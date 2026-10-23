@@ -6,8 +6,9 @@ node_modules/
 .env.*
 !.env.example
 
-# SQLite data của tracker (sinh lại bằng crawler, đổi mỗi ngày)
-tools/game-market-tracker/data/*.db
+# SQLite của tracker: giữ market.db (lịch sử xếp hạng, không lấy lại được),
+# bỏ demo.db (sinh lại bằng demo-seed.js)
+tools/game-market-tracker/data/demo.db
 *.db-journal
 *.db-wal
 *.db-shm
