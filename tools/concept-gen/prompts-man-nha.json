@@ -1,0 +1,16 @@
+[
+  {
+    "id": "PHAT-TRIEN",
+    "model": "google/nano-banana-2.1/edit",
+    "image": "docs/concepts/que-len-pho/lang-quy-hoach/lang-overview-chot.png",
+    "note": "Overview chi lam mau phong cach. Man Nha minh kieu Hay Day, da phat trien. Khong co ruong lua.",
+    "prompt": "Use the attached village map only as the art style reference. Draw a NEW image: the player's HOME FARM screen of a cozy mobile farming game in the style of Hay Day's farm screen, 16:9, fixed isometric camera, no sky, land fills the frame. Large plot laid out on a faint isometric tile grid with plenty of empty placeable land. Cutaway three-bay red tile house with brick front yard; brick drying yard with crops and corn; many square vegetable and root crop plots (cabbage, morning glory, chili, sweet potato, carrot, corn, pumpkin) at different stages; gourd and loofah trellises; chicken coop with run, duck pond, pig sty, cow shed; stone rice mill, thatched clay-stove kitchen hut; well, haystack, fruit trees, small decorations. No rice paddies. Outer edges wild and locked (tall grass, bushes, rocks, stumps, bamboo), low reddish earthen brick wall and gate at the far boundary with the village lane beyond. Young woman player in conical hat harvesting; dog and chickens. No coconut palms, no text, no UI."
+  },
+  {
+    "id": "BAT-DAU",
+    "model": "google/nano-banana-2.1/edit",
+    "image": "docs/concepts/que-len-pho/man-nha/PHAT-TRIEN-2.png",
+    "note": "Sua tu PHAT-TRIEN-2, giu khung hinh: luc moi vao game",
+    "prompt": "Edit into the starting state, same camera and framing. Old dusty house with missing tiles and nearly empty interior; only a small cleared area near the house with 2 empty soil plots and the old well on the faint grid; everything else overgrown and locked (grass, weeds, bushes, rocks, stumps, branches, bamboo, broken fences). Remove all crops, animals, buildings and decorations. Player woman in conical hat holding a hoe near the house, small dog. No text, no UI."
+  }
+]

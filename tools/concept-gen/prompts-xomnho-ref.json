@@ -1,0 +1,14 @@
+[
+  {
+    "id": "X1-bacbo",
+    "model": "fal-ai/flux-pro/kontext",
+    "image": "docs/concepts/que-len-pho/_ref-noi-bo/xom-nho-sample.webp",
+    "prompt": "Keep the same flat cartoon isometric game art style, the cutaway houses that show their interiors, the hedge-bordered house plots, the sandy roads and the tiny chibi villagers. Turn it into a different Northern Vietnamese village: remove the logo text in the bottom left completely and fill that area with rice paddies; replace the railway and train with a dense green bamboo hedge; replace the radio tower with an arched brick village gate with a small tiled roof; replace the coconut palms with areca palms and bamboo clumps; replace the sea, pier and basket boats in the top right with a winding river crossed by an arched stone bridge and green rice paddies; replace the big tin-roof market with a communal house (dinh lang) with a dark red tile roof with gently curved corners on wooden columns and a stone yard where a small morning market with umbrellas is held; replace the striped-awning cafe with a thatched-roof tea stall under a big banyan tree; add a round brick village well. Remove all signs and readable text. Keep the cutaway houses."
+  },
+  {
+    "id": "X2-nhan-vat-to",
+    "model": "fal-ai/flux-pro/kontext",
+    "image": "docs/concepts/que-len-pho/_ref-noi-bo/xom-nho-sample.webp",
+    "prompt": "Keep the same flat cartoon isometric game art style and the cutaway houses with visible interiors, but zoom in so the view is closer and the characters are about twice as large and clearly readable. Remove the logo text completely. Make it a Northern Vietnamese village: bamboo hedge instead of the railway, an arched brick village gate with a small tiled roof instead of the radio tower, areca palms instead of coconut palms, a winding river with an arched stone bridge instead of the sea and pier, a communal house with a dark red tile roof with gently curved corners instead of the tin-roof market, and a thatched tea stall under a banyan tree instead of the striped cafe. One player character, a young woman in a conical hat, watering a vegetable bed in the center. Remove all signs and readable text."
+  }
+]

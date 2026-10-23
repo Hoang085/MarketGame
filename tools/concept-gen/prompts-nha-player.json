@@ -1,0 +1,16 @@
+[
+  {
+    "id": "SAU",
+    "model": "google/nano-banana-2.1/edit",
+    "image": "docs/concepts/que-len-pho/lang-quy-hoach/lang-overview-chot.png",
+    "note": "Overview chi dung lam mau phong cach. Khu nha player da phat trien: nha cat ngang, san phoi lua, khu trong trot, khu nuoi, nhan vat nu",
+    "prompt": "Use the attached village map only as the art style reference. Draw a NEW close-up gameplay view (16:9, isometric, no sky) of the player's home compound: large square plot in a low reddish earthen brick wall with a gate onto a sandy lane, neighbours at the edges. Cutaway three-bay red tile house at the back (front and one side wall removed) showing red brick floor, altar, bamboo daybed, tea table, cabinet, radio, bamboo fan. Big red brick rice drying yard with golden rice. Growing area: 4 vegetable beds at different stages, gourd trellis, fruit tree. Livestock area: thatched chicken coop, duck pond, cow shed with cow. Brick well, haystack. Young woman player, chibi 2.5-3 heads, conical hat, watering vegetables; dog by the gate. Warm afternoon light. No coconut palms, no text, no UI."
+  },
+  {
+    "id": "TRUOC",
+    "model": "google/nano-banana-2.1/edit",
+    "image": "docs/concepts/que-len-pho/nha-player/SAU-2.png",
+    "note": "Sua tu SAU-2, giu nguyen khung hinh: trang thai luc moi ve que",
+    "prompt": "Edit into the 'just arrived' state of the same compound, same camera and framing. Dusty nearly empty cutaway house (old altar, broken daybed, cobwebs, missing roof tiles), cracked weedy brick yard with no rice, overgrown grass and bare earth instead of vegetable beds, empty livestock area with a collapsed fence and a straw pile, mossy old well. The young woman in a conical hat stands at the gate with a small suitcase and a cloth bundle. No animals. No text, no UI."
+  }
+]

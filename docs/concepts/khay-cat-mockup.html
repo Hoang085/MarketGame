@@ -1,0 +1,335 @@
+<title>Khay hứng cát</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap">
+<style>
+/* Layout: the phone is the hero on the left; rules read beside it, keyed by the numbered callouts; stacks on phones */
+:root {
+  --bg: #f3efe8;
+  --surface: #ffffff;
+  --fg: #1f1a16;
+  --muted: #645a50;
+  --line: #e0d7cb;
+  --accent: #d9722b;
+  --phone: #16120f;
+  --display: "Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #15110e; --surface: #1f1a16; --fg: #efe8df; --muted: #a99d90; --line: #332b24; --accent: #f29a55; --phone: #050403;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #15110e; --surface: #1f1a16; --fg: #efe8df; --muted: #a99d90; --line: #332b24; --accent: #f29a55; --phone: #050403;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 15px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 36px 56px;
+}
+.wrap { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: 48px; align-items: start; }
+@media (max-width: 820px) { .wrap { grid-template-columns: minmax(0, 1fr); gap: 32px; } }
+.stage { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 16px); display: grid; justify-items: center; }
+@media (max-width: 820px) { .stage { position: static; } }
+.phone { background: var(--phone); border-radius: 40px; padding: 9px; width: 100%; max-width: 380px; box-shadow: 0 24px 50px -28px rgba(40, 20, 0, .6); }
+.phone svg { display: block; width: 100%; height: auto; border-radius: 32px; }
+.copy { display: grid; gap: 18px; min-width: 0; max-width: 580px; }
+.eyebrow { margin: 0; font-size: 12px; letter-spacing: .09em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+h1 { margin: 0; font-family: var(--display); font-weight: 800; font-size: clamp(32px, 5vw, 46px); line-height: 1.02; text-wrap: balance; }
+h2 { margin: 10px 0 0; font-family: var(--display); font-weight: 700; font-size: 21px; line-height: 1.2; }
+p { margin: 0; }
+.lead { font-size: 16px; }
+.note { color: var(--muted); font-size: 14px; }
+ol, ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+li::marker { color: var(--muted); }
+ol.keyed { list-style: none; padding: 0; }
+ol.keyed li { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start; }
+.num { width: 24px; height: 24px; border-radius: 50%; background: var(--accent); color: #fff; font: 700 13px/24px var(--body); text-align: center; margin-top: 1px; }
+.kinds { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: center; }
+.card svg { width: 64px; height: 80px; }
+.card b { display: block; font-family: var(--display); font-size: 17px; line-height: 1.2; margin-bottom: 2px; }
+.card span { font-size: 14px; color: var(--muted); }
+</style>
+
+<div class="wrap">
+  <div class="stage">
+    <div class="phone"><svg id="screen" viewBox="0 0 360 640" role="img" aria-label="Mockup một màn: băng chuyền chở đồ thủy tinh ở trên, 5 chỗ đổ ở giữa, bàn trượt khay với buồng cát và khối băng ở dưới"></svg></div>
+  </div>
+
+  <div class="copy">
+    <p class="eyebrow">Hành Trình Sắc Màu · biến thể khay cát · mockup 2D · 23/10/2026</p>
+    <h1>Khay hứng cát</h1>
+    <p class="lead">Người chơi trượt khay trên một bàn lưới, len qua các khối băng để tới dưới miệng buồng cát và hứng đầy màu. Khay đầy tự vào chỗ đổ, rồi đổ cát vào những món đồ thủy tinh đang chờ trên băng chuyền. Cả màn chơi theo lượt: có hai lớp câu đố là mở đường cho khay, và chọn màu để phục vụ món nào trước.</p>
+    <p class="note">Ảnh tĩnh để duyệt bố cục và luật chơi, chưa chơi được. Phần bàn trượt dựa theo ảnh tham khảo bạn gửi. Bố cục từ trên xuống: băng chuyền, chỗ đổ, bàn trượt, để bàn trượt nằm trong vùng ngón cái. Màu, dáng đồ và con số chỉ để minh họa.</p>
+
+    <h2>Luật chơi</h2>
+    <ol class="keyed">
+      <li><span class="num">1</span><span><b>Buồng cát.</b> Các buồng cát cố định ở hàng trên, mỗi buồng một màu và có miệng xả ở đáy. Khay nằm ngay dưới miệng xả thì cát chảy xuống tới khi khay đầy.</span></li>
+      <li><span class="num">2</span><span><b>Khối băng.</b> Khối băng chắn đường và trượt được như khay. Con số là số lượt còn lại trước khi tan: mỗi lượt trượt bất kỳ làm mọi khối giảm 1, về 0 thì khối tan và mở đường. Ví dụ: trượt khối "4" sang trái thì mở được miệng xả vàng cho khay to ở góc dưới.</span></li>
+      <li><span class="num">3</span><span><b>Khay trống.</b> Khay hứng màu gì thì thành màu đó. Khay to chứa 8 phần cát, khay nhỏ chứa 4 và chiếm 1 ô.</span></li>
+      <li><span class="num">4</span><span><b>Khay đầy tự vào chỗ đổ.</b> Có 5 chỗ đổ. Khay đầy rời khỏi bàn trượt, bay vào chỗ trống gần nhất và để lại ô trống trên bàn.</span></li>
+      <li><span class="num">5</span><span><b>Đổ cát và khay dư.</b> Khay tự đổ vào món đang chờ cần đúng màu của nó: khay nhấc khỏi chỗ đổ, bay lên trên món đồ rồi nghiêng đổ xuống. Không khớp thì khay nằm yên, không có animation. Khay còn cát thì ở lại chiếm chỗ. Ví dụ: khay xanh dương đang chờ vì bình hồ lô phải nhận đỏ trước.</span></li>
+      <li><span class="num">6</span><span><b>Băng chuyền.</b> Luôn có 3 món chờ ở khu giao hàng. Băng chuyền chỉ chạy khi một món xong: món đó rời đi, băng nhích một nấc và đưa món mới vào. Nhãn dưới mỗi món cho biết màu và số cát còn thiếu.</span></li>
+    </ol>
+
+    <h2>Hai loại món đồ</h2>
+    <div class="kinds">
+      <div class="card"><svg id="kindNormal" viewBox="-34 -42 68 84" aria-hidden="true"></svg><div><b>Món thường</b><span>Đổ màu nào trước cũng được. Chỉ cần đủ số cát mỗi màu.</span></div></div>
+      <div class="card"><svg id="kindSpecial" viewBox="-34 -42 68 84" aria-hidden="true"></svg><div><b>Món đặc biệt</b><span>Viền vàng, phải đổ đúng thứ tự từ đáy lên. Lớp kế tiếp có viền sáng, các lớp sau chỉ hiện vạch mờ. Thưởng nhiều xu hơn.</span></div></div>
+    </div>
+
+    <h2>Đề xuất cho các điểm chưa chốt</h2>
+    <ul>
+      <li><b>Thắng:</b> hoàn thành đủ số món của màn (thanh trên cùng, ở đây là 3/10).</li>
+      <li><b>Thua:</b> cả 5 chỗ đổ đều có khay dư, và không món nào trong 3 món đang chờ cần các màu đó. Hoặc bàn trượt kẹt, không còn nước đi. Khi ấy hiện gợi ý dùng vật phẩm hỗ trợ hoặc chơi lại.</li>
+      <li><b>Không có đồng hồ.</b> Cả màn chơi theo lượt, áp lực đến từ 5 chỗ đổ và thứ tự mở đường.</li>
+      <li><b>Mỗi món tối đa 3 màu.</b> Món đặc biệt xuất hiện từ chương 2, khoảng 1 món trong mỗi 4–5 món.</li>
+      <li><b>Vật phẩm hỗ trợ gợi ý:</b> phá một khối băng, đổ bỏ một khay dư, thêm chỗ đổ thứ 6 trong một lượt.</li>
+      <li><b>Số khay:</b> tùy từng màn trong level design. Có màn khay rời bàn thì sinh khay trống mới, có màn số khay cố định để câu đố chặt hơn.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+const NS = 'http://www.w3.org/2000/svg';
+const SAND = { R: '#e2574c', Y: '#f2bf3f', B: '#3f8fd8', G: '#55b06a', P: '#9a6bd6' };
+const GOLD = '#e2a72e';
+let uid = 0;
+
+function el(tag, attrs = {}, parent) {
+  const n = document.createElementNS(NS, tag);
+  for (const [k, v] of Object.entries(attrs)) n.setAttribute(k, v);
+  if (parent) parent.appendChild(n);
+  return n;
+}
+function text(parent, x, y, str, attrs = {}) {
+  const t = el('text', { x, y, 'font-family': 'Be Vietnam Pro, system-ui, sans-serif', 'font-size': 11, 'font-weight': 600, fill: '#2b231c', ...attrs }, parent);
+  t.textContent = str;
+  return t;
+}
+
+/* Glass shapes, centred on (0,0), bottom near y=+28 */
+const SHAPES = {
+  bottle: 'M-6,-32 h12 v10 q16,6 16,22 v26 q0,4 -4,4 h-36 q-4,0 -4,-4 v-26 q0,-16 16,-22 z',
+  gourd: 'M-4,-34 h8 v6 q10,4 10,12 q0,6 -4,9 q16,6 16,19 q0,16 -26,16 q-26,0 -26,-16 q0,-13 16,-19 q-4,-3 -4,-9 q0,-8 10,-12 z',
+  lantern: 'M-8,-32 h16 v4 q20,10 20,26 q0,16 -20,26 v4 h-16 v-4 q-20,-10 -20,-26 q0,-16 20,-26 z',
+  jar: 'M-12,-28 h24 v6 q14,4 14,20 v22 q0,8 -8,8 h-36 q-8,0 -8,-8 v-22 q0,-16 14,-20 z',
+};
+const TOP = { bottle: -22, gourd: -28, lantern: -28, jar: -22 }; // where sand can fill up to
+const BOTTOM = 30;
+
+/* layers: [{c, need, have}] bottom → top. special: order matters. pouring: colour being poured in */
+function glass(parent, { shape, x, y, s = 1, layers, special = false, pouring = null }) {
+  const g = el('g', { transform: `translate(${x},${y}) scale(${s})` }, parent);
+  const id = 'clip' + (uid++);
+  el('path', { d: SHAPES[shape] }, el('clipPath', { id }, el('defs', {}, g)));
+  el('path', { d: SHAPES[shape], fill: 'rgba(225,246,255,.92)' }, g);
+  const inner = el('g', { 'clip-path': `url(#${id})` }, g);
+  const total = layers.reduce((a, l) => a + l.need, 0);
+  const span = BOTTOM - TOP[shape];
+  let yb = BOTTOM;
+  let nextFound = false;
+  layers.forEach((l) => {
+    const h = span * l.need / total;
+    const hf = h * l.have / l.need;
+    if (hf > 0) el('rect', { x: -40, y: yb - hf, width: 80, height: hf + 0.5, fill: SAND[l.c], filter: 'url(#grain)' }, inner);
+    if (special && l.have < l.need) {
+      const isNext = !nextFound;
+      nextFound = true;
+      el('line', { x1: -40, x2: 40, y1: yb - h, y2: yb - h, stroke: isNext ? SAND[l.c] : 'rgba(80,70,60,.35)', 'stroke-width': isNext ? 2 : 1, 'stroke-dasharray': '3 3' }, inner);
+      if (isNext) el('rect', { x: -40, y: yb - h, width: 80, height: h - hf, fill: SAND[l.c], opacity: .22 }, inner);
+    }
+    yb -= h;
+  });
+  if (pouring) el('rect', { x: -2, y: TOP[shape] - 6, width: 4, height: yb - TOP[shape] + 40, fill: SAND[pouring], filter: 'url(#grain)' }, inner);
+  // glass rim + highlight
+  el('path', { d: SHAPES[shape], fill: 'none', stroke: special ? GOLD : 'rgba(90,130,150,.9)', 'stroke-width': special ? 2.6 : 1.6 }, g);
+  el('path', { d: 'M-12,-6 q-3,10 0,22', fill: 'none', stroke: 'rgba(255,255,255,.85)', 'stroke-width': 2.4, 'stroke-linecap': 'round' }, g);
+  if (special) el('path', { d: 'M-5,-38 l5,-6 l5,6 z', fill: GOLD }, g);
+  return g;
+}
+
+/* Remaining-need tag: coloured dots with counts */
+function tag(parent, x, y, layers, special = false, active = null) {
+  const items = layers.map((l, i) => ({ ...l, i, left: l.need - l.have }));
+  const w = items.length * 30 + 8;
+  const g = el('g', { transform: `translate(${x - w / 2},${y})` }, parent);
+  el('rect', { width: w, height: 18, rx: 9, fill: 'rgba(255,255,255,.94)', stroke: special ? GOLD : 'rgba(0,0,0,.12)', 'stroke-width': special ? 1.5 : 1 }, g);
+  let nextIdx = special ? items.findIndex((l) => l.left > 0) : -1;
+  items.forEach((l, k) => {
+    const cx = 12 + k * 30;
+    const lit = l.c === active || k === nextIdx;
+    if (lit) el('rect', { x: cx - 8, y: 2, width: 28, height: 14, rx: 7, fill: SAND[l.c], opacity: .22 }, g);
+    el('circle', { cx, cy: 9, r: 5, fill: SAND[l.c], stroke: lit ? '#2b231c' : 'none', 'stroke-width': 1.2 }, g);
+    text(g, cx + 8, 13, l.left === 0 ? '✓' : String(l.left), { 'font-size': 10, fill: l.left === 0 ? '#3c8a4f' : '#2b231c' });
+  });
+  return g;
+}
+
+function callout(parent, n, x, y) {
+  const g = el('g', { transform: `translate(${x},${y})` }, parent);
+  el('circle', { r: 10, fill: '#d9722b', stroke: '#fff', 'stroke-width': 2 }, g);
+  text(g, 0, 4, String(n), { 'text-anchor': 'middle', fill: '#fff', 'font-size': 11, 'font-weight': 700 });
+}
+
+function tray(parent, { x, y, c, amount, cap = 8, rot = 0, dim = false, label }) {
+  const g = el('g', { transform: `translate(${x},${y}) rotate(${rot})`, opacity: dim ? 1 : 1 }, parent);
+  const id = 'tclip' + (uid++);
+  const d = 'M-22,-8 h44 l-4,16 h-36 z';
+  el('path', { d }, el('clipPath', { id }, el('defs', {}, g)));
+  el('path', { d, fill: '#f6efe4' }, g);
+  if (amount > 0) el('rect', { x: -24, y: 8 - 16 * amount / cap, width: 48, height: 16 * amount / cap, fill: SAND[c], filter: 'url(#grain)', 'clip-path': `url(#${id})` }, g);
+  el('path', { d, fill: 'none', stroke: '#7a5a3a', 'stroke-width': 2, 'stroke-linejoin': 'round' }, g);
+  if (label) text(parent, x, y + 24, label, { 'text-anchor': 'middle', 'font-size': 10, fill: '#5a4632' });
+  return g;
+}
+
+/* Grid tray on the slide board: w×1 cells, fill shown as % like the reference */
+function boardTray(parent, x, y, w, h, c, pct) {
+  const g = el('g', {}, parent);
+  el('rect', { x: x + 2, y: y + 2, width: w - 4, height: h - 4, rx: 6, fill: '#2a2a33', stroke: c ? SAND[c] : '#55555f', 'stroke-width': 2.5 }, g);
+  if (pct > 0) el('rect', { x: x + 6, y: y + h - 6 - (h - 12) * pct, width: w - 12, height: (h - 12) * pct, rx: 3, fill: SAND[c], filter: 'url(#grain)' }, g);
+  el('rect', { x: x + w - 30, y: y + h - 15, width: 26, height: 11, rx: 3, fill: 'rgba(0,0,0,.55)' }, g);
+  text(g, x + w - 17, y + h - 6.5, Math.round(pct * 100) + '%', { 'text-anchor': 'middle', 'font-size': 8, fill: '#fff' });
+  return g;
+}
+
+/* Ice block: a polyomino of cells with a move counter */
+function ice(parent, cells, n, ox, oy, cs) {
+  const g = el('g', {}, parent);
+  cells.forEach(([cx, cy]) => el('rect', { x: ox + cx * cs + 1.5, y: oy + cy * cs + 1.5, width: cs - 3, height: cs - 3, rx: 7, fill: '#5cc6ee', stroke: '#2f9fd0', 'stroke-width': 1.5 }, g));
+  // merge seams between neighbouring cells so the piece reads as one block
+  cells.forEach(([cx, cy]) => {
+    if (cells.some(([a, b]) => a === cx + 1 && b === cy)) el('rect', { x: ox + (cx + 1) * cs - 6, y: oy + cy * cs + 3, width: 12, height: cs - 6, fill: '#5cc6ee' }, g);
+    if (cells.some(([a, b]) => a === cx && b === cy + 1)) el('rect', { x: ox + cx * cs + 3, y: oy + (cy + 1) * cs - 6, width: cs - 6, height: 12, fill: '#5cc6ee' }, g);
+  });
+  const [lx, ly] = cells[0];
+  text(g, ox + lx * cs + cs - 9, oy + ly * cs + 15, String(n), { 'text-anchor': 'end', 'font-size': 15, 'font-weight': 800, fill: '#0e4d6b' });
+  return g;
+}
+
+function drawScreen(svg) {
+  const defs = el('defs', {}, svg);
+  const f = el('filter', { id: 'grain', x: 0, y: 0, width: '100%', height: '100%' }, defs);
+  el('feTurbulence', { type: 'fractalNoise', baseFrequency: 1.4, numOctaves: 1, seed: 3, result: 'n' }, f);
+  el('feColorMatrix', { in: 'n', type: 'matrix', values: '0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .35 0', result: 'a' }, f);
+  el('feComposite', { in: 'a', in2: 'SourceGraphic', operator: 'in', result: 'd' }, f);
+  el('feMerge', {}, f).append(el('feMergeNode', { in: 'SourceGraphic' }), el('feMergeNode', { in: 'd' }));
+  const sky = el('linearGradient', { id: 'sky', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+  el('stop', { offset: 0, 'stop-color': '#fde7c4' }, sky);
+  el('stop', { offset: 1, 'stop-color': '#f4c99a' }, sky);
+  const m = el('marker', { id: 'arrow', viewBox: '0 0 10 10', refX: 8, refY: 5, markerWidth: 7, markerHeight: 7, orient: 'auto' }, defs);
+  el('path', { d: 'M0,0 L10,5 L0,10 z', fill: '#5a4632' }, m);
+  const mw = el('marker', { id: 'arrowW', viewBox: '0 0 10 10', refX: 8, refY: 5, markerWidth: 6, markerHeight: 6, orient: 'auto' }, defs);
+  el('path', { d: 'M0,0 L10,5 L0,10 z', fill: '#fff' }, mw);
+
+  el('rect', { width: 360, height: 640, fill: 'url(#sky)' }, svg);
+
+  // HUD
+  el('rect', { x: 14, y: 14, width: 34, height: 26, rx: 9, fill: 'rgba(255,255,255,.8)' }, svg);
+  text(svg, 31, 32, 'II', { 'text-anchor': 'middle', 'font-size': 12, 'font-weight': 700 });
+  text(svg, 180, 26, 'Màn 12 · Mũi Né', { 'text-anchor': 'middle', 'font-size': 13, 'font-weight': 700, 'font-family': 'Baloo 2, system-ui' });
+  el('rect', { x: 120, y: 32, width: 120, height: 8, rx: 4, fill: 'rgba(255,255,255,.7)' }, svg);
+  el('rect', { x: 120, y: 32, width: 36, height: 8, rx: 4, fill: '#55b06a' }, svg);
+  text(svg, 246, 40, '3/10', { 'font-size': 10 });
+  el('rect', { x: 284, y: 14, width: 62, height: 26, rx: 13, fill: 'rgba(255,255,255,.8)' }, svg);
+  el('circle', { cx: 298, cy: 27, r: 7, fill: GOLD }, svg);
+  text(svg, 310, 31, '1.240', { 'font-size': 11 });
+
+  // Slide board: 6 columns × 7 rows. Rows 0–2 hold sand chambers, rows 3–6 are the sliding area.
+  const cs = 44, ox = 180 - 3 * cs, oy = 300, cols = 6, rows = 7;
+  const P = (cx, cy) => [ox + cx * cs, oy + cy * cs];
+  el('rect', { x: ox - 8, y: oy - 8, width: cols * cs + 16, height: rows * cs + 16, rx: 14, fill: '#8f86d8' }, svg);
+  el('rect', { x: ox, y: oy + 3 * cs, width: cols * cs, height: 4 * cs, rx: 6, fill: '#c9c4f0' }, svg);
+  // walls between chambers (top rows that are not playable)
+  for (const cx of [1, 4]) { const [x, y] = P(cx, 0); el('rect', { x, y, width: cs, height: 3 * cs, fill: '#8f86d8' }, svg); }
+  // channel at columns 2–3, rows 0–2: also part of the grid, filled with ice
+  { const [x, y] = P(2, 0); el('rect', { x, y, width: 2 * cs, height: 3 * cs, rx: 6, fill: '#c9c4f0' }, svg); }
+  // chambers: column 0 red, column 5 yellow; outlet notch at the bottom
+  for (const [cx, c, lvl] of [[0, 'R', .78], [5, 'Y', .9]]) {
+    const [x, y] = P(cx, 0);
+    el('rect', { x: x + 3, y: y + 3, width: cs - 6, height: 3 * cs - 6, rx: 6, fill: '#f3f0ff', stroke: '#6d63c4', 'stroke-width': 2 }, svg);
+    const h = (3 * cs - 12) * lvl;
+    el('rect', { x: x + 7, y: y + 3 * cs - 6 - h, width: cs - 14, height: h, rx: 3, fill: SAND[c], filter: 'url(#grain)' }, svg);
+    el('rect', { x: x + cs / 2 - 8, y: y + 3 * cs - 4, width: 16, height: 6, rx: 2, fill: '#3b3470' }, svg);
+  }
+  // pipe stubs feeding the chambers, like the reference
+  el('rect', { x: ox - 22, y: oy + 6, width: 18, height: 14, rx: 4, fill: SAND.R }, svg);
+  el('rect', { x: ox + cols * cs + 4, y: oy + 6, width: 18, height: 14, rx: 4, fill: SAND.Y }, svg);
+
+  // ice in the channel
+  ice(svg, [[2, 0], [3, 0], [2, 1]], 7, ox, oy, cs);
+  ice(svg, [[3, 1], [3, 2], [2, 2]], 7, ox, oy, cs);
+
+  // sliding area pieces
+  ice(svg, [[2, 3], [2, 4], [3, 4]], 2, ox, oy, cs);
+  ice(svg, [[4, 3], [5, 3]], 4, ox, oy, cs);           // blocks the yellow outlet
+  ice(svg, [[1, 5], [1, 6]], 3, ox, oy, cs);
+  ice(svg, [[3, 5], [4, 5]], 2, ox, oy, cs);
+  ice(svg, [[3, 6]], 1, ox, oy, cs);
+  // trays
+  { const [x, y] = P(0, 3); boardTray(svg, x, y, 2 * cs, cs, 'R', .62); }   // under red outlet, filling
+  { const [x, y] = P(0, 5); boardTray(svg, x, y, cs, cs, null, 0); }
+  { const [x, y] = P(4, 6); boardTray(svg, x, y, 2 * cs, cs, null, 0); }
+  // red stream into the tray
+  { const [x, y] = P(0, 3); el('rect', { x: x + cs / 2 - 2, y: y - 2, width: 4, height: 20, fill: SAND.R, filter: 'url(#grain)' }, svg); }
+  // hint: slide the ice left, then the big tray up under yellow
+  { const [x, y] = P(4, 3); el('path', { d: `M${x + 14},${y + cs / 2} h-26`, stroke: '#fff', 'stroke-width': 3, 'stroke-linecap': 'round', 'marker-end': 'url(#arrowW)' }, svg); }
+  { const [x, y] = P(5, 6); el('path', { d: `M${x + cs / 2},${y + 8} v-${2 * cs + 4}`, stroke: '#5a4632', 'stroke-width': 2, 'stroke-dasharray': '4 3', fill: 'none', 'marker-end': 'url(#arrow)' }, svg); }
+  callout(svg, 1, ox + 10, oy + 10);
+  callout(svg, 2, ox + 2 * cs + 10, oy + 10);
+  callout(svg, 3, ox + cs + 6, oy + 5 * cs + 10);
+
+  // Pour places
+  const py = 240, slotW = 56, gap = 10, sx0 = 20;
+  const centres = [0, 1, 2, 3, 4].map((i) => sx0 + i * (slotW + gap) + slotW / 2);
+  centres.forEach((cx) => el('rect', { x: cx - slotW / 2, y: py - 18, width: slotW, height: 34, rx: 9, fill: 'rgba(255,255,255,.45)', stroke: '#b89470', 'stroke-width': 1.5, 'stroke-dasharray': '4 3' }, svg));
+  tray(svg, { x: centres[0], y: py, c: 'G', amount: 3, label: 'dư 3' });
+  tray(svg, { x: centres[1], y: py, c: 'B', amount: 4, cap: 4, label: 'chờ lượt' });
+  // arrow from the full board tray up to a free place
+  { const [x, y] = P(1, 3); el('path', { d: `M${x + 20},${y + 4} C ${x + 50},${y - 30} ${centres[3] - 30},${py + 50} ${centres[3]},${py + 20}`, fill: 'none', stroke: '#5a4632', 'stroke-width': 1.5, 'stroke-dasharray': '3 3', 'marker-end': 'url(#arrow)' }, svg); }
+  callout(svg, 4, centres[3] + 24, py - 16);
+  callout(svg, 5, centres[0] - 18, py - 14);
+
+  // Conveyor: three items wait at the delivery zone; belt advances one notch only when an item is done
+  const belt = 118;
+  el('rect', { x: 0, y: belt + 22, width: 360, height: 26, fill: '#4d3b2c' }, svg);
+  for (let x = 330; x > 0; x -= 26) el('path', { d: `M${x},${belt + 29} l-6,6 l6,6`, stroke: 'rgba(255,255,255,.25)', 'stroke-width': 2, fill: 'none' }, svg);
+  const lantern = [{ c: 'R', need: 6, have: 0 }, { c: 'P', need: 4, have: 0 }, { c: 'Y', need: 3, have: 0 }];
+  glass(svg, { shape: 'lantern', x: 72, y: belt, s: 1.05, layers: lantern });
+  tag(svg, 72, belt + 58, lantern);
+  const bottle = [{ c: 'B', need: 5, have: 5 }, { c: 'Y', need: 8, have: 4 }];
+  glass(svg, { shape: 'bottle', x: 180, y: belt, s: 1.05, layers: bottle, pouring: 'Y' });
+  tag(svg, 180, belt + 58, bottle, false, 'Y');
+  const gourd = [{ c: 'G', need: 4, have: 4 }, { c: 'R', need: 5, have: 0 }, { c: 'B', need: 4, have: 0 }];
+  glass(svg, { shape: 'gourd', x: 288, y: belt, s: 1.05, layers: gourd, special: true });
+  tag(svg, 288, belt + 58, gourd, true);
+  // place 3's tray has lifted off its slot, flown above the bottle and tipped to pour
+  { const cx = centres[2]; el('path', { d: `M${cx - 14},${py - 18} C ${cx - 70},${py - 40} ${cx - 64},${belt - 40} ${cx - 30},${belt - 52}`, fill: 'none', stroke: '#5a4632', 'stroke-width': 1.5, 'stroke-dasharray': '3 3', 'marker-end': 'url(#arrow)' }, svg); }
+  el('rect', { x: 178, y: belt - 56, width: 4, height: 30, fill: SAND.Y, filter: 'url(#grain)' }, svg);
+  tray(svg, { x: 164, y: belt - 62, c: 'Y', amount: 4, rot: 26 });
+  // queue + exit hints
+  el('rect', { x: 326, y: belt + 62, width: 30, height: 18, rx: 9, fill: 'rgba(255,255,255,.8)' }, svg);
+  text(svg, 341, belt + 75, '+7', { 'text-anchor': 'middle', 'font-size': 10, 'font-weight': 700 });
+  text(svg, 180, belt + 92, 'món xong rời đi ◀ băng chuyền nhích 1 nấc', { 'text-anchor': 'middle', 'font-size': 10, fill: '#5a4632' });
+  callout(svg, 6, 22, belt - 20);
+}
+
+drawScreen(document.getElementById('screen'));
+
+/* Legend cards: reuse the same glass drawing */
+for (const [id, opts] of [
+  ['kindNormal', { shape: 'bottle', layers: [{ c: 'B', need: 5, have: 5 }, { c: 'Y', need: 8, have: 4 }] }],
+  ['kindSpecial', { shape: 'gourd', layers: [{ c: 'G', need: 4, have: 4 }, { c: 'R', need: 5, have: 0 }, { c: 'B', need: 4, have: 0 }], special: true }],
+]) {
+  // #grain is defined once in the phone screen and shared by id
+  glass(document.getElementById(id), { x: 0, y: 0, ...opts });
+}
+</script>

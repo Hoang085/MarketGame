@@ -1,0 +1,13 @@
+[
+  {
+    "id": "H1-cat-C1",
+    "model": "fal-ai/flux-pro/kontext",
+    "image": "docs/concepts/que-len-pho/lang-cutaway/C1-flux-1.png",
+    "prompt": "Keep everything else exactly the same. Cut away every house like a dollhouse: remove the front wall and the right side wall and the front half of the roof of each house, so we look straight into the rooms from above: red-and-white checkered tile floor, wooden ancestral altar on the back wall, round table with small stools, wardrobe, bed with mosquito net. Keep the back walls and the back half of the red tile roof. No text."
+  },
+  {
+    "id": "H2-nha-cat-lop",
+    "image_size": "square_hd",
+    "prompt": "Single isometric game asset on a plain white background: a cozy Northern Vietnamese countryside house drawn as a dollhouse cutaway, flat vector cartoon with thin warm-brown outlines and soft pastel colors. The front wall and the right side wall are removed and only the back half of the red clay tile gable roof remains, so the interior is fully visible from above: red-and-white checkered tile floor, wooden ancestral altar with incense bowl and framed photo on the back wall, round wooden table with low stools and a teapot, tall wardrobe, bed with a pink mosquito net, small old TV on a cabinet, electric fan, a calendar on the wall. Pale yellow lime-wash walls, wooden window with shutters. Around the house: a small grass plot with a low trimmed green hedge, a clay water jar, firewood stack, vegetable bed, a bicycle. One tiny chibi girl in a conical hat sweeping the floor. Strict 2:1 isometric, no perspective, no shadow drama, no text."
+  }
+]

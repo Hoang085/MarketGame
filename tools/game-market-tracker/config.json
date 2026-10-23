@@ -1,0 +1,50 @@
+{
+  "countries": [
+    "vn",
+    "us",
+    "gb",
+    "in",
+    "br",
+    "mx",
+    "tr"
+  ],
+  "topN": 100,
+  "delayMs": 1500,
+  "apple": {
+    "collections": [
+      "TOP_GROSSING_IOS",
+      "TOP_FREE_IOS"
+    ],
+    "categories": [
+      "GAMES"
+    ]
+  },
+  "google": {
+    "collections": [
+      "GROSSING",
+      "TOP_FREE"
+    ],
+    "categories": [
+      "GAME"
+    ]
+  },
+  "googleDetailsTopN": 20,
+  "genreLookupMaxPerRun": 400,
+  "watchlist": {
+    "google": [],
+    "apple": []
+  },
+  "report": {
+    "lookbackDays": 7,
+    "minCountriesForTrend": 3,
+    "trendRankCutoff": 30,
+    "genreRankCutoff": 100,
+    "maxRowsPerSection": 20
+  },
+  "links": {
+    "appmagic_google": "https://appmagic.rocks/google-play/app/{id}",
+    "appmagic_apple": "https://appmagic.rocks/iphone/app/{id}",
+    "sensortower_google": "",
+    "sensortower_apple": ""
+  }
+}

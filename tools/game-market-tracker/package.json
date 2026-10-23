@@ -1,0 +1,24 @@
+{
+  "name": "game-market-tracker",
+  "version": "1.0.0",
+  "description": "Theo doi bang xep hang game mobile da quoc gia",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "collect": "node src/collect.js",
+    "report": "node src/report.js",
+    "demo": "node src/demo-seed.js && node src/report.js --db data/demo.db --out reports/demo",
+    "query": "node src/query.js",
+    "dive": "node src/deep-dive.js",
+    "estimate": "node src/estimates.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "app-store-scraper": "^0.18.0",
+    "better-sqlite3": "^13.0.3",
+    "google-play-scraper": "^10.1.4"
+  },
+  "type": "module"
+}

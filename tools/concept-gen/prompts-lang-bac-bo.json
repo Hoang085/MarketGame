@@ -1,0 +1,21 @@
+[
+  {
+    "id": "K1-bacbo",
+    "model": "fal-ai/flux-pro/kontext",
+    "image": "docs/concepts/que-len-pho/lang/V2-map-hud-2.png",
+    "prompt": "Keep the exact same isometric camera angle, map layout, paths, stairs, pond position, HUD position and cozy mobile game rendering. Transform it into an authentic Northern Vietnamese village: replace the wooden fence ring with a tall dense green bamboo hedge; change every building into a traditional Northern Vietnamese house with a red clay tile gable roof with straight ridge and solid gable end walls, yellow lime-washed walls and wooden doors; turn the central crop square into a red brick courtyard with golden rice drying on it; add a round brick well, two haystacks with a pole in the middle, areca palms and banana plants; make the pond a lotus pond with a small stone washing pier; outside the bamboo hedge show green rice paddies divided by narrow dikes with a water buffalo. Tiny villagers wearing conical hats. No Chinese architecture, no upturned roof corners, no red lanterns, no text."
+  },
+  {
+    "id": "K2-dinh-cho",
+    "model": "fal-ai/flux-pro/kontext",
+    "image": "docs/concepts/que-len-pho/lang/V2-map-hud-2.png",
+    "prompt": "Keep the exact same isometric camera angle, overall map layout, paths and HUD, same cozy mobile game style. Make it a Northern Vietnamese village center: the large building becomes a communal house (dinh lang) with a wide dark-red tile roof on wooden columns and a stone-paved yard; the striped-umbrella stall area becomes a small morning market with conical-hat vendors, baskets of vegetables and red plastic stools; the entrance stairs get a village gate with two white pillars and a small tiled roof; a big banyan tree with hanging roots shades the crossroads; the fence ring becomes a dense bamboo hedge; houses get red tile gable roofs with straight ridges and yellow lime-wash walls; rice paddies with dikes surround the village outside the hedge. No Chinese architecture, no upturned roof corners, no red lanterns, no text."
+  },
+  {
+    "id": "I1-img2img",
+    "model": "fal-ai/flux/dev/image-to-image",
+    "image": "docs/concepts/que-len-pho/lang/V2-map-hud-2.png",
+    "extra": { "strength": 0.62 },
+    "prompt": "Cozy mobile game screenshot, isometric overview of an authentic Northern Vietnamese village surrounded by a dense green bamboo hedge, red clay tile gable roofs with straight ridges, yellow lime-washed walls, red brick courtyard with golden rice drying, round brick well, haystacks, areca palms, banana plants, lotus pond with stone pier, communal house with tiled roof, small market with conical-hat vendors and red plastic stools, green rice paddies with dikes and a water buffalo outside the hedge, tiny villagers in conical hats, simple game HUD with icon buttons. Clean cel-shaded game art, bright warm daylight. No Chinese architecture, no red lanterns, no text."
+  }
+]

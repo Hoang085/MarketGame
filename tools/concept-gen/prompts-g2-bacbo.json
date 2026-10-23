@@ -1,0 +1,14 @@
+[
+  {
+    "id": "G2-K1-giu-bo-cuc",
+    "model": "fal-ai/flux-pro/kontext",
+    "image": "docs/concepts/que-len-pho/lang-game/G2-recraft-1.png",
+    "prompt": "Keep the exact same isometric camera, map layout, paths, plots and the clean flat cartoon style with thin dark outlines. Make it an authentic Northern Vietnamese village: replace the sea and beach in the bottom right with a lotus pond and green rice paddies divided by narrow earth dikes; replace the grey stone walls with a dense green bamboo hedge; change the white houses into traditional Northern Vietnamese houses with yellow lime-washed walls, rectangular wooden doors and windows, and red clay tile gable roofs with straight ridges; replace the tiered building at the top right with a village communal house with a wide dark tile roof on wooden columns and straight ridge; turn the red gazebo into a small tea stall with red plastic stools; add a few tiny chibi villagers in conical hats, chickens, a water buffalo and a bicycle. No upturned roof corners, no Chinese architecture, no red lanterns, no sea, no text."
+  },
+  {
+    "id": "G2-K2-day-hon",
+    "model": "fal-ai/flux-pro/kontext",
+    "image": "docs/concepts/que-len-pho/lang-game/G2-recraft-1.png",
+    "prompt": "Keep the same isometric camera and the clean flat cartoon game art style with thin dark outlines, but make the scene denser and livelier like a busy mobile village game map. Northern Vietnamese village: bamboo hedge instead of stone walls, rice paddies and a lotus pond with a stone washing pier instead of the sea and beach, yellow lime-wash houses with red clay tile gable roofs and straight ridges, one house shown as a cutaway with the front walls removed to reveal a red tiled floor, ancestral altar, bamboo daybed and tea table; a small morning market with blue-and-white umbrellas and vendors in conical hats; a roadside tea stall with red plastic stools; a round brick well and haystacks; many tiny chibi villagers, kids, dogs, chickens, bicycles and scooters on the sandy paths. No upturned roof corners, no Chinese architecture, no red lanterns, no sea, no text."
+  }
+]

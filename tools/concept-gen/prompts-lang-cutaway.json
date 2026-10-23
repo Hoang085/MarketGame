@@ -1,0 +1,18 @@
+[
+  {
+    "id": "C1-flux",
+    "prompt": "Mobile game key art, cozy Vietnamese village life simulation, clean flat vector cartoon with thin warm-brown outlines, soft pastel colors, strict 2:1 isometric projection, no perspective, no sky, no lighting effects, everything at one small consistent scale. Wide map of a Northern Vietnamese village crossed by wide pale sandy roads. Several house plots, each plot a rectangle of grass surrounded by a low trimmed green hedge with a small wooden gate. Every house is shown as a dollhouse cutaway: the front wall and one side wall are removed so the inside is clearly visible: red-and-white checkered tile floor, wooden ancestral altar with a framed photo, round table with stools, wardrobe, small TV cabinet, bed with mosquito net; only the back walls and the red clay tile gable roof with a pale ridge remain. Beside the houses: vegetable beds, luffa trellis, firewood stack, clay water jar, bicycle. Golden rice paddies with thin blue water borders and stacked rice sheaves, water buffalo grazing, a haystack, a big banyan tree. A covered village market: a long hall with grey corrugated tin roof around a courtyard full of blue-and-white umbrellas, vegetable baskets and red plastic stools. A roadside che stall with a striped awning and red plastic stools. A lotus pond with a stone washing pier, a village gate with two white pillars and a small tiled roof, a bamboo hedge along the village edge, areca palms. Many tiny chibi villagers walking, kids playing, dogs. Peaceful, nostalgic, authentic Vietnamese, no Chinese architecture, no text, no logo."
+  },
+  {
+    "id": "C2-recraft",
+    "model": "fal-ai/recraft/v3/text-to-image",
+    "extra": { "style": "digital_illustration" },
+    "prompt": "Isometric mobile game map, cozy Vietnamese village, flat vector cartoon with thin brown outlines and soft pastel colors, wide pale sandy roads, house plots each surrounded by a low green hedge, houses drawn as dollhouse cutaways with front and side walls removed showing red-and-white checkered tile floors, wooden altar, round table, wardrobe and bed inside, red clay tile gable roofs, vegetable beds, luffa trellis, golden rice paddies with blue water borders and rice sheaves, water buffalo, haystack, banyan tree, a market hall with grey tin roof around a courtyard of blue-and-white umbrellas and red plastic stools, a che stall with striped awning, lotus pond, village gate with white pillars, bamboo hedge, many tiny chibi villagers. No text."
+  },
+  {
+    "id": "C3-sua-G2",
+    "model": "fal-ai/flux-pro/kontext",
+    "image": "docs/concepts/que-len-pho/g2-bacbo/G2-K2-day-hon-1.png",
+    "prompt": "Keep the same isometric camera and map layout. Redraw everything as clean flat vector cartoon with thin warm-brown outlines and soft pastel colors. Turn every house into a dollhouse cutaway: remove the front wall and one side wall so the interior is clearly visible with a red-and-white checkered tile floor, wooden ancestral altar, round table with stools, wardrobe and bed; keep only the back walls and the red clay tile gable roof. Replace arched windows with rectangular wooden ones. Surround each house plot with a low trimmed green hedge. Make the paths wide pale sand. Add a bamboo hedge along the map edge and golden rice paddies with blue water borders outside it. Many tiny chibi villagers in conical hats. No text."
+  }
+]

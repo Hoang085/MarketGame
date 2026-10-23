@@ -1,0 +1,12 @@
+[
+  {
+    "id": "G1-flux",
+    "prompt": "Mobile game key art screenshot, flat vector cartoon, clean thin dark outlines, strict 2:1 isometric projection with no perspective, no sky, no horizon, no depth of field, no dramatic lighting, even soft daylight. A dense, busy overview of a whole Northern Vietnamese village packed with small readable gameplay objects, everything at one consistent scale. Zones connected by sandy dirt roads: a ring of tall green bamboo hedge around the village; the player's home plot with a cutaway house (red clay tile gable roof, front walls removed to show a red tiled floor, ancestral altar, bamboo daybed, tea table), raised vegetable beds, chicken coop, round brick well, haystack; a communal house (dinh lang) with a wide dark tile roof on wooden columns and a stone yard where villagers gather; a small morning market square beside it with many blue-and-white umbrellas, vendors in conical hats, baskets of vegetables and fruit; a roadside che and tea stall with red plastic stools at the village gate; a village gate with two white pillars and a small tiled roof; a lotus pond with a stone washing pier; a banyan tree at the crossroads; golden and green rice paddies divided by narrow dikes outside the hedge with water buffalo and a farmer. Dozens of tiny chibi villagers, kids, dogs, chickens, bicycles and scooters on the roads. Bright cheerful colors, authentic Vietnamese details, no Chinese architecture, no upturned roof corners, no red lanterns, no text, no logo."
+  },
+  {
+    "id": "G2-recraft",
+    "model": "fal-ai/recraft/v3/text-to-image",
+    "extra": { "style": "digital_illustration" },
+    "prompt": "Isometric mobile game map of a whole Northern Vietnamese village, flat vector cartoon with thin outlines, strict isometric projection, no sky, dense with small readable objects at one consistent scale: bamboo hedge ring around the village, cutaway houses with red clay tile gable roofs showing furniture inside, vegetable beds, chicken coop, brick well, haystacks, communal house with dark tile roof and stone yard, small market with blue-and-white umbrellas and conical-hat vendors, roadside tea stall with red plastic stools, village gate with white pillars and a small tiled roof, lotus pond with stone pier, banyan tree, rice paddies with dikes and water buffalo outside the hedge, many tiny chibi villagers, bicycles and scooters on sandy roads. Bright cheerful colors, no text."
+  }
+]

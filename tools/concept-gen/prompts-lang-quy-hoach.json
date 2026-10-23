@@ -1,0 +1,37 @@
+[
+  {
+    "id": "Q1-lang-tong-the",
+    "prompt": "Full map overview of a whole Northern Vietnamese village for a cozy 2D isometric mobile farming and business game. Strict orthographic isometric camera from above, no perspective, no sky, no horizon; the map fills the whole frame like a game board. Art style: clean flat-colour cozy cartoon game art with soft warm brown outlines (not black), gentle cel shading, warm late-afternoon sunlight with soft shadows all falling the same direction, palette of young rice green, straw yellow, earth brown, red clay roof tiles, white and pale yellow lime-wash walls, accents of lotus pink and jade pond water. Avoid harsh neon grass green.\n\nLayout, clearly separated zones joined by winding sandy dirt lanes:\n1. CENTRE: the village communal house (dinh lang): a large wooden hall on columns with a heavy dark red tile roof whose corners curve up only gently, Northern Vietnamese style, with a wide paved brick courtyard in front, two stone pillars at the yard entrance and a half-moon lotus pond in front.\n2. Next to the communal house: the village market (phien cho) on an open earth square: rows of low stalls with thatched or corrugated roofs, big canvas umbrellas, bamboo baskets of vegetables, fish basins, fruit, many tiny villagers shopping.\n3. A big open bare-earth playground with two simple bamboo goalposts where small children are playing football, a banyan tree shading one corner.\n4. A RESIDENTIAL QUARTER of 6 to 8 family compounds lined up side by side along the lanes, in neat rows. Every compound is a generous square plot enclosed by its own low wall of rustic earthen red-brown bricks with a small gate. Inside each compound: a small three-bay house with red tile gable roof (straight ridge, no curved corners), and a LOT of free space: a brick yard for drying golden rice, a vegetable garden, a chicken coop, ducks, a cow shed with a cow, a well, a haystack. The compounds vary in what they contain, and two or three plots are left almost empty with plain earth and grass, ready for the player to build on.\n5. A SEPARATE RICE FIELD ZONE outside the village: a large patchwork of flooded green rice paddies divided by narrow dikes and irrigation channels, a few farmers in conical hats, a water buffalo, haystacks; it lies beyond the bamboo hedge, connected to the village by one dirt road.\n6. A dense ring of green bamboo hedge (luy tre) around the inhabited village, broken by a brick village gate with a small tiled roof where the road enters.\nAlso: a village pond with a stone washing pier, a round brick village well at a crossroads, areca palms and bamboo clumps, a few bicycles, a motorbike.\n\nTiny chibi villagers everywhere at consistent small scale. Readable on a phone, medium detail density, crisp shapes. Authentic Vietnamese details only: no Chinese-style architecture, no red lanterns, no coconut palms, no text, no labels, no UI."
+  },
+  {
+    "id": "Q2-lang-so-do",
+    "prompt": "Top-down game level layout illustration of a Northern Vietnamese village map for a cozy mobile farming game, seen from high above at a steep isometric angle so the whole village plan is easy to read, like a level design concept painting. Flat cozy cartoon style, warm brown outlines, soft afternoon light, palette of young rice green, straw yellow, earth brown, red roof tiles, lime-wash white.\n\nThe map is organised in clear districts:\n- North-west quarter: a large separate area of rice paddies in a grid of dikes and water channels, haystacks, a water buffalo, farmers in conical hats.\n- Centre: the communal house (dinh lang) with a dark red tiled roof, gently curved corners, a big brick courtyard and a lotus pond in front; directly beside it the open market square with umbrellas and thatched stalls full of produce and shoppers.\n- East: a wide open bare-earth field with bamboo goalposts where children play football.\n- South half: a residential quarter of about eight family compounds placed side by side in two neat rows along a straight village lane. Each compound is a spacious square yard surrounded by a low wall of reddish earthen bricks with a gate opening onto the lane; inside, a small red-tile three-bay house at the back and a large open yard in front with variety: one has rice drying on bricks, one has a cow shed and cow, one has ducks and a small pond, one has chickens and a vegetable garden, two are mostly empty earth ready to be built on.\n- A thick bamboo hedge wraps the inhabited village with a brick village gate on the main road; the rice field district is outside the hedge.\nSandy lanes connect everything, a village well at the main crossroads, a banyan tree, a pond with a stone pier. Tiny chibi villagers. No text, no labels, no UI, no Chinese architecture, no lanterns, no coconut trees."
+  },
+  {
+    "id": "R1-sua-Q1-2",
+    "model": "google/nano-banana-2.1/edit",
+    "image": "docs/concepts/que-len-pho/lang-quy-hoach/Q1-nb21-2.png",
+    "note": "Sua Q1-nb21-2 theo anh mau ruong lua thung lung nui da voi (nguoi dung gui 2026-10-22)",
+    "prompt": "Edit this cozy isometric village game map, keep the exact same art style, camera angle, outlines and the village layout. Make the rice field zone much bigger like a Northern Vietnamese valley: irregular patchwork paddies, mix of ripe golden and young green rice, flooded plots, haystacks, a dirt road to the village gate. Add a soft backdrop of rounded green limestone karst hills at the top edge. Replace coconut palms with areca palms or bamboo. Communal house roof corners curve only slightly. No text."
+  },
+  {
+    "id": "R2-thung-lung",
+    "model": "google/nano-banana-2.1",
+    "note": "Lang cum gon o goc phai duoi, ruong lua rieng chiem ben trai va phia tren, nui da voi o mep tren",
+    "prompt": "Full map overview of a Northern Vietnamese valley village (see Q1 for full style text). Compact walled village cluster lower-right inside a bamboo hedge; separate rice field zone fills the left and top with irregular golden/green/flooded paddies; thin band of limestone karst hills at top edge; communal house + market + football playground + 6-8 walled family compounds with open yards, two left empty."
+  },
+  {
+    "id": "R3-mo-lang",
+    "model": "google/nano-banana-2.1/edit",
+    "image": "docs/concepts/que-len-pho/lang-quy-hoach/R2-thung-lung-1.png",
+    "note": "Sua R2-1: bo luy tre, them 12-14 ho, cho chu U (y tuong tu Xom Nho, doi chat lieu mai ngoi + tranh, cong gach)",
+    "prompt": "Edit this map, keep style and rice fields. Remove the bamboo hedge and gates around the village; enlarge the residential quarter to 12-14 walled family compounds with varied yards, 3-4 empty; replace the market with a U-shaped market of three long open sheds with red tile and thatch roofs around a courtyard of umbrellas and stalls, brick gate with two pillars, motorbikes outside; areca palms instead of coconut palms. No text."
+  },
+  {
+    "id": "R4-lang-rong",
+    "model": "google/nano-banana-2.1/edit",
+    "image": "docs/concepts/que-len-pho/lang-quy-hoach/R2-thung-lung-1.png",
+    "note": "Nhu R3 nhung zoom ra de lang to hon",
+    "prompt": "Redraw this map zoomed out a little, same style. Keep rice fields left/top, karst hills, communal house, playground, banyan, pond. No hedge or gates; about 14 walled family compounds on a grid of sandy lanes on the right and bottom, several empty; larger U-shaped market of red-tile and thatch sheds around a courtyard with umbrellas, brick gate, parked motorbikes; areca palms not coconut. No text."
+  }
+]
