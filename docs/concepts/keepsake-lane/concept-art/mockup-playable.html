@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keepsake Lane mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  :root { --paper:#f3e6c8; --ink:#3a2a1c; --brass:#c9a24a; --wine:#7a2232; --teal:#3fd6c4; }
+  body { margin:0; background:#1b1612; color:#e8dcc4; font-family:Nunito,sans-serif; }
+  h1 { font:700 20px 'Playfair Display',serif; text-align:center; margin:16px 0 4px; }
+  p.note { text-align:center; margin:0 0 16px; font-size:13px; opacity:.7; }
+  .row { display:flex; gap:24px; justify-content:center; flex-wrap:wrap; padding:0 16px 32px; }
+  .phone { position:relative; width:360px; height:640px; overflow:hidden; border-radius:22px;
+           background:url(BG01-shop-night-1.jpg) center/cover; box-shadow:0 10px 40px #000a; }
+  .cap { text-align:center; font-size:13px; margin-top:8px; opacity:.8; }
+  .char { position:absolute; bottom:250px; height:330px; filter:drop-shadow(0 6px 10px #0008); }
+  .bubble { position:absolute; background:var(--paper); color:var(--ink); border-radius:14px;
+            padding:10px 14px; font-weight:800; font-size:15px; border:3px solid var(--brass); box-shadow:0 4px 10px #0007; }
+  .board { position:absolute; left:16px; right:16px; bottom:16px; height:228px; display:grid;
+           grid-template-columns:repeat(5,1fr); gap:5px; padding:8px; border-radius:14px;
+           background:#3b2a1cdd; border:3px solid var(--brass); }
+  .tile { background:#5a4330; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:26px; }
+  .tile.dust { background:#4a3a2e; opacity:.5; }
+  .tile.glow { box-shadow:0 0 0 3px var(--teal), 0 0 14px var(--teal); }
+  .tile img { width:92%; }
+  .bar { position:absolute; top:14px; left:50%; transform:translateX(-50%); width:220px; height:20px; border-radius:10px;
+         background:#2a1e14; border:2px solid var(--brass); font-size:11px; font-weight:800; text-align:center; line-height:16px; }
+  .bar i { position:absolute; inset:0; width:100%; border-radius:8px; background:linear-gradient(90deg,#2fb3a5,var(--teal)); opacity:.85; }
+  .bar span { position:relative; }
+  .dim { position:absolute; inset:0; background:#0009; }
+  .watch { position:absolute; left:50%; top:205px; transform:translateX(-50%); width:230px; border-radius:50%;
+           box-shadow:0 0 40px #3fd6c466; }
+  .scrap { position:absolute; left:50%; top:395px; transform:translateX(-50%) rotate(-3deg); background:var(--paper); color:var(--ink);
+           font:italic 700 22px 'Playfair Display',serif; padding:12px 18px; border-radius:4px; box-shadow:0 6px 16px #000a; white-space:nowrap; }
+  .btns { position:absolute; left:16px; right:16px; bottom:40px; display:flex; gap:12px; }
+  .btn { flex:1; text-align:center; padding:14px 0; border-radius:14px; font-weight:800; font-size:17px; color:#fff; border:3px solid var(--brass); }
+  .sell { background:var(--wine); } .keep { background:#1f8f84; }
+  .hand { position:absolute; font-size:38px; }
+  .fade { position:absolute; left:0; right:0; bottom:0; height:200px; background:linear-gradient(transparent,#1b1410 45%); }
+</style>
+</head>
+<body>
+<h1>Keepsake Lane: mockup playable A</h1>
+<p class="note">Ghép thử nhân vật v3-1 lên nền BG01. Ô bánh răng ⚙️ là chỗ giữ chỗ, chưa có icon thật.</p>
+<div class="row">
+  <div>
+    <div class="phone">
+      <img class="char" src="cutout/CH-henry.png" style="left:-30px">
+      <div class="bubble" style="right:16px;top:150px;width:150px">It was hers...<br>Can you fix it?</div>
+      <div class="board">
+        <div class="tile dust"></div><div class="tile">🧽</div><div class="tile dust"></div><div class="tile">🪛</div><div class="tile dust"></div>
+        <div class="tile">⚙️</div><div class="tile"></div><div class="tile glow">⚙️</div><div class="tile"></div><div class="tile">🫙</div>
+        <div class="tile"></div><div class="tile glow">⚙️</div><div class="tile"></div><div class="tile">🕰️</div><div class="tile"></div>
+        <div class="tile dust"></div><div class="tile"></div><div class="tile">⏱️</div><div class="tile"></div><div class="tile dust"></div>
+      </div>
+      <div class="hand" style="left:140px;bottom:120px">👆</div>
+    </div>
+    <div class="cap">Cảnh 1–2: hook + merge có hướng dẫn</div>
+  </div>
+  <div>
+    <div class="phone">
+      <div class="bar"><i></i><span>RESTORED 100%</span></div>
+      <div class="dim"></div>
+      <img class="watch" src="IT-CLK5-watch-open-2.jpg" style="top:70px">
+      <div class="scrap" style="top:300px">"It was no accident." — E.</div>
+      <img class="char" src="cutout/CH-clara.png" style="left:-40px;bottom:-10px;height:300px">
+      <div class="bubble" style="right:20px;bottom:150px">Grandma...?</div>
+    </div>
+    <div class="cap">Cảnh 4: hé lộ</div>
+  </div>
+  <div>
+    <div class="phone">
+      <img class="char" src="cutout/CH-victor.png" style="right:-40px;bottom:150px;height:400px">
+      <img class="char" src="cutout/CH-clara.png" style="left:-70px;bottom:150px;height:300px">
+      <div class="bubble" style="left:16px;top:70px;width:200px">I'll pay $5,000<br>for that watch. Tonight.</div>
+      <div class="fade"></div>
+      <div class="btns"><div class="btn sell">🪙 SELL $5,000</div><div class="btn keep">🔍 KEEP IT</div></div>
+    </div>
+    <div class="cap">Cảnh 5: lựa chọn</div>
+  </div>
+</div>
+</body>
+</html>

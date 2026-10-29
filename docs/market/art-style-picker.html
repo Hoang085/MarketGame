@@ -1,0 +1,286 @@
+<title>Bloom Corner Art Styles</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap">
+<style>
+/* Layout: một cột đọc dọc; mỗi style là một "kệ" ảnh store cuộn ngang + phân tích; bảng tóm tắt ở đầu để sếp lướt. */
+:root{
+  --bg:#fbf7f8; --surface:#ffffff; --ink:#2b1f2a; --muted:#6f6170; --line:#eadde3;
+  --petal:#c2416b; --petal-soft:#f8e3ea; --leaf:#3f7a52; --leaf-soft:#e3f0e6; --warn:#a15c00; --warn-soft:#fbefd9;
+  --display:"Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --body:"Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1b1519; --surface:#251d23; --ink:#f3e9ef; --muted:#b6a5b0; --line:#3a2e37;
+  --petal:#f07fa3; --petal-soft:#3d2230; --leaf:#86c79a; --leaf-soft:#1f3326; --warn:#f2b45c; --warn-soft:#3a2c17; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1b1519; --surface:#251d23; --ink:#f3e9ef; --muted:#b6a5b0; --line:#3a2e37;
+  --petal:#f07fa3; --petal-soft:#3d2230; --leaf:#86c79a; --leaf-soft:#1f3326; --warn:#f2b45c; --warn-soft:#3a2c17; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--body)}
+.wrap{max-width:1080px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:40px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,5vw,46px);font-weight:800}
+h2{font-size:clamp(24px,3.4vw,32px);font-weight:800}
+h3{font-size:17px;font-weight:600;letter-spacing:.01em}
+p{margin:0}
+a{color:var(--petal)}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--petal)}
+.lede{max-width:66ch;color:var(--muted);font-size:16px}
+header{display:grid;gap:14px}
+.quote{border-left:3px solid var(--petal);padding:4px 0 4px 14px;max-width:66ch;color:var(--ink);font-style:italic}
+.how{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:14px}
+.how b{color:var(--ink)}
+
+/* current art */
+.current{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px;align-items:center}
+.current .imgs{display:flex;gap:10px;height:220px}
+.current .imgs img{height:100%;width:auto;min-width:0;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
+.current .imgs img:nth-child(2){flex:1}
+
+/* summary table */
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:0}
+td a{font-weight:600;text-decoration:none}
+.rank{font-family:var(--display);font-weight:800;font-size:20px;color:var(--petal);font-variant-numeric:tabular-nums}
+.pill{display:inline-block;padding:1px 9px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+.fit-cao{background:var(--leaf-soft);color:var(--leaf)}
+.fit-tb{background:var(--warn-soft);color:var(--warn)}
+.fit-thap{background:var(--petal-soft);color:var(--petal)}
+.flag{background:var(--warn-soft);color:var(--warn)}
+
+/* votes */
+.votes{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:16px 18px;display:grid;gap:10px}
+.votes ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.votes li{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.votes .who{font-weight:600}
+.votes .note{color:var(--muted);flex-basis:100%}
+.empty{color:var(--muted)}
+
+/* style sections */
+section.style{display:grid;gap:18px;padding-top:28px;border-top:1px solid var(--line)}
+.shead{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.shead .rank{font-size:28px}
+.shead .en{color:var(--muted);font-size:14px;flex-basis:100%}
+.shelf{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x proximity}
+.shot{flex:0 0 auto;display:grid;gap:6px;scroll-snap-align:start;margin:0}
+.shot img{height:340px;width:auto;max-width:none;border-radius:10px;border:1px solid var(--line);background:var(--surface)}
+.shot figcaption{font-size:12px;color:var(--muted);max-width:220px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
+.cols > div{min-width:0;display:grid;gap:8px;align-content:start}
+ul.dots{margin:0;padding-left:18px;display:grid;gap:6px}
+.verdict{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
+.verdict > div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:4px;align-content:start}
+.verdict .lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.games{display:flex;flex-wrap:wrap;gap:8px}
+.games span{font-size:13px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--surface)}
+.games small{display:block;color:var(--muted);font-size:12px}
+.pick{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button{font:600 14px var(--body);border-radius:999px;padding:9px 18px;border:1.5px solid var(--petal);background:transparent;color:var(--petal);cursor:pointer}
+button.primary{background:var(--petal);color:var(--bg)}
+button:focus-visible,textarea:focus-visible{outline:3px solid var(--petal);outline-offset:2px}
+button[disabled]{opacity:.5;cursor:default}
+.picked{font-weight:600;color:var(--leaf)}
+.noteform{display:grid;gap:8px;width:100%;max-width:560px}
+textarea{font:14px/1.5 var(--body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px;min-height:70px;resize:vertical}
+.status{font-size:13px;color:var(--muted)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tabs button{padding:7px 14px;font-size:13px}
+.tabs button[aria-selected="true"]{background:var(--petal);color:var(--bg)}
+.cmpgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;align-items:start}
+.cmpgrid figure{margin:0;display:grid;gap:6px;min-width:0}
+.cmpgrid img{width:100%;border-radius:10px;border:1px solid var(--line);background:var(--surface);cursor:zoom-in}
+.cmpgrid figcaption{font-size:13px;font-weight:600}
+.cmpgrid figcaption small{display:block;font-weight:400;color:var(--muted)}
+@media (max-width:900px){.cmpgrid{grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr))}}
+.concepts{display:grid;gap:8px}
+.concepts .shelf img{height:300px}
+dialog.zoom{border:0;padding:0;background:transparent;max-width:96vw;max-height:94vh}
+dialog.zoom img{max-width:96vw;max-height:94vh;width:auto;height:auto;border-radius:10px;display:block}
+dialog.zoom::backdrop{background:rgba(0,0,0,.75)}
+footer{color:var(--muted);font-size:13px;display:grid;gap:6px;max-width:72ch}
+@media (max-width:560px){.shot img{height:260px}.current .imgs{height:160px}}
+@media (prefers-reduced-motion:no-preference){.shelf{scroll-behavior:smooth}}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Bloom Corner · art direction · 27/10/2026 · <a href="https://claude.ai/artifact/YPAcwBg8uHuwdRXb7B4jWy" target="_blank" rel="noopener">Trang theme →</a></span>
+    <h1>Chọn art style cho Bloom Corner</h1>
+    <div class="how"><span><b>G</b> = Top Grossing</span><span><b>F</b> = Top Free</span></div>
+  </header>
+
+  <section class="current" aria-labelledby="cur-h">
+    <div style="display:grid;gap:8px;min-width:0">
+      <span class="eyebrow">Bản hiện tại</span>
+      <h2 id="cur-h">Art đang có</h2>
+      <p class="lede">Nữ chính nét mảnh kiểu storybook, tông kem và xanh sage; item hoa tròn pastel.</p>
+    </div>
+    <div class="imgs">
+      <img src="current/heroine.png" alt="Nữ chính Bloom Corner bản hiện tại">
+      <img src="current/flowers.png" alt="Bộ item hoa bản hiện tại">
+    </div>
+  </section>
+
+  <section aria-labelledby="sum-h" style="display:grid;gap:14px">
+    <h2 id="sum-h">Tóm tắt các style merge-2</h2>
+    <div class="tablebox"><table id="summary"><thead><tr><th>#</th><th>Style</th><th>Game mẫu đang top</th><th>Hợp Bloom Corner</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section aria-labelledby="cmp-h" style="display:grid;gap:14px">
+    <span class="eyebrow">Concept Bloom Corner · cùng nội dung, khác style</span>
+    <h2 id="cmp-h">So sánh 5 style trên asset demo</h2>
+    <p class="lede">Mỗi style được vẽ lại đúng 7 thứ demo cần: màn chơi, Clara, Leo, chuỗi hoa, chuỗi thời trang, chuỗi café và nền tiệm. Cùng mô tả, chỉ đổi style (lấy từ 2 ảnh store mẫu của style đó). Ảnh AI, chỉ để chọn hướng, chưa phải art hoàn thiện.</p>
+    <div class="tabs" role="tablist" id="assettabs"></div>
+    <div class="cmpgrid" id="cmpgrid"></div>
+  </section>
+
+  <section class="votes" aria-labelledby="votes-h">
+    <h3 id="votes-h">Lựa chọn đã ghi</h3>
+    <ul id="votelist"></ul>
+    <p class="empty" id="voteempty">Chưa ai chọn. Bấm "Chọn style này" ở mục style anh thích.</p>
+  </section>
+
+  <div id="styles" style="display:grid;gap:40px"></div>
+
+  <footer>
+    <p><b>Bản sửa 27/10:</b> bản trước lẫn cả game match-3, puzzle, otome; bản này chỉ còn game merge-2 (Merge Gardens và Merge Fables bị loại vì ghép 3).</p>
+    <p><b>Nguồn:</b> thứ hạng đo từ bảng xếp hạng App Store và Google Play (top 100 Free/Grossing, 19–27/10/2026, US, GB, BR, MX, TR, IN, VN). Số AppMagic là ngưỡng ước tính đọc ở chế độ chưa đăng nhập. Cách chia style, mức hợp với tệp nữ và chi phí sản xuất là nhận định của nhóm, chưa có số CTR/CPI theo style.</p>
+    <p>Ảnh là ảnh chụp màn hình công khai trên store của từng game, chỉ dùng tham khảo nội bộ. Báo cáo đầy đủ: docs/market/art-style-list-2026-10-27.md.</p>
+  </footer>
+</div>
+
+<script>
+const STYLES = [{"slug":"merge-glossy-cartoon","name_vi":"Cartoon vẽ màu bóng bẩy (chuẩn merge-2 hiện nay)","name_en":"Glossy painted cartoon (merge-2 mainstream)","traits":["Nhân vật 2D vẽ màu, tỉ lệ người lớn khoảng 6–7 đầu, mắt to, cười rộng, trang điểm rõ, biểu cảm cường điệu; thường đứng thành hàng 3 khách hàng phía trên board.","Item trên board tròn trịa, khối đầy, highlight bóng, đổ bóng mềm, viền tối nhẹ; khi merge thì item phóng to giữa board với tia sáng.","Màu bão hòa cao: cam, vàng, xanh biển; nền bãi biển nắng hoặc nội thất sang; nút UI cam-vàng chữ trắng viền nâu.","Cảnh trang trí 2D isometric vẽ tay, chi tiết vừa phải. Một biến thể (Family Farm Merge, Merge Age) dùng bản đồ đảo isometric để khám phá thay vì sửa từng phòng, nhưng board và nhân vật vẫn theo style này."],"why_hot":["Đây là ngôn ngữ hình ảnh của phần lớn game merge-2 đang có thứ hạng ở US/GB: Tasty Travels, Travel Town, Hotel Legacy, Flambé, Seaside Escape, Mystery Town, Merge Cooking, Foodstars.","Style này vẫn sinh ra game mới thành công: Flambé (05/2025), Foodstars (12/2025), Hotel Legacy (01/2026), Family Farm Merge (05/2026), Merge Age (04/2026). Nó đang ở đỉnh, chưa hết thời.","Hợp tệp nữ 25–54 vì nữ chính đẹp, tự tin, là hình mẫu khát vọng; item đồ ăn, đồ uống, thời trang trông \"ngon\" và \"muốn sở hữu\".","Chạy ads tốt (suy luận): item bóng nổi trên mọi nền feed và màn merge đọc được trong 1 giây."],"evidence":["Tasty Travels (2024): Grossing iOS US 13–15, GB 9–11; Google Grossing ở 7 nước 13–26 (đo được, 9 ngày).","Travel Town (2021): Grossing iOS GB 7–10, VN 6–9; Google Grossing BR 10, GB 17 (đo được).","Hotel Legacy (01/2026): Free iOS GB 12–20; Grossing iOS GB 21–24 (đo được).","Flambé (05/2025): Grossing Google GB 25–26, US 46–52; Grossing iOS GB 29–36 (đo được).","Seaside Escape: Grossing iOS GB 35–45. Mystery Town (cùng style, phẳng hơn): Grossing Google GB 20–23, US 39–40 (đo được).","Family Farm Merge (05/2026): Grossing iOS BR 43–46, GB 73–79. Merge Age (04/2026): Grossing iOS VN 56–69 (đo được).","AppMagic (ước tính, ngưỡng): Travel Town >10 triệu USD / >500 nghìn lượt tải; Seaside Escape >5 triệu USD; Hotel Legacy >2 triệu USD / >1 triệu lượt tải. Blog AppMagic Casual H1 2026: Tasty Travels ~127 triệu USD trong H1 2026, Mystery Town ~40,6 triệu USD."],"fit_bloom":"cao — Hoa, café, thời trang chính là loại item style này vẽ đẹp nhất, và tệp nữ US/GB đã quen trả tiền cho nó. Nhược điểm: Bloom Corner sẽ trông giống hàng chục game khác, nên cần bảng màu và dáng nhân vật riêng để nhận ra được.","production":"Trung bình. AI (fal) vẽ item theo style này tốt vì có nhiều dữ liệu tham khảo; giữ đồng nhất item dễ nếu có style sheet và bảng màu cố định. Nhân vật cần người vẽ chỉnh tay để giữ khuôn mặt nhất quán.","risks":"Rủi ro \"nhìn giống game X\" cao nhất (Tasty Travels, Hotel Legacy, Family Farm Merge đều của Century Games). Phải đọ creative trực tiếp với publisher có ngân sách UA lớn.","games":[{"name":"Tasty Travels: Merge Game","publisher":"Century Games","appstore":"https://apps.apple.com/us/app/tasty-travels-merge-game/id6471045672","gplay":"https://play.google.com/store/apps/details?id=com.fatmerge.global","rank_note":"G iOS US 13–15, GB 9–11; G Google 7 nước 13–26; ra 2024","images":["style-refs/merge-glossy-cartoon/tasty-travels-1.jpg","style-refs/merge-glossy-cartoon/tasty-travels-2.jpg"]},{"name":"Travel Town - Merge Adventure","publisher":"Moon Active","appstore":"https://apps.apple.com/us/app/travel-town-merge-adventure/id1521236603","gplay":"https://play.google.com/store/apps/details?id=io.randomco.travel","rank_note":"G iOS GB 7–10; G Google BR 10, GB 17; ra 2021","images":["style-refs/merge-glossy-cartoon/travel-town-1.jpg","style-refs/merge-glossy-cartoon/travel-town-2.jpg"]},{"name":"Hotel Legacy: Merge Game","publisher":"Century Games","appstore":"https://apps.apple.com/us/app/hotel-legacy-merge-game/id6752886832","gplay":"https://play.google.com/store/apps/details?id=com.fatr.global","rank_note":"F iOS GB 12–20; G iOS GB 21–24; ra 01/2026","images":["style-refs/merge-glossy-cartoon/hotel-legacy-1.jpg","style-refs/merge-glossy-cartoon/hotel-legacy-2.jpg"]},{"name":"Flambé: Merge & Cook","publisher":"Microfun","appstore":"https://apps.apple.com/us/app/flamb%C3%A9-merge-and-cook/id6618142292","gplay":"https://play.google.com/store/apps/details?id=com.cola.game","rank_note":"G Google GB 25–26; G iOS GB 29–36, US 48–53; ra 05/2025","images":["style-refs/merge-glossy-cartoon/flambe-1.jpg","style-refs/merge-glossy-cartoon/flambe-2.jpg"]},{"name":"Seaside Escape: Merge & Story","publisher":"Microfun","appstore":"https://apps.apple.com/us/app/seaside-escape-merge-story/id6443755785","gplay":"https://play.google.com/store/apps/details?id=com.gamedots.seasideescape","rank_note":"G iOS GB 35–45, US 54–69; ra 2022","images":["style-refs/merge-glossy-cartoon/seaside-escape-1.jpg","style-refs/merge-glossy-cartoon/seaside-escape-2.jpg"]},{"name":"Family Farm Merge","publisher":"Century Games","appstore":"https://apps.apple.com/us/app/family-farm-merge/id6760998152","gplay":"https://play.google.com/store/apps/details?id=com.roomperfect.global","rank_note":"G iOS BR 43–46, GB 73–79; ra 05/2026 (biến thể bản đồ đảo)","images":["style-refs/merge-glossy-cartoon/family-farm-merge-1.jpg","style-refs/merge-glossy-cartoon/family-farm-merge-2.jpg"]},{"name":"Merge Age: Stone Haven","publisher":"Puzzle1Studio","appstore":"https://apps.apple.com/us/app/merge-age-stone-haven/id6756160382","gplay":"https://play.google.com/store/apps/details?id=com.puzzle1studio.go.stoneagemerge","rank_note":"G iOS VN 56–69; ra 04/2026 (biến thể bản đồ đảo)","images":["style-refs/merge-glossy-cartoon/merge-age-1.jpg","style-refs/merge-glossy-cartoon/merge-age-2.jpg"]}],"suggested_rank":1},{"slug":"cute-doodle-merge","name_vi":"Doodle / chibi dễ thương nét viền","name_en":"Cute doodle & chibi line-art merge","traits":["Nét viền nâu hoặc đen, rõ, hơi run tay; tô phẳng, ít đổ bóng.","Nhân vật chibi hoặc thú cưng mascot (mèo, chó), tỉ lệ 2–3 đầu, má hồng, mắt chấm hoặc mắt to kiểu manga.","Bảng màu pastel ấm hoặc nâu trầm; cảnh là căn bếp, quán café, con phố nhỏ như diorama, đầy đồ lặt vặt.","Item trên board vẽ nhỏ gọn, viền rõ, ít bóng; giọng điệu hài nhẹ, ấm áp, không drama."],"why_hot":["Là thẩm mỹ \"cozy game\" của TikTok/Pinterest, hợp nữ 18–40, và khác hẳn biển ads bóng bẩy (suy luận).","Có game mới ra gần đây: Cats & Soup: Merge Magic Recipe (04/2025, NEOWIZ) và Hello Town (12/2024, studio Hàn). Cả hai có >1 triệu lượt cài trên Google Play.","Starbrew Cafe (2023, indie) cho thấy style này kiếm được tiền nhờ cốt truyện: ít lượt tải nhưng >100 nghìn USD (ước tính).","Hạn chế: chưa game merge-2 nào ở style này lọt top 100 Grossing ở 7 nước. Đây là ngách đang lớn, chưa phải dòng chính."],"evidence":["Cả 3 game không có mặt trong top 100 Free/Grossing ở 7 nước suốt 9 ngày (đo được).","Lượt cài Google Play (toàn cầu, do store công bố): Cats & Soup: Merge Magic Recipe 1.000.000+, điểm 4,66; Hello Town 1.000.000+, điểm 4,54; Starbrew Cafe 500.000+.","AppMagic (ước tính, ô tìm kiếm Demo, gộp 2 store): Starbrew Cafe >100 nghìn USD / >20 nghìn lượt tải. Cats & Soup: Merge Magic Recipe hiển thị \"$200K\"; Hello Town hiển thị \"$50K\". Hai số này hiện ở dạng thu gọn, không có dấu \">\" và không có lượt tải."],"fit_bloom":"trung bình–cao — Hợp tiệm hoa, café, góc thời trang nhỏ, và tạo khác biệt rõ với đối thủ merge-2 chủ lưu. Nhưng tệp quen style này trẻ hơn target 25–54, và trần doanh thu đã thấy chỉ khoảng 0,1–0,2 triệu USD (ước tính, kỳ không rõ).","production":"Thấp. Ít đổ bóng nên dễ giữ đồng nhất; AI vẽ được nhưng nét viền hay không đều, cần người vẽ làm sạch. Một họa sĩ có thể giữ cả bộ item.","risks":"Item quá phẳng có thể khó đọc trên board dày. Tệp 40+ có thể thấy \"trẻ con\". Cats & Soup là thương hiệu đã có tiếng, nên nhân vật mèo dễ bị so sánh.","games":[{"name":"Cats & Soup: Merge Magic Recipe","publisher":"NEOWIZ","appstore":"https://apps.apple.com/us/app/cats-soup-magic-recipe/id6446347021","gplay":"https://play.google.com/store/apps/details?id=com.hidea.cat.magicrecipe","rank_note":"Không có trong top 100 (7 nước); Google 1M+ lượt cài; ra 04/2025","images":["style-refs/cute-doodle-merge/cats-soup-recipe-1.jpg","style-refs/cute-doodle-merge/cats-soup-recipe-2.jpg"]},{"name":"Hello Town: Merge & Story","publisher":"Springcomes","appstore":"https://apps.apple.com/us/app/hello-town-merge-story/id6737850281","gplay":"https://play.google.com/store/apps/details?id=com.spcomes.hellotown","rank_note":"Không có trong top 100 (7 nước); Google 1M+ lượt cài; ra 12/2024","images":["style-refs/cute-doodle-merge/hello-town-1.jpg","style-refs/cute-doodle-merge/hello-town-2.jpg"]},{"name":"Starbrew Cafe: Mystical Merge","publisher":"Extra Dimension Games","appstore":"https://apps.apple.com/us/app/starbrew-cafe-mystical-merge/id6456751444","gplay":"https://play.google.com/store/apps/details?id=games.extradimension.cafemerge","rank_note":"Không có trong top 100 (7 nước); AppMagic >100 nghìn USD; ra 2023","images":["style-refs/cute-doodle-merge/starbrew-cafe-1.jpg","style-refs/cute-doodle-merge/starbrew-cafe-2.jpg"]}],"suggested_rank":2},{"slug":"warm-painterly-storybook","name_vi":"Truyện tranh vẽ màu ấm kiểu châu Âu (thế hệ 2020–2021)","name_en":"Warm painterly storybook (2020–2021 generation)","traits":["Vẽ màu dày hơn style 1, chất liệu gỗ, vải, gạch rõ; bảng màu trầm ấm (nâu, đỏ gạch, xanh rêu) thay vì bão hòa.","Nhân vật kiểu truyện tranh/hoạt hình châu Âu, biểu cảm hài, có cả nhân vật thú nhân (Merge Inn).","Cảnh trang trí isometric 2D rất nhiều chi tiết, hay dùng cặp before/after (quán cháy, bếp bẩn → quán đẹp).","Item board vẽ màu chi tiết, ít \"bóng nhựa\" hơn style 1."],"why_hot":["Không còn hot. Đây là style của làn sóng merge-2 2020–2021 (Love & Pies, Merge Inn) trước khi style 1 thống trị.","Đưa vào để sếp thấy rõ: concept Bloom Corner hiện tại (storybook, tông kem-sage) gần với nhóm này hơn là nhóm đang kiếm tiền.","Theme café/bánh của nhóm này rất gần Bloom Corner, nên đây là tham chiếu trực tiếp về trần doanh thu cho đội nhỏ."],"evidence":["Love & Pies và Merge Inn: không có mặt trong top 100 ở 7 nước suốt 9 ngày (đo được).","AppMagic (ước tính, ngưỡng): Love & Pies >200 nghìn USD / >20 nghìn lượt tải; Merge Inn >100 nghìn USD / >50 nghìn lượt tải.","Lượt cài Google Play (toàn cầu): Love & Pies 5.000.000+, Merge Inn 10.000.000+, cho thấy từng lớn nhưng nay đã chững."],"fit_bloom":"trung bình — Theme café/bánh hợp nhất danh sách. Nhưng đây là style đang đi xuống. Nếu chọn, Bloom Corner dễ trông \"cũ\" so với các game ra năm 2025–2026.","production":"Trung bình. Vẽ màu chi tiết tốn công hơn doodle; AI làm được nền, nhưng item chi tiết dễ rối khi thu nhỏ.","risks":"Nhìn lỗi thời; tín hiệu thị trường hiện tại yếu.","games":[{"name":"Love & Pies - Merge Mystery","publisher":"Trailmix","appstore":"https://apps.apple.com/us/app/love-pies-merge-mystery/id1563239332","gplay":"https://play.google.com/store/apps/details?id=com.Trailmix.LoveAndPiesMerge","rank_note":"Không có trong top 100 (7 nước); AppMagic >200 nghìn USD; ra 2021","images":["style-refs/warm-painterly-storybook/love-and-pies-1.jpg","style-refs/warm-painterly-storybook/love-and-pies-2.jpg"]},{"name":"Merge Inn - Cafe Merge Game","publisher":"Original Games","appstore":"https://apps.apple.com/us/app/merge-inn-tasty-match-puzzle/id1541160673","gplay":"https://play.google.com/store/apps/details?id=com.mergegame.merge","rank_note":"Không có trong top 100 (7 nước); AppMagic >100 nghìn USD; ra 2021","images":["style-refs/warm-painterly-storybook/merge-inn-1.jpg","style-refs/warm-painterly-storybook/merge-inn-2.jpg"]}],"suggested_rank":3},{"slug":"drama-3d-cinematic","name_vi":"3D điện ảnh kể chuyện drama","name_en":"Cinematic 3D drama","traits":["Nhân vật 3D render stylized: đầu hơi to, mắt to, da mịn, gần phong cách phim hoạt hình 3D.","Ánh sáng điện ảnh: lạnh và tối ở cảnh khổ (tuyết, cháy, nhà đổ nát), ấm ở cảnh \"sau khi sửa\".","Biểu cảm cường điệu: khóc, sợ, xấu hổ; ảnh store bố cục như khung phim, kèm 3–4 vòng tròn item \"cứu giúp\".","Lai: cảnh truyện và ads là 3D, còn board merge vẫn là item 2D bóng như style 1."],"why_hot":["Game merge-2 kiếm tiền nhất (Gossip Harbor) dùng style này cho toàn bộ cảnh truyện và ads.","Đang lan nhanh trong năm 2026: Whisper Castle (05/2026), Hollywood Merge (02/2026), Just Desserts (05/2026), Reality Bay (02/2026) đều dùng nó. Merge Mansion (2020) cũng đã chuyển ảnh store sang 3D.","Móc cảm xúc \"cứu mẹ con khỏi cảnh khổ\" kéo nữ 30–55. 3D (và video AI) cho phép làm nhiều cảnh ads như phim ngắn nhanh hơn vẽ tay (suy luận)."],"evidence":["Gossip Harbor: Grossing iOS US 2–3, GB 5–6; Free Google US 1–4, GB 2–3 (đo được, 9 ngày).","Hollywood Merge (02/2026): Grossing iOS GB 32–35, BR 29–32, TR 29–34; Google Grossing GB 34–36 (đo được).","Whisper Castle (05/2026): Grossing Google GB 46–50. Merge Mansion: Grossing iOS US 69–75. Just Desserts: Grossing Google IN 40–45, VN 40–44 (đo được).","AppMagic (ước tính): Gossip Harbor >50 triệu USD / >10 triệu lượt tải (ô tìm kiếm), vượt 100 triệu USD/tháng từ 03/2026 (blog). Hollywood Merge ~15,8 triệu USD tính đến giữa 2026 (blog). Whisper Castle >1 triệu USD. Merge Mansion hiển thị \"$5M\" (dạng thu gọn)."],"fit_bloom":"thấp — Móc \"gia đình gặp nạn + bí mật\" là công thức Bloom Corner đang dùng, nên ghép thêm style này sẽ thành bản sao Gossip Harbor.","production":"Cao. Cần pipeline 3D (dựng, rig, ánh sáng, render) hoặc video AI; đội 3–6 người khó giữ nhân vật nhất quán qua hàng trăm cảnh.","risks":"Trùng hình ảnh và công thức với Gossip Harbor, Whisper Castle, Hollywood Merge.","games":[{"name":"Gossip Harbor: Merge & Story","publisher":"Microfun","appstore":"https://apps.apple.com/us/app/gossip-harbor-merge-story/id1623318294","gplay":"https://play.google.com/store/apps/details?id=com.mergegames.gossipharbor","rank_note":"G iOS US 2–3, GB 5–6; F Google US 1–4; ra 2022","images":["style-refs/drama-3d-cinematic/gossip-harbor-1.jpg","style-refs/drama-3d-cinematic/gossip-harbor-2.jpg"]},{"name":"Hollywood Merge","publisher":"VoyagerOne","appstore":"https://apps.apple.com/us/app/hollywood-merge/id6755455500","gplay":"https://play.google.com/store/apps/details?id=com.hollywood.merge","rank_note":"G iOS GB 32–35; G Google GB 34–36; ra 02/2026","images":["style-refs/drama-3d-cinematic/hollywood-merge-1.jpg","style-refs/drama-3d-cinematic/hollywood-merge-2.jpg"]},{"name":"Whisper Castle: Merge & Story","publisher":"Microfun","appstore":"https://apps.apple.com/us/app/whisper-castle-merge-story/id6749889618","gplay":"https://play.google.com/store/apps/details?id=com.mf.coffee","rank_note":"G Google GB 46–50; F Google GB 32–54; ra 05/2026","images":["style-refs/drama-3d-cinematic/whisper-castle-1.jpg","style-refs/drama-3d-cinematic/whisper-castle-2.jpg"]},{"name":"Just Desserts: Revenge & Merge","publisher":"Century Games","appstore":"https://apps.apple.com/us/app/just-desserts-revenge-merge/id6761531281","gplay":"https://play.google.com/store/apps/details?id=com.justdesserts.global","rank_note":"G Google IN 40–45, VN 40–44, GB 87–91; ra 05/2026","images":["style-refs/drama-3d-cinematic/just-desserts-1.jpg","style-refs/drama-3d-cinematic/just-desserts-2.jpg"]},{"name":"Merge Mansion: Puzzles & Story","publisher":"Metacore","appstore":"https://apps.apple.com/us/app/merge-mansion-puzzles-story/id1484442152","gplay":"https://play.google.com/store/apps/details?id=com.everywear.game5","rank_note":"G iOS US 69–75, GB 81–93; ra 2020 (ảnh store 2026 chuyển sang 3D)","images":["style-refs/drama-3d-cinematic/merge-mansion-1.jpg","style-refs/drama-3d-cinematic/merge-mansion-2.jpg"]}],"suggested_rank":4},{"slug":"webtoon-semireal-drama","name_vi":"Webtoon bán hiện thực, drama tình cảm / thời trang","name_en":"Semi-realistic webtoon romance drama","traits":["Nhân vật 2D vẽ gần thực như webtoon, truyện tình cảm tương tác (Episode, Chapters): da có khối, tóc chi tiết, tỉ lệ người thật.","Cảnh drama công sở, tình tay ba, makeover \"từ xấu thành đẹp\"; ánh sáng mềm, nền văn phòng hoặc biệt thự sang.","Item board theo chủ đề mỹ phẩm, trang sức, quần áo; tông tím-hồng-vàng kim.","Ảnh store nặng cảm xúc: nước mắt, ngoại tình, cầu hôn."],"why_hot":["Là cách merge-2 lấn sang tệp đọc truyện tình cảm và makeover. Hai ví dụ đều ra trong 2024–2026.","Thời trang + makeover là motivation mạnh với nữ (suy luận); kiếm tiền khá ở thị trường Mỹ Latinh và Thổ Nhĩ Kỳ."],"evidence":["Merge Fashion: Romance Story (11/2024): Free iOS TR 20–33, BR 46–72 (đo được); Google 10.000.000+ lượt cài.","Fallen Beauty (02/2026): Grossing iOS TR 55–60, IN 65–77, BR 68–79 (đo được). Cả hai không có thứ hạng ở US/GB.","AppMagic (ước tính, dạng thu gọn, không có dấu \">\"): Merge Fashion hiển thị \"$500K\", Fallen Beauty hiển thị \"$1M\"."],"fit_bloom":"thấp–trung bình — Phần thời trang hợp Bloom Corner. Tín hiệu ở US/GB cũng yếu: cả hai game chỉ có thứ hạng ở TR, BR, IN.","production":"Trung bình. AI vẽ style này dễ, nhưng giữ khuôn mặt nhất quán qua nhiều cảnh truyện khó. Ảnh dễ bị nhận ra là \"ảnh AI\".","risks":"lệch thị trường chính; nội dung tình cảm drama cần viết nhiều.","games":[{"name":"Merge Fashion: Romance Story","publisher":"Infiniplay / Wind's Choice","appstore":"https://apps.apple.com/us/app/merge-fashion-romance-story/id6737874398","gplay":"https://play.google.com/store/apps/details?id=com.infiniplay.merge.fashion.romance.story","rank_note":"F iOS TR 20–33, BR 46–72; ra 11/2024","images":["style-refs/webtoon-semireal-drama/merge-fashion-1.jpg","style-refs/webtoon-semireal-drama/merge-fashion-2.jpg"]},{"name":"Fallen Beauty: Merge & Story","publisher":"Kinetic Energy Game","appstore":"https://apps.apple.com/us/app/fallen-beauty-merge-story/id6758072393","gplay":"https://play.google.com/store/apps/details?id=com.fallenbeauty.google","rank_note":"G iOS TR 55–60, IN 65–77; ra 02/2026","images":["style-refs/webtoon-semireal-drama/fallen-beauty-1.jpg","style-refs/webtoon-semireal-drama/fallen-beauty-2.jpg"]}],"suggested_rank":5}];
+const flags = {};
+const el = (t, a = {}, ...kids) => { const n = document.createElement(t); for (const [k, v] of Object.entries(a)) k === "class" ? n.className = v : n.setAttribute(k, v); for (const c of kids) n.append(c); return n; };
+const fitLevel = s => { const f = String(s.fit_bloom).toLowerCase(); return f.startsWith("cao") ? ["cao","Cao"] : f.startsWith("trung bình–cao") ? ["cao","TB–cao"] : f.startsWith("trung") ? ["tb","Trung bình"] : f.startsWith("thấp–") ? ["thap","Thấp–TB"] : ["thap","Thấp"]; };
+const fitText = s => String(s.fit_bloom).replace(/^[^—]*—\s*/, "");
+const nameOf = slug => (STYLES.find(s => s.slug === slug) || {}).name_vi || slug;
+
+const tbody = document.querySelector("#summary tbody");
+for (const s of STYLES) {
+  const [cls, lbl] = fitLevel(s);
+  const top = s.games.filter(g => !/Không có trong top/.test(g.rank_note)).slice(0, 2).map(g => g.name.split(/[:\-–]/)[0].trim()).join(", ") || "—";
+  tbody.append(el("tr", {},
+    el("td", {}, el("span", {class: "rank"}, String(s.suggested_rank))),
+    el("td", {}, el("a", {href: "#" + s.slug}, s.name_vi)),
+    el("td", {}, top),
+    el("td", {}, el("span", {class: "pill fit-" + cls}, lbl))));
+}
+
+const ASSETS = [["SCREEN-board","Màn chơi"],["CH-clara","Clara"],["CH-leo","Leo"],["FLW-chain","Chuỗi hoa"],["FSH-chain","Chuỗi thời trang"],["CAF-chain","Chuỗi café"],["BG-store","Nền tiệm"]];
+const cpath = (slug, a) => "concepts/" + slug + "/" + a + ".jpg";
+const zoom = el("dialog", {class: "zoom"}); const zimg = el("img", {alt: ""}); zoom.append(zimg); document.body.append(zoom);
+zoom.addEventListener("click", () => zoom.close());
+const zoomable = img => { img.addEventListener("click", () => { zimg.src = img.src; zimg.alt = img.alt; zoom.showModal(); }); return img; };
+const tabs = document.getElementById("assettabs"), grid = document.getElementById("cmpgrid");
+function showAsset(key) {
+  for (const b of tabs.children) b.setAttribute("aria-selected", String(b.dataset.k === key));
+  grid.replaceChildren();
+  for (const s of STYLES) grid.append(el("figure", {}, zoomable(el("img", {src: cpath(s.slug, key), alt: s.name_vi + " – " + key, loading: "lazy"})), el("figcaption", {}, String(s.suggested_rank) + ". " + s.name_vi, el("small", {}, flags[s.slug] ? "Vướng: " + flags[s.slug] : ""))));
+}
+for (const [k, lbl] of ASSETS) { const b = el("button", {type: "button", role: "tab", "data-k": k}, lbl); b.addEventListener("click", () => showAsset(k)); tabs.append(b); }
+showAsset("SCREEN-board");
+
+const host = document.getElementById("styles");
+const pickUIs = [];
+for (const s of STYLES) {
+  const [cls, lbl] = fitLevel(s);
+  const sec = el("section", {class: "style", id: s.slug, "aria-labelledby": "h-" + s.slug});
+  sec.append(el("div", {class: "shead"},
+    el("span", {class: "rank"}, String(s.suggested_rank)),
+    el("h2", {id: "h-" + s.slug}, s.name_vi),
+    el("span", {class: "pill fit-" + cls}, "Hợp Bloom Corner: " + lbl),
+    flags[s.slug] ? el("span", {class: "pill flag"}, "Vướng: " + flags[s.slug]) : "",
+    el("span", {class: "en"}, s.name_en)));
+  const shelf = el("div", {class: "shelf", tabindex: "0", "aria-label": "Ảnh store của game mẫu"});
+  for (const g of s.games) for (const src of g.images)
+    shelf.append(el("figure", {class: "shot"}, el("img", {src, alt: g.name + " – ảnh store", loading: "lazy"}), el("figcaption", {}, g.name)));
+  sec.append(el("h3", {}, "Game mẫu (ảnh store)"), shelf);
+  const cshelf = el("div", {class: "shelf", tabindex: "0", "aria-label": "Concept Bloom Corner theo style này"});
+  for (const [k, lbl] of ASSETS) cshelf.append(el("figure", {class: "shot"}, zoomable(el("img", {src: cpath(s.slug, k), alt: "Bloom Corner – " + lbl, loading: "lazy"})), el("figcaption", {}, lbl)));
+  sec.append(el("div", {class: "concepts"}, el("h3", {}, "Bloom Corner vẽ theo style này"), cshelf));
+  const list = arr => { const u = el("ul", {class: "dots"}); for (const t of arr) u.append(el("li", {}, t)); return u; };
+  sec.append(el("div", {class: "cols"},
+    el("div", {}, el("h3", {}, "Nhận diện"), list(s.traits)),
+    el("div", {}, el("h3", {}, "Vì sao hot"), list(s.why_hot)),
+    el("div", {}, el("h3", {}, "Căn cứ"), list(s.evidence))));
+  sec.append(el("div", {class: "verdict"},
+    el("div", {}, el("span", {class: "lbl"}, "Hợp Bloom Corner"), el("p", {}, fitText(s))),
+    el("div", {}, el("span", {class: "lbl"}, "Sản xuất (đội 3–6 + AI)"), el("p", {}, s.production)),
+    el("div", {}, el("span", {class: "lbl"}, "Rủi ro"), el("p", {}, s.risks))));
+  const games = el("div", {class: "games"});
+  for (const g of s.games) {
+    const sp = el("span", {}, g.name + " · " + g.publisher);
+    const links = el("small", {}, g.rank_note + " ");
+    if (g.appstore) links.append(el("a", {href: g.appstore, target: "_blank", rel: "noopener"}, "App Store"), " ");
+    if (g.gplay) links.append(el("a", {href: g.gplay, target: "_blank", rel: "noopener"}, "Google Play"));
+    sp.append(links); games.append(sp);
+  }
+  sec.append(games);
+  const pick = el("div", {class: "pick"});
+  sec.append(pick);
+  pickUIs.push({slug: s.slug, pick});
+  host.append(sec);
+}
+
+// Chọn style: mỗi người một phiếu ở votes/<id>, ai cũng xem được.
+let db = null, uid = null, user = null, mine = null, writable = true;
+function renderPickers() {
+  for (const {slug, pick} of pickUIs) {
+    pick.replaceChildren();
+    if (!db || !uid) { pick.append(el("span", {class: "status"}, "Mở trang này trên claude.ai (đã đăng nhập) để chọn style.")); continue; }
+    if (!writable) { pick.append(el("span", {class: "status"}, "Anh/chị chỉ có quyền xem; nhờ người chia sẻ cấp quyền Contributor để chọn.")); continue; }
+    if (mine && mine.style === slug) pick.append(el("span", {class: "picked"}, "✓ Bạn đã chọn style này"));
+    const btn = el("button", {class: mine && mine.style === slug ? "" : "primary", type: "button"}, mine && mine.style === slug ? "Sửa ghi chú" : "Chọn style này");
+    btn.addEventListener("click", () => openForm(slug, pick));
+    pick.append(btn);
+  }
+}
+function openForm(slug, pick) {
+  pick.replaceChildren();
+  const ta = el("textarea", {id: "note-" + slug, placeholder: "Ghi chú (không bắt buộc): ví dụ lấy nhân vật kiểu này nhưng item kiểu style khác…"});
+  if (mine && mine.style === slug) ta.value = mine.note || "";
+  const save = el("button", {class: "primary", type: "button"}, "Lưu lựa chọn");
+  const cancel = el("button", {type: "button"}, "Huỷ");
+  const st = el("span", {class: "status", role: "status"});
+  save.addEventListener("click", async () => {
+    save.disabled = true; st.textContent = "Đang lưu…";
+    try { await db.doc("votes/" + uid).set({style: slug, note: ta.value.trim().slice(0, 1000), at: new Date().toISOString()}); mine = {style: slug, note: ta.value.trim()}; renderPickers(); }
+    catch (e) { save.disabled = false; if (e && e.code === "invalid_argument") { writable = false; renderPickers(); } else st.textContent = "Chưa lưu được, thử lại sau ít phút."; }
+  });
+  cancel.addEventListener("click", renderPickers);
+  pick.append(el("div", {class: "noteform"}, el("label", {for: ta.id}, "Chọn: " + nameOf(slug)), ta, el("div", {class: "pick"}, save, cancel, st)));
+  ta.focus();
+}
+async function renderVotes(docs) {
+  const ul = document.getElementById("votelist");
+  const ids = docs.map(d => d.id);
+  let ps = {};
+  try { ps = user ? await user.profiles(ids) : {}; } catch (_) {}
+  ul.replaceChildren();
+  for (const d of docs) {
+    const v = d.data() || {};
+    const who = (ps[d.id] && ps[d.id].name) || "Một người xem";
+    ul.append(el("li", {}, el("span", {class: "who"}, who + (d.id === uid ? " (bạn)" : "")), el("span", {}, "chọn " + nameOf(v.style)), v.note ? el("span", {class: "note"}, "“" + v.note + "”") : ""));
+  }
+  document.getElementById("voteempty").hidden = docs.length > 0;
+}
+renderPickers();
+(async () => {
+  if (!window.claude || !window.claude.use) return;
+  [db, user] = await Promise.all([claude.use("db"), claude.use("user")]);
+  if (user) { try { uid = await user.id(); } catch (_) {} try { if (await user.can("data.write") === false) writable = false; } catch (_) {} }
+  if (db) {
+    db.collection("votes").onSnapshot(snap => {
+      const me = snap.docs.find(d => d.id === uid);
+      mine = me ? me.data() : null;
+      renderPickers(); renderVotes(snap.docs);
+    }, () => {});
+  }
+  renderPickers();
+})();
+</script>

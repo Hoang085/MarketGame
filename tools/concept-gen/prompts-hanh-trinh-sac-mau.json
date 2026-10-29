@@ -1,0 +1,89 @@
+[
+  {
+    "id": "SF-A-pastel-glass",
+    "image_size": "portrait_16_9",
+    "prompt": "Vertical mobile puzzle game screenshot, 2.5D: simple stylized 3D models rendered from a fixed camera looking down from above with a slight tilt, soft studio lighting, clean and very readable like a premium casual puzzle game. Layout from top to bottom. TOP THIRD: a short curved conveyor belt carrying three empty-ish glass vessels in a row, each a different shape (a round-bottom bottle, a gourd-shaped vase, a small lantern-shaped jar); each glass is clear with bright rim highlights and partly filled with stacked horizontal layers of colored sand; the middle vessel has a thin gold rim to mark it as special. MIDDLE: a row of five small rounded slots on a light wooden shelf, two of them holding small rectangular trays filled with colored sand, three empty. BOTTOM HALF: a square sliding-block puzzle board, a 5 by 6 grid with a raised light frame; along the top edge of the board sit four sand hoppers in pink, teal, yellow and purple, each with a small spout pouring a thin stream of sand downward; on the grid, several rectangular trays (some 1-cell, some 2-cell) in neutral cream, one of them under a spout catching falling sand; three translucent pale-blue ice blocks with a small round badge showing a number. Pastel candy palette: coral pink, mint teal, lemon yellow, lavender, on a soft cream and sky-blue background. Smooth glossy materials, gentle ambient occlusion, no characters. Simple flat UI: a level pill at the top, small round booster buttons at the bottom. No readable text."
+  },
+  {
+    "id": "SF-B-muine-sunset",
+    "image_size": "portrait_16_9",
+    "prompt": "Vertical mobile puzzle game screenshot, 2.5D: simple stylized 3D models rendered from a fixed camera looking down from above with a slight tilt, warm golden-hour lighting, clean and readable casual puzzle game. Theme: a sand-art craft stall by the sea in Mui Ne, Vietnam, with warm sand dunes and a turquoise sea softly visible at the edges of the background. Layout from top to bottom. TOP THIRD: a woven bamboo conveyor belt carrying three glass vessels of different shapes (a tall bottle, a gourd-shaped vase, a small Hoi An lantern-shaped jar), each clear glass with bright highlights and partly filled with stacked layers of colored sand forming a simple landscape picture; the middle vessel has a gold rim marking it special. MIDDLE: five small rounded wooden slots in a row, two holding small trays of colored sand. BOTTOM HALF: a sliding-block puzzle board made of light wood, a 5 by 6 grid; along the top edge four ceramic sand hoppers in terracotta red, turquoise, sunflower yellow and indigo, each spout pouring a thin stream of sand; on the grid, several rectangular wooden trays (1-cell and 2-cell), one catching sand under a spout; three frosted ice blocks with a small number badge. Palette: warm sand beige, terracotta, turquoise, sunflower yellow, indigo, sunset orange. No characters. Minimal UI: level pill at top, round booster buttons at bottom. No readable text."
+  },
+  {
+    "id": "SF-C-toy-bold",
+    "image_size": "portrait_16_9",
+    "prompt": "Vertical mobile puzzle game screenshot, 2.5D: chunky toy-like stylized 3D models with soft matte clay materials and glossy glass, fixed camera looking down from above with a slight tilt, bright even lighting, bold high-contrast colors, very readable at a glance like a top-grossing hyper-casual-to-casual puzzle game. Layout from top to bottom. TOP THIRD: a thick rubber conveyor belt with rounded rollers carrying three chunky glass vessels of different shapes (round bottle, gourd vase, lantern jar), each clear glass with a strong white rim highlight and filled partway with thick layers of saturated colored sand; the middle vessel has a shiny gold rim and a small star. MIDDLE: five rounded slots in a row, two holding chunky trays full of colored sand. BOTTOM HALF: a sliding-block puzzle board with a thick rounded border, a 5 by 6 grid of slightly recessed cells; along the top edge four big bucket-shaped sand hoppers in red, blue, green and yellow, each pouring a thick stream of sand; on the grid, chunky rectangular trays (1-cell and 2-cell) in white, one under a stream filling with red sand; three icy blue blocks with a big white number on top. Background: a clean saturated gradient from light blue to violet with subtle bokeh. No characters. Chunky UI: level pill at top, round booster buttons at bottom. No readable text."
+  },
+  {
+    "id": "SF2-full-belt",
+    "model": "fal-ai/nano-banana-pro",
+    "extra": {
+      "aspect_ratio": "9:16"
+    },
+    "prompt": "Vertical mobile game gameplay screen (9:16). Art style: clean casual mobile puzzle game, soft 2.5D with simple stylized 3D shapes, top-down camera with a slight tilt, glossy rounded plastic-like materials, bright saturated candy colors on a deep violet-purple background, lavender raised frames with soft bevels, dark navy-indigo recessed grid cells, colored sand made of visible tiny square pixel grains. Crisp, very readable, no clutter, no characters. Layout from top to bottom. TOP (about 30% of screen): a horizontal conveyor belt made of rounded lavender and white segments with small rollers, running left to right across the screen; on it stand three clear glass vessels of different shapes (a round-bottom bottle, a gourd-shaped vase, a small lantern-shaped jar), each made of thick glossy transparent glass with a white rim highlight, partly filled with horizontal layers of pixel-grain colored sand (red, blue, yellow, green); under each vessel a small rounded tag shows colored dots for the colors it still needs; the middle vessel has a shiny gold rim and a small gold star marking it as special. MIDDLE: a row of exactly five rounded recessed slots on a lavender shelf; two slots hold small square transparent trays with colored borders filled with pixel sand, three slots are empty. BOTTOM (about 50%): a sliding-block puzzle board in a lavender beveled frame with a 5 by 6 grid of dark navy recessed cells; along the top edge of the board four rectangular sand chambers filled with pixel sand in red, blue, yellow, green, each with a small opening at the bottom; one blue sand stream pours into a square transparent blue-bordered tray right below it; several other square trays (1 cell) and long trays (2 cells) with red, yellow, green glossy borders sit on the grid, each with a small percentage label; two frosted light-blue ice cubes with a white number on top block some cells. Simple top HUD: coin counter left, level pill right. No other text."
+  },
+  {
+    "id": "SF2-full-shelf",
+    "model": "fal-ai/nano-banana-pro",
+    "extra": {
+      "aspect_ratio": "9:16"
+    },
+    "prompt": "Vertical mobile game gameplay screen (9:16). Art style: clean casual mobile puzzle game, soft 2.5D with simple stylized 3D shapes, top-down camera with a slight tilt, glossy rounded plastic-like materials, bright saturated candy colors on a deep violet-purple background, lavender raised frames with soft bevels, dark navy-indigo recessed grid cells, colored sand made of visible tiny square pixel grains. Crisp, very readable, no clutter, no characters. Layout from top to bottom. TOP (about 30%): a curved glossy conveyor track shaped like a gentle arc, made of a single rounded lavender rail with small round pucks moving along it; three clear glass vessels ride on the pucks: a tall slim bottle, a wide gourd vase, a lantern-shaped jar with a small lid; thick glossy glass with white rim light, partly filled with stacked horizontal layers of pixel-grain colored sand; a small floating bubble above each vessel shows the colors it still needs; the vessel in the center is special, with a gold rim and the next required layer outlined by a glowing dashed line. MIDDLE: five rounded pour slots in a row, each a small lavender cup holder; two hold square transparent trays with colored borders filled with pixel sand. BOTTOM (about 50%): sliding-block puzzle board in a lavender beveled frame, 5 by 6 dark navy recessed cells; four sand chambers along the top edge (pink, teal, yellow, purple) with small spouts; square and long transparent trays with glossy colored borders on the grid, one tray under a spout filling with teal pixel sand, small percentage labels; one frosted ice cube with a white number. Simple top HUD: coin counter left, level pill right. No other text."
+  },
+  {
+    "id": "IT-glass-sheet",
+    "model": "fal-ai/nano-banana-pro",
+    "extra": {
+      "aspect_ratio": "16:9"
+    },
+    "prompt": "Game asset sheet on a plain deep violet-purple background, 2 rows by 4 columns, evenly spaced, each item centered with a soft shadow. Art style: clean casual mobile puzzle game, soft 2.5D with simple stylized 3D shapes, top-down camera with a slight tilt, glossy rounded plastic-like materials, bright saturated candy colors on a deep violet-purple background, lavender raised frames with soft bevels, dark navy-indigo recessed grid cells, colored sand made of visible tiny square pixel grains. Crisp, very readable, no clutter, no characters. Clear thick glossy glass vessels for a sand-art puzzle game, each partly filled with horizontal layers of colored pixel-grain sand in bright candy colors. Row 1, normal vessels: (1) round-bottom bottle with a cork, (2) gourd-shaped vase (Vietnamese hồ lô shape), (3) small Hoi An lantern-shaped glass jar with a metal cap, (4) tall slim sake-style bottle. Row 2: (5) a special vessel with a shiny gold rim and small gold star, sand layers stacked bottom to top, the next layer to fill shown as a glowing dashed outline; (6) a Cham-style pottery-shaped glass jar; (7) a finished vessel completely full with sand layers forming a tiny landscape picture (sea, dunes, sun), sparkling; (8) an empty vessel showing pure glass. Readable silhouettes, consistent lighting from top-left. No text, no labels."
+  },
+  {
+    "id": "IT3-shapes-states",
+    "model": "fal-ai/nano-banana-pro/edit",
+    "image_urls": [
+      "https://v3b.fal.media/files/b/0aafeeea/cPRSOiysDLl6uEpkAhZdW_c1dzoRUM.png"
+    ],
+    "extra": {
+      "aspect_ratio": "16:9",
+      "resolution": "2K"
+    },
+    "prompt": "Use the attached game screenshot ONLY as the art style reference: match exactly its glass vessel rendering (thick clear glossy glass, white rim highlight, soft inner reflection), its colored sand made of tiny square pixel grains, its saturated candy colors (red #f04545, blue #3a86f5, yellow #ffc928, green #3ccf55), its soft top-left lighting and its deep violet-purple background. Do not copy the screenshot layout. Clean game asset sheet, each item centered with even spacing and a soft contact shadow, no text, no numbers, no labels, no UI. A 4 columns by 3 rows grid of glass vessels on a plain deep violet background. Columns are four vessel shapes: (1) round-bottom flask bottle with a short straight neck, (2) Vietnamese gourd vase (two stacked round bulbs, small neck), (3) wide straight-sided jar with a thick rim, (4) oval lantern-shaped jar with a small collar neck. Rows are fill states of the SAME shape: row 1 completely empty clear glass; row 2 half full with two flat horizontal sand layers (blue at bottom, red above); row 3 full with three flat horizontal sand layers (blue, yellow, red from bottom to top), sand surface slightly mounded. All sand layers are perfectly horizontal and sharply separated. Same size and same camera angle (front view, very slight top-down tilt) for every vessel."
+  },
+  {
+    "id": "IT3-special-steps",
+    "model": "fal-ai/nano-banana-pro/edit",
+    "image_urls": [
+      "https://v3b.fal.media/files/b/0aafeeea/cPRSOiysDLl6uEpkAhZdW_c1dzoRUM.png"
+    ],
+    "extra": {
+      "aspect_ratio": "16:9",
+      "resolution": "2K"
+    },
+    "prompt": "Use the attached game screenshot ONLY as the art style reference: match exactly its glass vessel rendering (thick clear glossy glass, white rim highlight, soft inner reflection), its colored sand made of tiny square pixel grains, its saturated candy colors (red #f04545, blue #3a86f5, yellow #ffc928, green #3ccf55), its soft top-left lighting and its deep violet-purple background. Do not copy the screenshot layout. Clean game asset sheet, each item centered with even spacing and a soft contact shadow, no text, no numbers, no labels, no UI. One row of 4 identical special glass jars showing the fill sequence of a special order, left to right. The special jar is a wide straight-sided glass jar with a shiny thick gold rim and a small gold star floating above it, and a soft golden glow. Step 1: empty, with a glowing dashed outline in blue marking the bottom layer to fill next. Step 2: bottom blue sand layer filled, glowing dashed outline in yellow marking the middle layer. Step 3: blue and yellow layers filled, glowing dashed outline in red marking the top layer. Step 4: all three layers filled (blue, yellow, red, flat and sharp), golden sparkles and a bright glow burst celebrating completion."
+  },
+  {
+    "id": "IT3-hero-muine",
+    "model": "fal-ai/nano-banana-pro/edit",
+    "image_urls": [
+      "https://v3b.fal.media/files/b/0aafeeea/cPRSOiysDLl6uEpkAhZdW_c1dzoRUM.png"
+    ],
+    "extra": {
+      "aspect_ratio": "1:1",
+      "resolution": "2K"
+    },
+    "prompt": "Use the attached game screenshot ONLY as the art style reference: match exactly its glass vessel rendering (thick clear glossy glass, white rim highlight, soft inner reflection), its colored sand made of tiny square pixel grains, its saturated candy colors (red #f04545, blue #3a86f5, yellow #ffc928, green #3ccf55), its soft top-left lighting and its deep violet-purple background. Do not copy the screenshot layout. Clean game asset sheet, each item centered with even spacing and a soft contact shadow, no text, no numbers, no labels, no UI. A single hero illustration of a completed special glass vessel, gourd-shaped with a shiny gold rim and gold star, completely filled with colored pixel-grain sand arranged as a sand-art picture of the Mui Ne coast in Vietnam: turquoise sea at the bottom, white wave line, golden sand dunes, a small red fishing boat, warm orange sky with a round sun at the top. Sparkles and a soft glow around the vessel, celebration mood. Centered, large, on the plain deep violet background."
+  },
+  {
+    "id": "IT3-pour-moment",
+    "model": "fal-ai/nano-banana-pro/edit",
+    "image_urls": [
+      "https://v3b.fal.media/files/b/0aafeeea/cPRSOiysDLl6uEpkAhZdW_c1dzoRUM.png"
+    ],
+    "extra": {
+      "aspect_ratio": "3:4",
+      "resolution": "2K"
+    },
+    "prompt": "Use the attached game screenshot ONLY as the art style reference: match exactly its glass vessel rendering (thick clear glossy glass, white rim highlight, soft inner reflection), its colored sand made of tiny square pixel grains, its saturated candy colors (red #f04545, blue #3a86f5, yellow #ffc928, green #3ccf55), its soft top-left lighting and its deep violet-purple background. Do not copy the screenshot layout. Clean game asset sheet, each item centered with even spacing and a soft contact shadow, no text, no numbers, no labels, no UI. Animation reference frame: a small square sand tray with a glossy red border, filled with red pixel-grain sand, floats above an open glass round-bottom flask and is tilted about 45 degrees, pouring a thin stream of red pixel sand grains into the flask. The flask already has a blue sand layer at the bottom and the red sand is piling up on top of it, forming a small mound. A few loose grains bounce at the impact point. Motion arc shown by three faint ghost copies of the tray rising along a curved path from the bottom of the image. Plain deep violet background."
+  }
+]

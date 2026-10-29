@@ -1,0 +1,77 @@
+[
+  {
+    "id": "BG01-shop-night",
+    "image_size": "portrait_16_9",
+    "prompt": "Vertical mobile game background, hand-painted semi-realistic 2D illustration, cozy mystery mood. Interior of a cluttered old antique shop at night, seen from behind the wooden shop counter. Rain streaks on the large front window, blurry street lamps outside. A single warm brass desk lamp on the counter casts golden light; dark shadowy corners. Wooden shelves in the background full of antique clocks, porcelain vases, old books, picture frames, brass instruments, softly out of focus. Dust motes floating in the lamp light. Color palette: walnut brown, moss green, wine red, aged brass, with deep blue night outside. The middle of the image is relatively clear and uncluttered (space for characters and UI). No people, no text, no letters, no logos."
+  },
+  {
+    "id": "BG03-shopfront-rain",
+    "image_size": "portrait_16_9",
+    "prompt": "Vertical mobile game key art, hand-painted semi-realistic 2D illustration, cozy mystery mood. Exterior of a narrow two-story old antique shop on a cobblestone street in a small seaside town, New England and English style, at night in the rain. Dark green painted wooden shopfront with large display windows glowing warm yellow, antiques visible inside. A blank wooden hanging sign above the door. Above, a small attic window under the pitched roof is lit with a single mysterious warm light. Wet cobblestones reflecting the light, a vintage street lamp, light fog. Palette: deep navy night, moss green, warm amber, aged brass. Atmospheric, inviting but secretive. Leave empty space at the top and bottom for a logo and a button. No people, no readable text, no letters on the sign."
+  },
+  {
+    "id": "IT-CLK5-watch-open",
+    "image_size": "square_hd",
+    "prompt": "Mobile merge game item illustration, hand-painted semi-realistic 2D style, centered on a plain dark warm background. An antique gold-plated pocket watch with its hinged lid sprung open. Out of the open lid tumble a small ornate old brass key and a small folded piece of yellowed paper. Soft magical turquoise glow outlining the watch, tiny dust sparkles. Fine detail on the engraved gold case, white enamel dial with blue steel hands. Clean readable silhouette suitable for a game icon. No text, no letters, no writing on the paper."
+  },
+  {
+    "id": "CH-clara",
+    "image_size": "portrait_4_3",
+    "prompt": "Character portrait for a mobile story game, half-body, hand-painted semi-realistic 2D cartoon style for adult audience, similar quality to premium merge-story games. Clara, a 32-year-old woman, warm and curious, slightly clumsy charm. Messy brown hair loosely tied back, a few loose strands, cream knit sweater with sleeves pushed up, canvas workshop apron with small tools in the pocket. Expression: stunned, wide eyes, lips slightly parted, as if she just read a shocking note. Warm lamp lighting from one side. Plain dark warm background. Not chibi, not anime, realistic proportions. No text."
+  },
+  {
+    "id": "CH-henry",
+    "image_size": "portrait_4_3",
+    "prompt": "Character portrait for a mobile story game, half-body, hand-painted semi-realistic 2D cartoon style for adult audience, similar quality to premium merge-story games. Henry, a gentle elderly watchmaker around 75 years old, round wire-rimmed glasses, neat white beard, tweed flat cap and a worn tweed coat damp from rain, a few raindrops on his shoulders. Expression: pale and worried, glancing sideways toward something off-screen, as if afraid someone is watching. Warm lamp light on one side, cool blue shadow on the other. Plain dark background. Not chibi, realistic proportions. No text."
+  },
+  {
+    "id": "CH-victor",
+    "image_size": "portrait_4_3",
+    "prompt": "Character portrait for a mobile story game, half-body, hand-painted semi-realistic 2D cartoon style for adult audience, similar quality to premium merge-story games. Victor, a charming but untrustworthy antique dealer in his late 40s, slicked-back dark hair with grey at the temples, neatly trimmed short beard, tailored charcoal three-piece suit with a burgundy silk pocket square and a gold watch chain. Standing in a doorway at night with rain behind him, holding a black umbrella. Expression: a polite, confident smile that does not reach his eyes, unreadable. Dramatic lighting, warm light on the face, dark blue rain behind. Not chibi, realistic proportions. No text."
+  },
+  {
+    "id": "CH-clara-v2",
+    "image_size": "portrait_4_3",
+    "prompt": "Digital oil painting, painterly visible brushstrokes, semi-realistic illustration with realistic adult proportions and natural-sized eyes, like a book cover or a premium narrative mobile game portrait. NOT 3D render, NOT Pixar, NOT Disney, NOT anime, no oversized eyes, no red cartoon nose. Half-body portrait, warm amber lamp light from the left, cool deep-blue shadow on the right, soft dark painterly background of a cluttered antique shop at night. Muted palette: walnut brown, moss green, wine red, aged brass. No text. Subject: Clara, a woman aged 32 with mature adult features, a few fine lines, no heavy makeup. Messy chestnut-brown hair loosely tied back with loose strands, cream cable-knit sweater with sleeves pushed up, worn canvas workshop apron with a small screwdriver and brush in the chest pocket. Expression: stunned and uneasy, eyes fixed on something she holds just below frame, lips slightly parted, as if she just read a shocking handwritten note."
+  },
+  {
+    "id": "CH-henry-v2",
+    "image_size": "portrait_4_3",
+    "prompt": "Digital oil painting, painterly visible brushstrokes, semi-realistic illustration with realistic adult proportions and natural-sized eyes, like a book cover or a premium narrative mobile game portrait. NOT 3D render, NOT Pixar, NOT Disney, NOT anime, no oversized eyes, no red cartoon nose. Half-body portrait, warm amber lamp light from the left, cool deep-blue shadow on the right, soft dark painterly background of a cluttered antique shop at night. Muted palette: walnut brown, moss green, wine red, aged brass. No text. Subject: Henry, a gentle elderly watchmaker about 75 years old, thin weathered face, round wire-rimmed spectacles, neat short white beard, grey tweed flat cap, worn brown tweed coat dark with rain, raindrops on the shoulders. Expression: pale and frightened, glancing sideways toward a door off-screen as if afraid someone is watching, mouth tight."
+  },
+  {
+    "id": "CH-victor-v2",
+    "image_size": "portrait_4_3",
+    "prompt": "Digital oil painting, painterly visible brushstrokes, semi-realistic illustration with realistic adult proportions and natural-sized eyes, like a book cover or a premium narrative mobile game portrait. NOT 3D render, NOT Pixar, NOT Disney, NOT anime, no oversized eyes, no red cartoon nose. Half-body portrait, warm amber lamp light from the left, cool deep-blue shadow on the right, soft dark painterly background of a cluttered antique shop at night. Muted palette: walnut brown, moss green, wine red, aged brass. No text. Subject: Victor, a handsome antique dealer in his late 40s, NO glasses, slicked-back dark hair with grey temples, neatly trimmed short beard, tailored charcoal three-piece suit, burgundy silk pocket square, a gold pocket-watch chain draped across the waistcoat from button to pocket (no necklace). He stands in a shop doorway with rain behind him, holding a closed black umbrella. Expression: a polite, confident half-smile that does not reach his cold eyes."
+  },
+  {
+    "id": "CH-clara-v3",
+    "image_size": "portrait_4_3",
+    "prompt": "2D mobile game character art, stylized illustration in the style of premium merge-story mobile games' dialogue portraits: clean confident line art, simplified shapes, soft cel shading with painted gradients, slightly stylized proportions, expressive but not oversized eyes. NOT photorealistic, NOT a photo, NOT 3D render, NOT anime, NOT chibi. Half-body portrait, centered, plain flat dark warm-brown background so it can be cut out. Warm amber rim light from the left. Muted palette: walnut brown, moss green, wine red, aged brass. No text. Subject: Clara, a woman in her early 30s, friendly face, messy chestnut-brown hair loosely tied back with loose strands, cream cable-knit sweater with sleeves pushed up, brown canvas workshop apron with a screwdriver and small brush in the chest pocket, holding a small folded yellowed note. Expression: stunned, eyebrows raised, mouth slightly open, looking at the note."
+  },
+  {
+    "id": "CH-henry-v3",
+    "image_size": "portrait_4_3",
+    "prompt": "2D mobile game character art, stylized illustration in the style of premium merge-story mobile games' dialogue portraits: clean confident line art, simplified shapes, soft cel shading with painted gradients, slightly stylized proportions, expressive but not oversized eyes. NOT photorealistic, NOT a photo, NOT 3D render, NOT anime, NOT chibi. Half-body portrait, centered, plain flat dark warm-brown background so it can be cut out. Warm amber rim light from the left. Muted palette: walnut brown, moss green, wine red, aged brass. No text. Subject: Henry, a kind elderly watchmaker around 75, round wire-rimmed glasses, neat short white beard, grey tweed flat cap, brown tweed coat with a few raindrops on the shoulders. Expression: worried and nervous, eyes glancing sideways toward something off-screen, lips pressed together."
+  },
+  {
+    "id": "CH-victor-v3",
+    "image_size": "portrait_4_3",
+    "prompt": "2D mobile game character art, stylized illustration in the style of premium merge-story mobile games' dialogue portraits: clean confident line art, simplified shapes, soft cel shading with painted gradients, slightly stylized proportions, expressive but not oversized eyes. NOT photorealistic, NOT a photo, NOT 3D render, NOT anime, NOT chibi. Half-body portrait, centered, plain flat dark warm-brown background so it can be cut out. Warm amber rim light from the left. Muted palette: walnut brown, moss green, wine red, aged brass. No text. Subject: Victor, a suave antique dealer in his late 40s, no glasses, slicked-back dark hair with grey temples, short neat beard, charcoal three-piece suit, burgundy tie and pocket square, a gold pocket-watch chain across the waistcoat, holding a closed black umbrella. Expression: a sly, polite half-smile, one eyebrow slightly raised, eyes calculating."
+  },
+  {
+    "id": "IT-CLK-chain",
+    "image_size": "landscape_16_9",
+    "prompt": "Sprite sheet of six 2D mobile merge game item icons arranged in one horizontal row, evenly spaced, each icon centered on its own rounded light cream parchment square tile. The six icons show the progressive restoration stages of the SAME antique pocket watch, left to right: (1) one single loose rusty brass gear; (2) three brass gears meshed together; (3) a bare watch movement with gears and a coiled mainspring, no dial; (4) the movement with a white enamel dial and blue steel hands attached, no case; (5) the pocket watch inside a dull tarnished gold case with cracked glass and scratches; (6) a shiny polished gold pocket watch, gleaming, with a soft turquoise glow outline and small sparkles. Style: stylized casual mobile game icons, thick dark brown outline, bold simple shapes, high contrast, glossy highlights, rich warm metal colors, readable at small size, consistent lighting from top left. No text, no numbers, no letters."
+  },
+  {
+    "id": "IT-GEN-TOOL-sheet",
+    "image_size": "landscape_16_9",
+    "prompt": "Sprite sheet of six 2D mobile merge game icons arranged in one horizontal row, evenly spaced, each centered on its own rounded light cream parchment square tile. Left to right: (1) a grandmother's vintage floral tin box with the lid half open and brass gears and screws peeking out; (2) a wicker basket full of cleaning tools and rags; (3) a folded cleaning rag; (4) a small wooden-handled brush; (5) a small glass bottle of polishing oil with a cork; (6) an old taped cardboard box. Style: stylized casual mobile game icons, thick dark brown outline, bold simple shapes, high contrast, glossy highlights, warm cozy colors, readable at small size, consistent lighting from top left. No text, no numbers, no letters."
+  },
+  {
+    "id": "BOARD-screen",
+    "image_size": "portrait_16_9",
+    "prompt": "Vertical mobile game screenshot mockup of a cozy merge-2 puzzle game set in an antique shop. Top area: a row of three order cards, each with a small round portrait of a customer and the item they want. Middle: a large 7 by 9 grid merge board on a light oak wooden workbench, each cell a cream parchment tray, bright and easy to read. On the board: brass gears, watch movements, pocket watches, small wooden boxes, porcelain tea cups, old letters, cleaning rags and brushes; several cells covered by dusty white cloths; a few old cardboard boxes; a vintage floral tin box generator; a chubby orange cat sleeping on one cell. Behind the board, softly blurred, a warm-lit antique shop interior with shelves of clocks. Bottom: a simple wooden toolbar. Stylized 2D casual mobile game art, thick outlines, glossy readable item icons, high contrast, warm but bright. No readable text."
+  }
+]

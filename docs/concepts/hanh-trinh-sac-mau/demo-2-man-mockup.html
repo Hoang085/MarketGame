@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo 2 màn</title>
+<style>
+  :root { --bg: #1b1240; --ink: #ece8ff; --muted: #b7aee6; --card: #261a57; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: "Be Vietnam Pro", system-ui, sans-serif; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 22px; margin: 0 0 4px; }
+  .lead { color: var(--muted); margin: 0 0 20px; font-size: 14px; }
+  .row { display: flex; flex-wrap: wrap; gap: 24px; justify-content: center; }
+  figure { margin: 0; width: 360px; max-width: 100%; }
+  canvas { width: 100%; height: auto; border-radius: 28px; display: block; box-shadow: 0 10px 40px #0008; }
+  figcaption { margin-top: 12px; font-size: 13px; line-height: 1.55; color: var(--muted); }
+  figcaption b { color: var(--ink); }
+  .note { margin-top: 28px; background: var(--card); border-radius: 12px; padding: 14px 16px; font-size: 13px; color: var(--muted); line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Demo 2 màn: mockup bố cục</h1>
+  <p class="lead">Style theo style-frame-v2/SF2-full-belt-2.png. Mỗi lọ là một bức tranh cát (ảnh trong tranh/, gen AI rồi quy về 4 màu game); vùng mờ là phần chưa đổ. Tranh, đơn hàng, bể và khay tính từ cùng dữ liệu trong tranh-lo.js.</p>
+  <div class="row">
+    <figure><canvas id="m1" width="720" height="1440"></canvas>
+      <figcaption><b>Màn 1 "Hứng cát", lúc bắt đầu.</b> Bể 2 màu (vàng cát | xanh ngọc), bàn 4×4 thoáng, 6 khay. Mỗi lọ là một tranh 2 màu cần 4 + 4 phần. Bàn tay chỉ kéo khay vàng lên dưới dải vàng: đổ xong thì nửa tranh "Bãi cát" hiện ra.</figcaption></figure>
+    <figure><canvas id="m2a" width="720" height="1440"></canvas>
+      <figcaption><b>Màn 2 "Đồng hồ cát", lúc bắt đầu.</b> 6 tranh Mũi Né, 4 màu: xanh ngọc, đỏ, vàng cát, cam. Khay cam hàng trên khóa trục ngang, phải sang phải tới dưới dải cam nhưng bị khay vàng chắn. Lọ 3 là món đặc biệt: vùng biển (đáy) sáng hơn vì phải đổ trước.</figcaption></figure>
+    <figure><canvas id="m2b" width="720" height="1440"></canvas>
+      <figcaption><b>Màn 2, giữa màn (minh họa).</b> Tranh "Đồi cát đỏ" đã xong. Bể tụt ở dải vàng và cam. Khay cam 2×2 đang hứng 55%. Chỗ đổ 1 giữ khay vàng dư 4: "Bãi biển" đã đủ vàng, món đặc biệt chưa có biển nên vàng phải chờ.</figcaption></figure>
+  </div>
+  <h2 style="font-size:18px;margin:36px 0 12px">Tranh các lọ khi hoàn thành</h2>
+  <canvas id="gal" width="2200" height="1400" style="border-radius:16px"></canvas>
+  <div class="note">Bố cục màn 2 là nháp, chưa qua solver. Bàn 6 ô ở hàng trên và dưới, 4 ô ở giữa (28 ô). Lượng cát: màn 1 vàng 16, xanh ngọc 16; màn 2 xanh ngọc 20, đỏ 16, vàng 24, cam 28 (tổng 88 = 22 ô khay × 4).</div>
+</div>
+<script src="tranh-map.js"></script>
+<script src="tranh-lo.js"></script>
+<script>
+const COL = { ...TranhLo.PALETTE, W: '#eeeaff' };
+const CELL = TranhLo.CELL;
+const W = 360, H = 720;
+
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function rgb(hex) { const n = parseInt(hex.slice(1), 16); return [n >> 16, (n >> 8) & 255, n & 255]; }
+function shade(hex, k, a = 1) { const [r, g, b] = rgb(hex); const f = v => Math.max(0, Math.min(255, Math.round(v * k))); return `rgba(${f(r)},${f(g)},${f(b)},${a})`; }
+function rr(c, x, y, w, h, r) { c.beginPath(); c.roundRect(x, y, w, h, r); }
+
+// O cat hat pixel: mau nen + hat sang/toi ngau nhien
+function sand(c, x, y, w, h, hex, rand, g = 2.5) {
+  if (w <= 0 || h <= 0) return;
+  c.fillStyle = shade(hex, 0.95); c.fillRect(x, y, w, h);
+  for (let j = 0; j < h; j += g) for (let i = 0; i < w; i += g) {
+    const k = 0.78 + rand() * 0.42;
+    c.fillStyle = shade(hex, k); c.fillRect(x + i, y + j, Math.min(g, w - i), Math.min(g, h - j));
+  }
+}
+
+function background(c) {
+  const gr = c.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, '#41288f'); gr.addColorStop(1, '#2a1868');
+  c.fillStyle = gr; c.fillRect(0, 0, W, H);
+}
+
+function belt(c, y) {
+  rr(c, -10, y, W + 20, 40, 14); c.fillStyle = '#c9b9f2'; c.fill();
+  c.fillStyle = '#e4dbff'; c.fillRect(-10, y + 2, W + 20, 18);
+  c.strokeStyle = '#a996e0'; c.lineWidth = 2;
+  for (let x = 6; x < W; x += 30) { c.beginPath(); c.moveTo(x, y + 2); c.lineTo(x, y + 20); c.stroke(); }
+  for (let x = 24; x < W; x += 78) { c.beginPath(); c.arc(x, y + 30, 7, 0, 7); c.fillStyle = '#9b86d8'; c.fill(); c.beginPath(); c.arc(x, y + 30, 3, 0, 7); c.fillStyle = '#e4dbff'; c.fill(); }
+}
+
+// Hinh dang do thuy tinh: tra ve path than + do cao than (de do cat)
+function vesselPath(shape, cx, by) {
+  const p = new Path2D();
+  // moveTo truoc moi arc de khong co net noi giua cac phan
+  if (shape === 'bottle') { p.moveTo(cx + 38, by - 38); p.arc(cx, by - 38, 38, 0, Math.PI * 2); p.rect(cx - 11, by - 98, 22, 24); return { p, top: by - 76, neck: [cx, by - 98, 13] }; }
+  if (shape === 'gourd') { p.moveTo(cx + 33, by - 32); p.arc(cx, by - 32, 33, 0, Math.PI * 2); p.moveTo(cx + 21, by - 78); p.arc(cx, by - 78, 21, 0, Math.PI * 2); p.rect(cx - 8, by - 104, 16, 8); return { p, top: by - 99, neck: [cx, by - 104, 11] }; }
+  if (shape === 'jar') { p.roundRect(cx - 33, by - 80, 66, 80, 16); p.rect(cx - 25, by - 92, 50, 12); return { p, top: by - 80, neck: [cx, by - 92, 27] }; }
+  p.moveTo(cx + 36, by - 44); p.ellipse(cx, by - 44, 36, 44, 0, 0, Math.PI * 2); p.rect(cx - 12, by - 98, 24, 10); return { p, top: by - 88, neck: [cx, by - 98, 14] };
+}
+
+// Lo = tranh chia vung mau. v = { shape, pic, total, have: {mau: so phan}, special }
+// Moi vung day dan tu duoi len theo ty le have/need; phan chua do ve mo.
+function vessel(c, v, cx, by, rand) {
+  const { p, top, neck } = vesselPath(v.shape, cx, by);
+  const nd = TranhLo.need(v.shape, v.pic, v.total), have = v.have || {};
+  const keys = v.special ? nd.order : Object.keys(nd.units);
+  const next = v.special ? nd.order.find(k => (have[k] || 0) < nd.units[k]) : null;
+  const byC = {};
+  for (const cl of TranhLo.grid(v.shape, v.pic)) (byC[cl.c] ||= []).push(cl);
+  c.save(); c.clip(p);
+  // moi o chi mang mau cua vung no (x do sang lay tu anh goc); phan chua do ve mo
+  for (const [k, list] of Object.entries(byC)) {
+    list.sort((a, b) => a.y - b.y || a.x - b.x);
+    const nf = Math.round(Math.min(1, (have[k] || 0) / nd.units[k]) * list.length);
+    list.forEach((cl, i) => {
+      c.fillStyle = i < nf ? shade(COL[k], cl.s * (0.9 + rand() * 0.2)) : shade(COL[k], cl.s, k === next ? 0.45 : 0.2);
+      c.fillRect(cx + cl.x, by - cl.y - CELL, CELL + 0.3, CELL + 0.3);
+    });
+  }
+  c.fillStyle = 'rgba(255,255,255,0.10)'; c.fillRect(cx - 50, top - 30, 100, by - top + 40);
+  c.restore();
+  c.lineWidth = 3; c.strokeStyle = 'rgba(255,255,255,0.85)'; c.stroke(p);
+  c.beginPath(); c.ellipse(neck[0], neck[1], neck[2], 5, 0, 0, 7);
+  c.strokeStyle = v.special ? '#ffcc33' : 'rgba(255,255,255,0.9)'; c.lineWidth = v.special ? 5 : 3; c.stroke();
+  c.strokeStyle = 'rgba(255,255,255,0.7)'; c.lineWidth = 4; c.lineCap = 'round';
+  c.beginPath(); c.arc(cx, by - 38, 26, Math.PI * 1.05, Math.PI * 1.35); c.stroke(); c.lineCap = 'butt';
+  if (v.special) star(c, cx, neck[1] - 18, 11);
+  // nhan: mau con thieu (mon dac biet: theo thu tu tu day len)
+  const need = keys.filter(k => (have[k] || 0) < nd.units[k]);
+  const tw = Math.max(46, need.length * 28 + 12);
+  rr(c, cx - tw / 2, by + 10, tw, 24, 8); c.fillStyle = v.special ? '#fff3c4' : '#f1ecff'; c.fill();
+  c.strokeStyle = v.special ? '#e9b42a' : '#b9a8ee'; c.lineWidth = 2; c.stroke();
+  need.forEach((k, i) => {
+    const x = cx - tw / 2 + 13 + i * 28;
+    c.beginPath(); c.arc(x, by + 22, 6, 0, 7); c.fillStyle = COL[k]; c.fill();
+    c.fillStyle = '#3a2a7a'; c.font = '800 11px system-ui'; c.textBaseline = 'middle'; c.fillText(nd.units[k] - (have[k] || 0), x + 8, by + 23);
+  });
+  if (!need.length) { c.fillStyle = '#3ccf55'; c.font = '800 14px system-ui'; c.textAlign = 'center'; c.fillText('✓', cx, by + 23); c.textAlign = 'left'; }
+}
+
+function star(c, x, y, r) {
+  c.beginPath();
+  for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr2 = i % 2 ? r * 0.45 : r; c.lineTo(x + rr2 * Math.cos(a), y + rr2 * Math.sin(a)); }
+  c.closePath(); c.fillStyle = '#ffcc33'; c.fill(); c.strokeStyle = '#d18f0c'; c.lineWidth = 2; c.stroke();
+}
+
+function slots(c, y, items, rand) {
+  rr(c, 18, y, 324, 62, 16); c.fillStyle = '#9c86e0'; c.fill(); c.fillStyle = '#b8a5f0'; c.fillRect(18, y, 324, 4);
+  for (let i = 0; i < 5; i++) {
+    const x = 28 + i * 62; rr(c, x, y + 8, 54, 46, 10); c.fillStyle = '#7c66c6'; c.fill();
+    const it = items[i]; if (!it) continue;
+    rr(c, x + 3, y + 10, 48, 42, 9); c.fillStyle = shade(COL[it.c], 0.45); c.fill();
+    c.save(); rr(c, x + 3, y + 10, 48, 42, 9); c.clip(); const h = 42 * it.pct; sand(c, x + 3, y + 52 - h, 48, h, COL[it.c], rand); c.restore();
+    rr(c, x + 3, y + 10, 48, 42, 9); c.strokeStyle = COL[it.c]; c.lineWidth = 4; c.stroke();
+    if (it.tag) pill(c, x + 27, y + 50, it.tag);
+  }
+}
+
+function pill(c, x, y, t) {
+  c.font = '800 10px system-ui'; const w = c.measureText(t).width + 10;
+  rr(c, x - w / 2, y - 8, w, 16, 8); c.fillStyle = 'rgba(20,12,50,0.75)'; c.fill();
+  c.fillStyle = '#fff'; c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillText(t, x, y + 0.5); c.textAlign = 'left';
+}
+
+// Ban: mask(c,r) cho o hop le; khung la hop cac o da noi rong
+function board(c, b) {
+  const { x0, y0, cell, cols, rows, mask } = b;
+  const pad = 10;
+  c.fillStyle = '#b9a6f2';
+  for (let r = 0; r < rows; r++) for (let q = 0; q < cols; q++) if (mask(q, r)) { rr(c, x0 + q * cell - pad, y0 + r * cell - pad, cell + pad * 2, cell + pad * 2, 14); c.fill(); }
+  // be cat ngay tren hang 0
+  rr(c, x0 - pad, b.tankY - pad, cols * cell + pad * 2, b.tankH + pad + 2, 14); c.fill();
+  c.fillStyle = '#d4c8fb';
+  rr(c, x0 - pad, b.tankY - pad, cols * cell + pad * 2, 6, 3); c.fill();
+  for (let r = 0; r < rows; r++) for (let q = 0; q < cols; q++) if (mask(q, r)) {
+    rr(c, x0 + q * cell + 2, y0 + r * cell + 2, cell - 4, cell - 4, 8); c.fillStyle = '#23285e'; c.fill();
+    rr(c, x0 + q * cell + 2, y0 + r * cell + 2, cell - 4, 6, 3); c.fillStyle = '#1a1d48'; c.fill();
+  }
+}
+
+// Be cat: bands [{c, to}] (to = mep phai theo so cot), level(x) = muc cat 0..1 theo cot
+function tank(c, b, bands, level, rand) {
+  const { x0, cell, cols } = b, w = cols * cell, y = b.tankY, h = b.tankH;
+  rr(c, x0, y, w, h, 8); c.fillStyle = '#2b2f63'; c.fill();
+  c.save(); rr(c, x0, y, w, h, 8); c.clip();
+  const g = 2.5;
+  for (let px = 0; px < w; px += g) {
+    const xc = px / cell, top = y + h * (1 - level(xc));
+    for (let py = top; py < y + h; py += g) {
+      const depth = (py - y) / h;
+      const wob = 0.12 * Math.sin(depth * 9 + xc * 2) + (rand() - 0.5) * 0.25;
+      const band = bands.find(bd => xc + wob < bd.to) || bands[bands.length - 1];
+      c.fillStyle = shade(COL[band.c], 0.8 + rand() * 0.38); c.fillRect(x0 + px, py, g, g);
+    }
+  }
+  c.fillStyle = 'rgba(255,255,255,0.10)'; c.fillRect(x0, y, w, 10);
+  c.restore();
+  rr(c, x0, y, w, h, 8); c.strokeStyle = 'rgba(255,255,255,0.35)'; c.lineWidth = 2; c.stroke();
+}
+
+// Khay hinh bat ky: cells [[cot,hang]], fill 0..1, lock 'h'|'v'
+function tray(c, b, t, rand) {
+  const { x0, y0, cell } = b, set = new Set(t.cells.map(([q, r]) => q + ',' + r));
+  const has = (q, r) => set.has(q + ',' + r);
+  const inset = 4, hex = COL[t.c];
+  const rows = t.cells.map(([, r]) => r), minR = Math.min(...rows), maxR = Math.max(...rows);
+  const yBot = y0 + (maxR + 1) * cell - inset, yTop = y0 + minR * cell + inset;
+  const level = yBot - (yBot - yTop) * (t.fill || 0);
+  for (const [q, r] of t.cells) {
+    const x1 = x0 + q * cell + (has(q - 1, r) ? 0 : inset), x2 = x0 + (q + 1) * cell - (has(q + 1, r) ? 0 : inset);
+    const y1 = y0 + r * cell + (has(q, r - 1) ? 0 : inset), y2 = y0 + (r + 1) * cell - (has(q, r + 1) ? 0 : inset);
+    c.fillStyle = t.c === 'W' ? 'rgba(210,205,240,0.30)' : shade(hex, 0.42, 0.92); c.fillRect(x1, y1, x2 - x1, y2 - y1);
+    if (t.fill) { const sy = Math.max(y1, level); sand(c, x1, sy, x2 - x1, y2 - sy, t.sandC ? COL[t.sandC] : hex, rand); }
+  }
+  c.strokeStyle = hex; c.lineWidth = 5; c.lineCap = 'round';
+  for (const [q, r] of t.cells) {
+    const X = x0 + q * cell, Y = y0 + r * cell;
+    const L = X + inset, R = X + cell - inset, T = Y + inset, B = Y + cell - inset;
+    const seg = (a, b2, cc, d) => { c.beginPath(); c.moveTo(a, b2); c.lineTo(cc, d); c.stroke(); };
+    if (!has(q, r - 1)) seg(has(q - 1, r) ? X : L, T, has(q + 1, r) ? X + cell : R, T);
+    if (!has(q, r + 1)) seg(has(q - 1, r) ? X : L, B, has(q + 1, r) ? X + cell : R, B);
+    if (!has(q - 1, r)) seg(L, has(q, r - 1) ? Y : T, L, has(q, r + 1) ? Y + cell : B);
+    if (!has(q + 1, r)) seg(R, has(q, r - 1) ? Y : T, R, has(q, r + 1) ? Y + cell : B);
+  }
+  c.lineCap = 'butt';
+  // bong sang
+  const [fq, fr] = t.cells.reduce((a, b2) => (b2[1] < a[1] || (b2[1] === a[1] && b2[0] < a[0]) ? b2 : a));
+  c.strokeStyle = 'rgba(255,255,255,0.55)'; c.lineWidth = 3; c.lineCap = 'round';
+  c.beginPath(); c.moveTo(x0 + fq * cell + 11, y0 + fr * cell + 10); c.lineTo(x0 + fq * cell + 24, y0 + fr * cell + 10); c.stroke(); c.lineCap = 'butt';
+  pill(c, x0 + fq * cell + cell / 2, y0 + fr * cell + cell - 13, Math.round((t.fill || 0) * 100) + '%');
+  if (t.lock) {
+    const qs = t.cells.map(([q]) => q), cx = x0 + (Math.min(...qs) + Math.max(...qs) + 1) / 2 * cell, cy = y0 + (minR + maxR + 1) / 2 * cell - 4;
+    c.save(); c.translate(cx, cy); if (t.lock === 'v') c.rotate(Math.PI / 2);
+    c.strokeStyle = '#fff'; c.fillStyle = '#fff'; c.lineWidth = 4; c.lineCap = 'round';
+    c.beginPath(); c.moveTo(-18, 0); c.lineTo(18, 0); c.stroke();
+    for (const s of [-1, 1]) { c.beginPath(); c.moveTo(s * 24, 0); c.lineTo(s * 14, -7); c.lineTo(s * 14, 7); c.closePath(); c.fill(); }
+    c.restore(); c.lineCap = 'butt';
+  }
+}
+
+function stream(c, x, y1, y2, hex, rand) {
+  for (let y = y1; y < y2; y += 2.5) { const wob = Math.sin(y / 9) * 1.5; for (let i = -3; i <= 3; i += 2.5) if (rand() > 0.25) { c.fillStyle = shade(hex, 0.8 + rand() * 0.4); c.fillRect(x + i + wob, y, 2.5, 2.5); } }
+}
+
+function hand(c, x, y, tx, ty) {
+  c.strokeStyle = 'rgba(255,255,255,0.9)'; c.lineWidth = 4; c.setLineDash([8, 7]); c.lineCap = 'round';
+  c.beginPath(); c.moveTo(x, y); c.lineTo(tx, ty + 10); c.stroke(); c.setLineDash([]);
+  c.fillStyle = '#fff'; c.beginPath(); c.moveTo(tx, ty); c.lineTo(tx - 9, ty + 14); c.lineTo(tx + 9, ty + 14); c.closePath(); c.fill();
+  c.font = '44px system-ui'; c.textBaseline = 'middle'; c.fillText('👆', x - 14, y + 30); c.lineCap = 'butt';
+}
+
+function screen(id, s) {
+  const cv = document.getElementById(id), c = cv.getContext('2d'); c.scale(2, 2);
+  const rand = rng(s.seed);
+  background(c);
+  belt(c, 172);
+  s.vessels.forEach((v, i) => vessel(c, v, 66 + i * 114, 176, rand));
+  slots(c, 238, s.slots, rand);
+  board(c, s.board); tank(c, s.board, s.bands, s.level0, rand);
+  s.trays.forEach(t => tray(c, s.board, t, rand));
+  (s.streams || []).forEach(([q, hex]) => { const b = s.board; stream(c, b.x0 + (q + 0.5) * b.cell, b.tankY + b.tankH, b.y0 + b.cell * 0.55, hex, rand); });
+  if (s.hand) s.hand(c);
+}
+
+// Nap anh tranh truoc khi ve
+const IMG = {};
+Promise.all(Object.entries(TranhLo.PICTURES).map(([id, p]) => new Promise(ok => { const im = new Image(); im.onload = ok; im.src = p.img; IMG[id] = im; }))).then(main);
+function main() {
+// Lo cua tung man: [dang lo, tranh, tong so phan cat]. Don hang, be va khay deu tinh tu day.
+const LEVELS = {
+  m1: [['bottle', 'bai-cat', 8], ['gourd', 'doi-cat', 8], ['jar', 'song-bien', 8], ['lantern', 'dao-nho', 8]],
+  m2: [['bottle', 'doi-cat-do', 12], ['lantern', 'thuyen-do', 12], ['jar', 'hoang-hon', 16], ['bottle', 'bai-bien', 12], ['jar', 'lang-chai', 16], ['gourd', 'mui-ne', 20]],
+};
+const lo = ([shape, pic, total], have) => ({ shape, pic, total, have, special: !!TranhLo.PICTURES[pic].special });
+
+// ---- Man 1: vang cat 16, xanh ngoc 16 ----
+const b1 = { cols: 4, rows: 4, cell: 62, x0: 56, tankY: 322, tankH: 96, mask: () => true };
+b1.y0 = b1.tankY + b1.tankH + 6;
+screen('m1', {
+  seed: 7, board: b1,
+  bands: [{ c: 'Y', to: 2 }, { c: 'T', to: 9 }], level0: () => 0.88,
+  vessels: LEVELS.m1.slice(0, 3).map(l => lo(l)),
+  slots: [],
+  trays: [
+    { c: 'Y', cells: [[0, 1]] }, { c: 'T', cells: [[3, 1]] },
+    { c: 'Y', cells: [[0, 2], [1, 2]] }, { c: 'T', cells: [[3, 2]] },
+    { c: 'Y', cells: [[1, 3]] }, { c: 'T', cells: [[2, 3], [3, 3]] },
+  ],
+  hand: c => hand(c, b1.x0 + b1.cell * 0.5, b1.y0 + b1.cell * 1.55, b1.x0 + b1.cell * 0.5, b1.y0 + b1.cell * 0.3),
+});
+
+// ---- Man 2: xanh ngoc 20, do 16, vang 24, cam 28 (khay trang 4 de bu do) ----
+const b2 = { cols: 6, rows: 6, cell: 48, x0: 36, tankY: 320, tankH: 84, mask: (q, r) => r === 0 || r === 5 || (q >= 1 && q <= 4) };
+b2.y0 = b2.tankY + b2.tankH + 6;
+const bands2 = [{ c: 'T', to: 1.4 }, { c: 'R', to: 2.5 }, { c: 'Y', to: 4.1 }, { c: 'O', to: 9 }];
+screen('m2a', {
+  seed: 21, board: b2, bands: bands2, level0: () => 0.9,
+  vessels: LEVELS.m2.slice(0, 3).map(l => lo(l)),
+  slots: [],
+  trays: [
+    { c: 'O', cells: [[0, 0], [1, 0]], lock: 'h' },
+    { c: 'Y', cells: [[4, 0], [4, 1]] },
+    { c: 'R', cells: [[1, 1], [2, 1], [1, 2]] },
+    { c: 'Y', cells: [[3, 1], [3, 2], [2, 2]] },
+    { c: 'T', cells: [[4, 2], [4, 3], [4, 4]] },
+    { c: 'O', cells: [[1, 3], [2, 3], [1, 4], [2, 4]] },
+    { c: 'T', cells: [[3, 4], [3, 5]] },
+    { c: 'Y', cells: [[1, 5]] },
+    { c: 'O', cells: [[2, 5]] },
+    { c: 'W', cells: [[0, 5]] },
+  ],
+});
+
+// Giua man: lo 1 xong; be tut o dai vang va cam
+const dip = (x, at, wd, d) => d * Math.exp(-((x - at) ** 2) / (2 * wd * wd));
+screen('m2b', {
+  seed: 33, board: b2,
+  bands: [{ c: 'T', to: 1.5 }, { c: 'R', to: 2.8 }, { c: 'Y', to: 4.0 }, { c: 'O', to: 9 }],
+  level0: x => 0.9 - dip(x, 3.3, 0.6, 0.3) - dip(x, 4.7, 0.8, 0.4),
+  vessels: [lo(LEVELS.m2[1]), lo(LEVELS.m2[2]), lo(LEVELS.m2[3], { Y: 4 })],
+  slots: [{ c: 'Y', pct: 0.5, tag: 'dư 4' }],
+  trays: [
+    { c: 'O', cells: [[3, 0], [4, 0], [3, 1], [4, 1]], fill: 0.55 },
+    { c: 'Y', cells: [[2, 1], [2, 2], [1, 2]] },
+    { c: 'R', cells: [[1, 3], [2, 3], [1, 4]] },
+    { c: 'T', cells: [[4, 3], [4, 4], [4, 5]] },
+    { c: 'T', cells: [[3, 3], [3, 4]] },
+    { c: 'Y', cells: [[1, 5]] },
+    { c: 'O', cells: [[2, 5]] },
+    { c: 'W', cells: [[5, 5]] },
+  ],
+  streams: [[4, COL.O]],
+});
+
+// ---- Bang xem tranh: tat ca lo khi hoan thanh ----
+(function gallery() {
+  const cv = document.getElementById('gal'), c = cv.getContext('2d'); c.scale(2, 2);
+  const rand = rng(5);
+  c.fillStyle = '#34207a'; c.fillRect(0, 0, 1100, 700);
+  const rows = [['Màn 1 · vàng cát + xanh ngọc', LEVELS.m1], ['Màn 2 · Mũi Né: xanh ngọc, đỏ, vàng cát, cam', LEVELS.m2]];
+  const K = 1.45; // phong to lo trong bang xem
+  rows.forEach(([label, list], r) => {
+    const y0 = 20 + r * 340;
+    c.fillStyle = '#d8d0ff'; c.font = '700 14px system-ui'; c.textBaseline = 'top'; c.fillText(label, 20, y0);
+    list.forEach((l, i) => {
+      const cx = 95 + i * 182, by = y0 + 190;
+      const nd = TranhLo.need(l[0], l[1], l[2]);
+      c.save(); c.translate(cx, by); c.scale(K, K); vessel(c, lo(l, nd.units), 0, 0, rand); c.restore();
+      const p = TranhLo.PICTURES[l[1]];
+      c.fillStyle = '#fff'; c.font = '700 13px system-ui'; c.textAlign = 'center'; c.textBaseline = 'top';
+      c.fillText(p.name + (p.special ? ' ★' : ''), cx, by + 56);
+      c.fillStyle = '#b7aee6'; c.font = '600 11px system-ui';
+      const NAME = { T: 'ngọc', Y: 'vàng', O: 'cam', R: 'đỏ' };
+      c.fillText((p.special ? nd.order : Object.keys(nd.units)).map(k => nd.units[k] + ' ' + NAME[k]).join(p.special ? ' → ' : ' + '), cx, by + 74);
+      c.textAlign = 'left';
+    });
+  });
+})();
+}
+</script>
+</body>
+</html>

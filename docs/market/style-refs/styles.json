@@ -1,0 +1,352 @@
+[
+  {
+    "slug": "merge-glossy-cartoon",
+    "name_vi": "Cartoon vẽ màu bóng bẩy (chuẩn merge-2 hiện nay)",
+    "name_en": "Glossy painted cartoon (merge-2 mainstream)",
+    "traits": [
+      "Nhân vật 2D vẽ màu, tỉ lệ người lớn khoảng 6–7 đầu, mắt to, cười rộng, trang điểm rõ, biểu cảm cường điệu; thường đứng thành hàng 3 khách hàng phía trên board.",
+      "Item trên board tròn trịa, khối đầy, highlight bóng, đổ bóng mềm, viền tối nhẹ; khi merge thì item phóng to giữa board với tia sáng.",
+      "Màu bão hòa cao: cam, vàng, xanh biển; nền bãi biển nắng hoặc nội thất sang; nút UI cam-vàng chữ trắng viền nâu.",
+      "Cảnh trang trí 2D isometric vẽ tay, chi tiết vừa phải. Một biến thể (Family Farm Merge, Merge Age) dùng bản đồ đảo isometric để khám phá thay vì sửa từng phòng, nhưng board và nhân vật vẫn theo style này."
+    ],
+    "why_hot": [
+      "Đây là ngôn ngữ hình ảnh của phần lớn game merge-2 đang có thứ hạng ở US/GB: Tasty Travels, Travel Town, Hotel Legacy, Flambé, Seaside Escape, Mystery Town, Merge Cooking, Foodstars.",
+      "Style này vẫn sinh ra game mới thành công: Flambé (05/2025), Foodstars (12/2025), Hotel Legacy (01/2026), Family Farm Merge (05/2026), Merge Age (04/2026). Nó đang ở đỉnh, chưa hết thời.",
+      "Hợp tệp nữ 25–54 vì nữ chính đẹp, tự tin, là hình mẫu khát vọng; item đồ ăn, đồ uống, thời trang trông \"ngon\" và \"muốn sở hữu\".",
+      "Chạy ads tốt (suy luận): item bóng nổi trên mọi nền feed và màn merge đọc được trong 1 giây."
+    ],
+    "evidence": [
+      "Tasty Travels (2024): Grossing iOS US 13–15, GB 9–11; Google Grossing ở 7 nước 13–26 (đo được, 9 ngày).",
+      "Travel Town (2021): Grossing iOS GB 7–10, VN 6–9; Google Grossing BR 10, GB 17 (đo được).",
+      "Hotel Legacy (01/2026): Free iOS GB 12–20; Grossing iOS GB 21–24 (đo được).",
+      "Flambé (05/2025): Grossing Google GB 25–26, US 46–52; Grossing iOS GB 29–36 (đo được).",
+      "Seaside Escape: Grossing iOS GB 35–45. Mystery Town (cùng style, phẳng hơn): Grossing Google GB 20–23, US 39–40 (đo được).",
+      "Family Farm Merge (05/2026): Grossing iOS BR 43–46, GB 73–79. Merge Age (04/2026): Grossing iOS VN 56–69 (đo được).",
+      "AppMagic (ước tính, ngưỡng): Travel Town >10 triệu USD / >500 nghìn lượt tải; Seaside Escape >5 triệu USD; Hotel Legacy >2 triệu USD / >1 triệu lượt tải. Blog AppMagic Casual H1 2026: Tasty Travels ~127 triệu USD trong H1 2026, Mystery Town ~40,6 triệu USD."
+    ],
+    "fit_bloom": "cao — Hoa, café, thời trang chính là loại item style này vẽ đẹp nhất, và tệp nữ US/GB đã quen trả tiền cho nó. Nhược điểm: Bloom Corner sẽ trông giống hàng chục game khác, nên cần bảng màu và dáng nhân vật riêng để nhận ra được.",
+    "production": "Trung bình. AI (fal) vẽ item theo style này tốt vì có nhiều dữ liệu tham khảo; giữ đồng nhất item dễ nếu có style sheet và bảng màu cố định. Nhân vật cần người vẽ chỉnh tay để giữ khuôn mặt nhất quán. Không vướng ràng buộc art.",
+    "risks": "Rủi ro \"nhìn giống game X\" cao nhất (Tasty Travels, Hotel Legacy, Family Farm Merge đều của Century Games). Phải đọ creative trực tiếp với publisher có ngân sách UA lớn.",
+    "games": [
+      {
+        "name": "Tasty Travels: Merge Game",
+        "publisher": "Century Games",
+        "appstore": "https://apps.apple.com/us/app/tasty-travels-merge-game/id6471045672",
+        "gplay": "https://play.google.com/store/apps/details?id=com.fatmerge.global",
+        "rank_note": "G iOS US 13–15, GB 9–11; G Google 7 nước 13–26; ra 2024",
+        "images": [
+          "style-refs/merge-glossy-cartoon/tasty-travels-1.jpg",
+          "style-refs/merge-glossy-cartoon/tasty-travels-2.jpg"
+        ]
+      },
+      {
+        "name": "Travel Town - Merge Adventure",
+        "publisher": "Moon Active",
+        "appstore": "https://apps.apple.com/us/app/travel-town-merge-adventure/id1521236603",
+        "gplay": "https://play.google.com/store/apps/details?id=io.randomco.travel",
+        "rank_note": "G iOS GB 7–10; G Google BR 10, GB 17; ra 2021",
+        "images": [
+          "style-refs/merge-glossy-cartoon/travel-town-1.jpg",
+          "style-refs/merge-glossy-cartoon/travel-town-2.jpg"
+        ]
+      },
+      {
+        "name": "Hotel Legacy: Merge Game",
+        "publisher": "Century Games",
+        "appstore": "https://apps.apple.com/us/app/hotel-legacy-merge-game/id6752886832",
+        "gplay": "https://play.google.com/store/apps/details?id=com.fatr.global",
+        "rank_note": "F iOS GB 12–20; G iOS GB 21–24; ra 01/2026",
+        "images": [
+          "style-refs/merge-glossy-cartoon/hotel-legacy-1.jpg",
+          "style-refs/merge-glossy-cartoon/hotel-legacy-2.jpg"
+        ]
+      },
+      {
+        "name": "Flambé: Merge & Cook",
+        "publisher": "Microfun",
+        "appstore": "https://apps.apple.com/us/app/flamb%C3%A9-merge-and-cook/id6618142292",
+        "gplay": "https://play.google.com/store/apps/details?id=com.cola.game",
+        "rank_note": "G Google GB 25–26; G iOS GB 29–36, US 48–53; ra 05/2025",
+        "images": [
+          "style-refs/merge-glossy-cartoon/flambe-1.jpg",
+          "style-refs/merge-glossy-cartoon/flambe-2.jpg"
+        ]
+      },
+      {
+        "name": "Seaside Escape: Merge & Story",
+        "publisher": "Microfun",
+        "appstore": "https://apps.apple.com/us/app/seaside-escape-merge-story/id6443755785",
+        "gplay": "https://play.google.com/store/apps/details?id=com.gamedots.seasideescape",
+        "rank_note": "G iOS GB 35–45, US 54–69; ra 2022",
+        "images": [
+          "style-refs/merge-glossy-cartoon/seaside-escape-1.jpg",
+          "style-refs/merge-glossy-cartoon/seaside-escape-2.jpg"
+        ]
+      },
+      {
+        "name": "Family Farm Merge",
+        "publisher": "Century Games",
+        "appstore": "https://apps.apple.com/us/app/family-farm-merge/id6760998152",
+        "gplay": "https://play.google.com/store/apps/details?id=com.roomperfect.global",
+        "rank_note": "G iOS BR 43–46, GB 73–79; ra 05/2026 (biến thể bản đồ đảo)",
+        "images": [
+          "style-refs/merge-glossy-cartoon/family-farm-merge-1.jpg",
+          "style-refs/merge-glossy-cartoon/family-farm-merge-2.jpg"
+        ]
+      },
+      {
+        "name": "Merge Age: Stone Haven",
+        "publisher": "Puzzle1Studio",
+        "appstore": "https://apps.apple.com/us/app/merge-age-stone-haven/id6756160382",
+        "gplay": "https://play.google.com/store/apps/details?id=com.puzzle1studio.go.stoneagemerge",
+        "rank_note": "G iOS VN 56–69; ra 04/2026 (biến thể bản đồ đảo)",
+        "images": [
+          "style-refs/merge-glossy-cartoon/merge-age-1.jpg",
+          "style-refs/merge-glossy-cartoon/merge-age-2.jpg"
+        ]
+      }
+    ],
+    "suggested_rank": 1
+  },
+  {
+    "slug": "cute-doodle-merge",
+    "name_vi": "Doodle / chibi dễ thương nét viền",
+    "name_en": "Cute doodle & chibi line-art merge",
+    "traits": [
+      "Nét viền nâu hoặc đen, rõ, hơi run tay; tô phẳng, ít đổ bóng.",
+      "Nhân vật chibi hoặc thú cưng mascot (mèo, chó), tỉ lệ 2–3 đầu, má hồng, mắt chấm hoặc mắt to kiểu manga.",
+      "Bảng màu pastel ấm hoặc nâu trầm; cảnh là căn bếp, quán café, con phố nhỏ như diorama, đầy đồ lặt vặt.",
+      "Item trên board vẽ nhỏ gọn, viền rõ, ít bóng; giọng điệu hài nhẹ, ấm áp, không drama."
+    ],
+    "why_hot": [
+      "Là thẩm mỹ \"cozy game\" của TikTok/Pinterest, hợp nữ 18–40, và khác hẳn biển ads bóng bẩy (suy luận).",
+      "Có game mới ra gần đây: Cats & Soup: Merge Magic Recipe (04/2025, NEOWIZ) và Hello Town (12/2024, studio Hàn). Cả hai có >1 triệu lượt cài trên Google Play.",
+      "Starbrew Cafe (2023, indie) cho thấy style này kiếm được tiền nhờ cốt truyện: ít lượt tải nhưng >100 nghìn USD (ước tính).",
+      "Hạn chế: chưa game merge-2 nào ở style này lọt top 100 Grossing ở 7 nước. Đây là ngách đang lớn, chưa phải dòng chính."
+    ],
+    "evidence": [
+      "Cả 3 game không có mặt trong top 100 Free/Grossing ở 7 nước suốt 9 ngày (đo được).",
+      "Lượt cài Google Play (toàn cầu, do store công bố): Cats & Soup: Merge Magic Recipe 1.000.000+, điểm 4,66; Hello Town 1.000.000+, điểm 4,54; Starbrew Cafe 500.000+.",
+      "AppMagic (ước tính, ô tìm kiếm Demo, gộp 2 store): Starbrew Cafe >100 nghìn USD / >20 nghìn lượt tải. Cats & Soup: Merge Magic Recipe hiển thị \"$200K\"; Hello Town hiển thị \"$50K\". Hai số này hiện ở dạng thu gọn, không có dấu \">\" và không có lượt tải."
+    ],
+    "fit_bloom": "trung bình–cao — Hợp tiệm hoa, café, góc thời trang nhỏ, và tạo khác biệt rõ với đối thủ merge-2 chủ lưu. Nhưng tệp quen style này trẻ hơn target 25–54, và trần doanh thu đã thấy chỉ khoảng 0,1–0,2 triệu USD (ước tính, kỳ không rõ).",
+    "production": "Thấp. Ít đổ bóng nên dễ giữ đồng nhất; AI vẽ được nhưng nét viền hay không đều, cần người vẽ làm sạch. Một họa sĩ có thể giữ cả bộ item. Không vướng ràng buộc art.",
+    "risks": "Item quá phẳng có thể khó đọc trên board dày. Tệp 40+ có thể thấy \"trẻ con\". Cats & Soup là thương hiệu đã có tiếng, nên nhân vật mèo dễ bị so sánh.",
+    "games": [
+      {
+        "name": "Cats & Soup: Merge Magic Recipe",
+        "publisher": "NEOWIZ",
+        "appstore": "https://apps.apple.com/us/app/cats-soup-magic-recipe/id6446347021",
+        "gplay": "https://play.google.com/store/apps/details?id=com.hidea.cat.magicrecipe",
+        "rank_note": "Không có trong top 100 (7 nước); Google 1M+ lượt cài; ra 04/2025",
+        "images": [
+          "style-refs/cute-doodle-merge/cats-soup-recipe-1.jpg",
+          "style-refs/cute-doodle-merge/cats-soup-recipe-2.jpg"
+        ]
+      },
+      {
+        "name": "Hello Town: Merge & Story",
+        "publisher": "Springcomes",
+        "appstore": "https://apps.apple.com/us/app/hello-town-merge-story/id6737850281",
+        "gplay": "https://play.google.com/store/apps/details?id=com.spcomes.hellotown",
+        "rank_note": "Không có trong top 100 (7 nước); Google 1M+ lượt cài; ra 12/2024",
+        "images": [
+          "style-refs/cute-doodle-merge/hello-town-1.jpg",
+          "style-refs/cute-doodle-merge/hello-town-2.jpg"
+        ]
+      },
+      {
+        "name": "Starbrew Cafe: Mystical Merge",
+        "publisher": "Extra Dimension Games",
+        "appstore": "https://apps.apple.com/us/app/starbrew-cafe-mystical-merge/id6456751444",
+        "gplay": "https://play.google.com/store/apps/details?id=games.extradimension.cafemerge",
+        "rank_note": "Không có trong top 100 (7 nước); AppMagic >100 nghìn USD; ra 2023",
+        "images": [
+          "style-refs/cute-doodle-merge/starbrew-cafe-1.jpg",
+          "style-refs/cute-doodle-merge/starbrew-cafe-2.jpg"
+        ]
+      }
+    ],
+    "suggested_rank": 2
+  },
+  {
+    "slug": "warm-painterly-storybook",
+    "name_vi": "Truyện tranh vẽ màu ấm kiểu châu Âu (thế hệ 2020–2021)",
+    "name_en": "Warm painterly storybook (2020–2021 generation)",
+    "traits": [
+      "Vẽ màu dày hơn style 1, chất liệu gỗ, vải, gạch rõ; bảng màu trầm ấm (nâu, đỏ gạch, xanh rêu) thay vì bão hòa.",
+      "Nhân vật kiểu truyện tranh/hoạt hình châu Âu, biểu cảm hài, có cả nhân vật thú nhân (Merge Inn).",
+      "Cảnh trang trí isometric 2D rất nhiều chi tiết, hay dùng cặp before/after (quán cháy, bếp bẩn → quán đẹp).",
+      "Item board vẽ màu chi tiết, ít \"bóng nhựa\" hơn style 1."
+    ],
+    "why_hot": [
+      "Không còn hot. Đây là style của làn sóng merge-2 2020–2021 (Love & Pies, Merge Inn) trước khi style 1 thống trị.",
+      "Đưa vào để sếp thấy rõ: concept Bloom Corner hiện tại (storybook, tông kem-sage) gần với nhóm này hơn là nhóm đang kiếm tiền.",
+      "Theme café/bánh của nhóm này rất gần Bloom Corner, nên đây là tham chiếu trực tiếp về trần doanh thu cho đội nhỏ."
+    ],
+    "evidence": [
+      "Love & Pies và Merge Inn: không có mặt trong top 100 ở 7 nước suốt 9 ngày (đo được).",
+      "AppMagic (ước tính, ngưỡng): Love & Pies >200 nghìn USD / >20 nghìn lượt tải; Merge Inn >100 nghìn USD / >50 nghìn lượt tải.",
+      "Lượt cài Google Play (toàn cầu): Love & Pies 5.000.000+, Merge Inn 10.000.000+, cho thấy từng lớn nhưng nay đã chững."
+    ],
+    "fit_bloom": "trung bình — Theme café/bánh hợp nhất danh sách và không vướng ràng buộc art. Nhưng đây là style đang đi xuống. Nếu chọn, Bloom Corner dễ trông \"cũ\" so với các game ra năm 2025–2026.",
+    "production": "Trung bình. Vẽ màu chi tiết tốn công hơn doodle; AI làm được nền, nhưng item chi tiết dễ rối khi thu nhỏ.",
+    "risks": "Nhìn lỗi thời; tín hiệu thị trường hiện tại yếu.",
+    "games": [
+      {
+        "name": "Love & Pies - Merge Mystery",
+        "publisher": "Trailmix",
+        "appstore": "https://apps.apple.com/us/app/love-pies-merge-mystery/id1563239332",
+        "gplay": "https://play.google.com/store/apps/details?id=com.Trailmix.LoveAndPiesMerge",
+        "rank_note": "Không có trong top 100 (7 nước); AppMagic >200 nghìn USD; ra 2021",
+        "images": [
+          "style-refs/warm-painterly-storybook/love-and-pies-1.jpg",
+          "style-refs/warm-painterly-storybook/love-and-pies-2.jpg"
+        ]
+      },
+      {
+        "name": "Merge Inn - Cafe Merge Game",
+        "publisher": "Original Games",
+        "appstore": "https://apps.apple.com/us/app/merge-inn-tasty-match-puzzle/id1541160673",
+        "gplay": "https://play.google.com/store/apps/details?id=com.mergegame.merge",
+        "rank_note": "Không có trong top 100 (7 nước); AppMagic >100 nghìn USD; ra 2021",
+        "images": [
+          "style-refs/warm-painterly-storybook/merge-inn-1.jpg",
+          "style-refs/warm-painterly-storybook/merge-inn-2.jpg"
+        ]
+      }
+    ],
+    "suggested_rank": 3
+  },
+  {
+    "slug": "drama-3d-cinematic",
+    "name_vi": "3D điện ảnh kể chuyện drama",
+    "name_en": "Cinematic 3D drama",
+    "traits": [
+      "Nhân vật 3D render stylized: đầu hơi to, mắt to, da mịn, gần phong cách phim hoạt hình 3D.",
+      "Ánh sáng điện ảnh: lạnh và tối ở cảnh khổ (tuyết, cháy, nhà đổ nát), ấm ở cảnh \"sau khi sửa\".",
+      "Biểu cảm cường điệu: khóc, sợ, xấu hổ; ảnh store bố cục như khung phim, kèm 3–4 vòng tròn item \"cứu giúp\".",
+      "Lai: cảnh truyện và ads là 3D, còn board merge vẫn là item 2D bóng như style 1."
+    ],
+    "why_hot": [
+      "Game merge-2 kiếm tiền nhất (Gossip Harbor) dùng style này cho toàn bộ cảnh truyện và ads.",
+      "Đang lan nhanh trong năm 2026: Whisper Castle (05/2026), Hollywood Merge (02/2026), Just Desserts (05/2026), Reality Bay (02/2026) đều dùng nó. Merge Mansion (2020) cũng đã chuyển ảnh store sang 3D.",
+      "Móc cảm xúc \"cứu mẹ con khỏi cảnh khổ\" kéo nữ 30–55. 3D (và video AI) cho phép làm nhiều cảnh ads như phim ngắn nhanh hơn vẽ tay (suy luận)."
+    ],
+    "evidence": [
+      "Gossip Harbor: Grossing iOS US 2–3, GB 5–6; Free Google US 1–4, GB 2–3 (đo được, 9 ngày).",
+      "Hollywood Merge (02/2026): Grossing iOS GB 32–35, BR 29–32, TR 29–34; Google Grossing GB 34–36 (đo được).",
+      "Whisper Castle (05/2026): Grossing Google GB 46–50. Merge Mansion: Grossing iOS US 69–75. Just Desserts: Grossing Google IN 40–45, VN 40–44 (đo được).",
+      "AppMagic (ước tính): Gossip Harbor >50 triệu USD / >10 triệu lượt tải (ô tìm kiếm), vượt 100 triệu USD/tháng từ 03/2026 (blog). Hollywood Merge ~15,8 triệu USD tính đến giữa 2026 (blog). Whisper Castle >1 triệu USD. Merge Mansion hiển thị \"$5M\" (dạng thu gọn)."
+    ],
+    "fit_bloom": "thấp — Vi phạm ràng buộc đã chốt: không 3D kiểu Pixar. Ngoài ra, móc \"gia đình gặp nạn + bí mật\" là công thức Bloom Corner đang dùng, nên ghép thêm style này sẽ thành bản sao Gossip Harbor.",
+    "production": "Cao. Cần pipeline 3D (dựng, rig, ánh sáng, render) hoặc video AI; đội 3–6 người khó giữ nhân vật nhất quán qua hàng trăm cảnh.",
+    "risks": "Trùng hình ảnh và công thức với Gossip Harbor, Whisper Castle, Hollywood Merge. Ngược ràng buộc art của dự án.",
+    "games": [
+      {
+        "name": "Gossip Harbor: Merge & Story",
+        "publisher": "Microfun",
+        "appstore": "https://apps.apple.com/us/app/gossip-harbor-merge-story/id1623318294",
+        "gplay": "https://play.google.com/store/apps/details?id=com.mergegames.gossipharbor",
+        "rank_note": "G iOS US 2–3, GB 5–6; F Google US 1–4; ra 2022",
+        "images": [
+          "style-refs/drama-3d-cinematic/gossip-harbor-1.jpg",
+          "style-refs/drama-3d-cinematic/gossip-harbor-2.jpg"
+        ]
+      },
+      {
+        "name": "Hollywood Merge",
+        "publisher": "VoyagerOne",
+        "appstore": "https://apps.apple.com/us/app/hollywood-merge/id6755455500",
+        "gplay": "https://play.google.com/store/apps/details?id=com.hollywood.merge",
+        "rank_note": "G iOS GB 32–35; G Google GB 34–36; ra 02/2026",
+        "images": [
+          "style-refs/drama-3d-cinematic/hollywood-merge-1.jpg",
+          "style-refs/drama-3d-cinematic/hollywood-merge-2.jpg"
+        ]
+      },
+      {
+        "name": "Whisper Castle: Merge & Story",
+        "publisher": "Microfun",
+        "appstore": "https://apps.apple.com/us/app/whisper-castle-merge-story/id6749889618",
+        "gplay": "https://play.google.com/store/apps/details?id=com.mf.coffee",
+        "rank_note": "G Google GB 46–50; F Google GB 32–54; ra 05/2026",
+        "images": [
+          "style-refs/drama-3d-cinematic/whisper-castle-1.jpg",
+          "style-refs/drama-3d-cinematic/whisper-castle-2.jpg"
+        ]
+      },
+      {
+        "name": "Just Desserts: Revenge & Merge",
+        "publisher": "Century Games",
+        "appstore": "https://apps.apple.com/us/app/just-desserts-revenge-merge/id6761531281",
+        "gplay": "https://play.google.com/store/apps/details?id=com.justdesserts.global",
+        "rank_note": "G Google IN 40–45, VN 40–44, GB 87–91; ra 05/2026",
+        "images": [
+          "style-refs/drama-3d-cinematic/just-desserts-1.jpg",
+          "style-refs/drama-3d-cinematic/just-desserts-2.jpg"
+        ]
+      },
+      {
+        "name": "Merge Mansion: Puzzles & Story",
+        "publisher": "Metacore",
+        "appstore": "https://apps.apple.com/us/app/merge-mansion-puzzles-story/id1484442152",
+        "gplay": "https://play.google.com/store/apps/details?id=com.everywear.game5",
+        "rank_note": "G iOS US 69–75, GB 81–93; ra 2020 (ảnh store 2026 chuyển sang 3D)",
+        "images": [
+          "style-refs/drama-3d-cinematic/merge-mansion-1.jpg",
+          "style-refs/drama-3d-cinematic/merge-mansion-2.jpg"
+        ]
+      }
+    ],
+    "suggested_rank": 4
+  },
+  {
+    "slug": "webtoon-semireal-drama",
+    "name_vi": "Webtoon bán hiện thực, drama tình cảm / thời trang",
+    "name_en": "Semi-realistic webtoon romance drama",
+    "traits": [
+      "Nhân vật 2D vẽ gần thực như webtoon, truyện tình cảm tương tác (Episode, Chapters): da có khối, tóc chi tiết, tỉ lệ người thật.",
+      "Cảnh drama công sở, tình tay ba, makeover \"từ xấu thành đẹp\"; ánh sáng mềm, nền văn phòng hoặc biệt thự sang.",
+      "Item board theo chủ đề mỹ phẩm, trang sức, quần áo; tông tím-hồng-vàng kim.",
+      "Ảnh store nặng cảm xúc: nước mắt, ngoại tình, cầu hôn."
+    ],
+    "why_hot": [
+      "Là cách merge-2 lấn sang tệp đọc truyện tình cảm và makeover. Hai ví dụ đều ra trong 2024–2026.",
+      "Thời trang + makeover là motivation mạnh với nữ (suy luận); kiếm tiền khá ở thị trường Mỹ Latinh và Thổ Nhĩ Kỳ."
+    ],
+    "evidence": [
+      "Merge Fashion: Romance Story (11/2024): Free iOS TR 20–33, BR 46–72 (đo được); Google 10.000.000+ lượt cài.",
+      "Fallen Beauty (02/2026): Grossing iOS TR 55–60, IN 65–77, BR 68–79 (đo được). Cả hai không có thứ hạng ở US/GB.",
+      "AppMagic (ước tính, dạng thu gọn, không có dấu \">\"): Merge Fashion hiển thị \"$500K\", Fallen Beauty hiển thị \"$1M\"."
+    ],
+    "fit_bloom": "thấp–trung bình — Phần thời trang hợp Bloom Corner, nhưng vi phạm ràng buộc \"tránh bán hiện thực\". Tín hiệu ở US/GB cũng yếu: cả hai game chỉ có thứ hạng ở TR, BR, IN.",
+    "production": "Trung bình. AI vẽ style này dễ, nhưng giữ khuôn mặt nhất quán qua nhiều cảnh truyện khó. Ảnh dễ bị nhận ra là \"ảnh AI\".",
+    "risks": "Vi phạm ràng buộc art; lệch thị trường chính; nội dung tình cảm drama cần viết nhiều.",
+    "games": [
+      {
+        "name": "Merge Fashion: Romance Story",
+        "publisher": "Infiniplay / Wind's Choice",
+        "appstore": "https://apps.apple.com/us/app/merge-fashion-romance-story/id6737874398",
+        "gplay": "https://play.google.com/store/apps/details?id=com.infiniplay.merge.fashion.romance.story",
+        "rank_note": "F iOS TR 20–33, BR 46–72; ra 11/2024",
+        "images": [
+          "style-refs/webtoon-semireal-drama/merge-fashion-1.jpg",
+          "style-refs/webtoon-semireal-drama/merge-fashion-2.jpg"
+        ]
+      },
+      {
+        "name": "Fallen Beauty: Merge & Story",
+        "publisher": "Kinetic Energy Game",
+        "appstore": "https://apps.apple.com/us/app/fallen-beauty-merge-story/id6758072393",
+        "gplay": "https://play.google.com/store/apps/details?id=com.fallenbeauty.google",
+        "rank_note": "G iOS TR 55–60, IN 65–77; ra 02/2026",
+        "images": [
+          "style-refs/webtoon-semireal-drama/fallen-beauty-1.jpg",
+          "style-refs/webtoon-semireal-drama/fallen-beauty-2.jpg"
+        ]
+      }
+    ],
+    "suggested_rank": 5
+  }
+]

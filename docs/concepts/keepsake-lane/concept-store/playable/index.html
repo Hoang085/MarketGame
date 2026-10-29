@@ -1,0 +1,829 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Bloom Corner playable</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --paper:#fff8f0; --ink:#5a3040; --frame:#eaa0b8; --rose:#f07aa5; --soft:#ffd6e5; --gold:#ffd27a; --cell:62px; }
+  * { box-sizing:border-box; -webkit-user-select:none; user-select:none; -webkit-tap-highlight-color:transparent; }
+  html, body { margin:0; height:100%; background:#2a1f24; overflow:hidden; font-family:Nunito,sans-serif; }
+  #stage { position:absolute; left:50%; top:50%; width:360px; height:640px; transform-origin:center; overflow:hidden;
+           border-radius:18px; background:#3a2e2a url(assets/bg-wilted.jpg) center/cover; touch-action:none; }
+  /* the bloomed shop fades in over the wilted one as the first board fills up */
+  #bloom { position:absolute; inset:0; background:url(assets/bg-store.jpg) center/cover; opacity:0; transition:opacity 1.2s; }
+  #stage.quake { animation:quake .45s; }
+  @keyframes quake { 20%{margin-left:-5px} 40%{margin-left:5px;margin-top:-3px} 60%{margin-left:-3px;margin-top:3px} 80%{margin-left:2px} }
+  .layer { position:absolute; inset:0; transition:opacity .4s; }
+  .hidden { opacity:0; pointer-events:none; }
+  #fxc { position:absolute; inset:0; width:360px; height:640px; pointer-events:none; z-index:58; }
+
+  /* HUD */
+  #hud { position:absolute; top:10px; left:10px; right:10px; display:flex; justify-content:flex-end; align-items:center; }
+  .pill { background:#fffffff0; color:var(--ink); border:2px solid var(--frame); border-radius:14px; padding:3px 10px; font-weight:900; font-size:13px; }
+  #bar { position:absolute; top:46px; left:50%; transform:translateX(-50%); width:230px; height:22px; border-radius:11px;
+         background:#fff; border:2px solid var(--frame); overflow:hidden; }
+  #bar i { position:absolute; left:0; top:0; bottom:0; width:0; background:linear-gradient(90deg,#ffb3cf,var(--rose)); transition:width .5s; box-shadow:0 0 10px var(--rose); }
+  #bar span { position:relative; display:block; text-align:center; font-size:11px; line-height:18px; font-weight:900; color:var(--ink); text-shadow:0 0 3px #fff, 0 0 3px #fff; }
+  #bar::after { content:''; position:absolute; top:0; bottom:0; left:-60px; width:50px; background:linear-gradient(90deg,#fff0,#fffa,#fff0); transform:skewX(-20deg); }
+  #bar.shine::after { animation:sweep .8s; }
+  @keyframes sweep { to { left:260px; } }
+
+  /* order card */
+  #order { position:absolute; top:80px; left:12px; right:12px; height:92px; background:var(--paper); border:3px solid var(--frame);
+           border-radius:14px; display:flex; align-items:center; gap:10px; padding:6px 10px; box-shadow:0 4px 12px #0004; }
+  #order .face { width:70px; height:80px; border-radius:10px; background:#fde3ec url(assets/ch-leo.png) center 6%/150% no-repeat; flex:none; }
+  #order .txt { flex:1; color:var(--ink); font-size:13px; font-weight:900; line-height:1.25; }
+  #order .want { width:66px; height:66px; flex:none; border-radius:12px; background-color:#fde9f0; position:relative; animation:wantGlow 2s infinite; }
+  @keyframes wantGlow { 0%,100%{box-shadow:inset 0 0 0 3px var(--rose)} 50%{box-shadow:inset 0 0 0 3px var(--rose),0 0 14px var(--rose)} }
+
+  /* board */
+  #board { position:absolute; left:10px; right:10px; bottom:16px; padding:8px; border-radius:16px;
+           background:linear-gradient(#f6d9c4,#ecc2ab); border:3px solid #d58aa3; box-shadow:0 6px 18px #0006;
+           display:grid; grid-template-columns:repeat(5,var(--cell)); grid-auto-rows:var(--cell); gap:4px; justify-content:center; }
+  .cell { position:relative; border-radius:12px; background:var(--paper); box-shadow:inset 0 -3px 0 #f1d9cf; transition:box-shadow .15s, background .15s; }
+  .cell.origin { box-shadow:inset 0 0 0 3px #fff8, inset 0 -3px 0 #f1d9cf; }
+  .cell.ok { background:#ffeef5; box-shadow:0 0 0 3px var(--rose), 0 0 16px var(--rose); animation:okPulse .6s infinite; }
+  @keyframes okPulse { 50% { box-shadow:0 0 0 4px var(--rose), 0 0 24px var(--rose); } }
+  .cell.no { box-shadow:0 0 0 3px #c9584a, inset 0 0 12px #c9584a88; }
+  .item { position:absolute; inset:3px; border-radius:10px; background-repeat:no-repeat; touch-action:none; cursor:grab; }
+  .item.pop { animation:pop .45s; }
+  @keyframes pop { 0%{transform:scale(.3)} 45%{transform:scale(1.28,.82)} 70%{transform:scale(.9,1.12)} 100%{transform:scale(1)} }
+  .item.flyin { animation:flyin .45s cubic-bezier(.3,.7,.4,1); }
+  @keyframes flyin { 0%{transform:translate(var(--dx),var(--dy)) scale(.3)} 55%{transform:translate(calc(var(--dx)*.35),calc(var(--dy)*.35 - 34px)) scale(1.1)} 80%{transform:scale(1.1,.9)} 100%{transform:none} }
+  .item.jiggle { animation:jiggle .3s; }
+  @keyframes jiggle { 25%{transform:rotate(-8deg) scale(1.08)} 75%{transform:rotate(8deg) scale(1.08)} }
+  .item.hint { animation:breathe 1s infinite; }
+  @keyframes breathe { 0%,100%{box-shadow:0 0 0 0 #f07aa500; transform:none} 50%{box-shadow:0 0 0 3px var(--rose),0 0 14px var(--rose); transform:scale(1.06)} }
+  .item.special { box-shadow:0 0 0 3px var(--gold),0 0 20px var(--gold); }
+  .lv { position:absolute; right:3px; bottom:2px; font-size:10px; font-weight:900; color:#c2557a; }
+  /* locked cell: the item shows greyed through a sheet of kraft paper tied with twine */
+  .cell.locked { background:#e6cbb5; box-shadow:inset 0 2px 6px #0003; }
+  .ghost { position:absolute; inset:6px; background-repeat:no-repeat; filter:grayscale(1) brightness(.75); opacity:.6; }
+  .kraft { position:absolute; inset:2px; border-radius:10px; overflow:hidden;
+           background:linear-gradient(90deg,#0000 46%,#e9d8b4 46% 54%,#0000 54%), linear-gradient(#0000 46%,#e9d8b4 46% 54%,#0000 54%),
+                      repeating-linear-gradient(115deg,#ffffff18 0 4px,#0000 4px 9px), linear-gradient(135deg,#c99d70d9,#b48659d9); }
+  .kraft::after { content:'🔒'; position:absolute; right:2px; bottom:1px; font-size:13px; filter:drop-shadow(0 1px 1px #0006); }
+  .kraft.off { animation:lift .6s forwards; pointer-events:none; }
+  @keyframes lift { 40%{ transform:translateY(-14px) rotate(-8deg) scale(1.1); opacity:1 } to { transform:translateY(-46px) rotate(-22deg) scale(.8); opacity:0; } }
+  .cell.shake { animation:shake .35s; }
+  @keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+  #mute { position:absolute; left:50%; top:10px; transform:translateX(-50%); z-index:70; cursor:pointer; }
+  #drag { position:absolute; width:var(--cell); height:var(--cell); pointer-events:none; z-index:50; border-radius:10px; background-repeat:no-repeat;
+          transform:scale(1.22) rotate(-6deg); filter:drop-shadow(0 12px 10px #0007) drop-shadow(0 0 8px #fff8); display:none; }
+  #hand { position:absolute; width:52px; height:52px; background-repeat:no-repeat; z-index:60; pointer-events:none; display:none; filter:drop-shadow(0 3px 4px #0008); }
+  #hand.tapping { animation:tapHand .8s ease-in-out infinite; }
+  @keyframes tapHand { 50% { transform:translate(4px,6px) scale(.9); } }
+  .flashfx { position:absolute; pointer-events:none; z-index:55; width:90px; height:90px; border-radius:50%;
+             background:radial-gradient(circle,#fff 0,#fffb 25%,#f07aa500 70%); animation:burst .45s forwards; }
+  @keyframes burst { from{transform:scale(.2);opacity:1} to{transform:scale(1.7);opacity:0} }
+
+  .rays { position:absolute; border-radius:50%; pointer-events:none; opacity:0; transition:opacity .6s;
+          background:repeating-conic-gradient(from 0deg,#fff1c455 0 8deg,#fff1c400 8deg 22deg);
+          -webkit-mask:radial-gradient(circle,#000 0,#000 30%,#0000 70%); mask:radial-gradient(circle,#000 0,#000 30%,#0000 70%);
+          animation:spin 14s linear infinite; }
+  .rays.on { opacity:1; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  /* dialogue / scenes */
+  .dim { position:absolute; inset:0; background:#2a1a2299; }
+  .char { position:absolute; bottom:0; height:340px; filter:drop-shadow(0 6px 10px #0006); transition:transform .4s, opacity .4s; }
+  .bubble { position:absolute; background:#fff; color:var(--ink); border:3px solid var(--frame); border-radius:14px;
+            padding:10px 14px; font-weight:900; font-size:16px; box-shadow:0 4px 10px #0005; animation:bubbleIn .35s; }
+  .bubble b { display:block; font-size:11px; letter-spacing:1px; color:var(--rose); }
+  @keyframes bubbleIn { from { transform:scale(.6); opacity:0 } }
+  .tap { position:absolute; bottom:14px; left:0; right:0; text-align:center; color:#fff; font-size:12px; opacity:.8; animation:blink 1.2s infinite; text-shadow:0 1px 3px #000; }
+  @keyframes blink { 50%{opacity:.2} }
+  /* the chain's Brewline notice taped to the door: drawn in CSS so the text stays crisp */
+  .notice { position:absolute; left:168px; top:128px; width:150px; padding:10px 10px 12px; background:#e9e7e2; border-radius:3px; transform:rotate(4deg);
+            box-shadow:0 6px 14px #0007; color:#4a4a4a; text-align:center; font-weight:900; font-size:11px; line-height:1.3; }
+  .notice::before { content:''; position:absolute; left:50%; top:-8px; width:46px; height:16px; margin-left:-23px; background:#fffc; transform:rotate(-3deg); }
+  .notice big { display:block; font:700 17px 'Playfair Display',serif; color:#2e2e2e; letter-spacing:1px; }
+  .notice i { display:block; margin-top:4px; font-style:normal; font-size:10px; color:#8a3a3a; letter-spacing:.5px; }
+
+  /* reveal */
+  .halo { position:absolute; left:50%; top:200px; width:300px; height:300px; margin:-150px 0 0 -150px; border-radius:50%; pointer-events:none;
+          background:radial-gradient(circle,#fff6e0cc 0,#ffc8dc88 22%,#f07aa533 48%,#f07aa500 70%); opacity:0; transform:scale(.4); transition:opacity .5s, transform .6s; }
+  .halo.on { opacity:1; transform:none; animation:haloPulse 2.4s ease-in-out infinite; }
+  @keyframes haloPulse { 50% { transform:scale(1.08); } }
+  .big { position:absolute; left:50%; top:105px; width:200px; height:200px; margin-left:-100px; background-repeat:no-repeat;
+         filter:drop-shadow(0 0 14px #fff0c8) drop-shadow(0 0 30px #ffb3cf99); transform:scale(.2); transition:transform .5s cubic-bezier(.3,1.6,.5,1), opacity .4s; }
+  .big.in { transform:none; animation:bob 2.6s ease-in-out .5s infinite; }
+  @keyframes bob { 50% { transform:translateY(-6px); } }
+  /* the 1968 photo: two halves of one image, each clipped along the same torn edge */
+  .half { position:absolute; width:180px; height:224px; background:url(assets/photo-1968.jpg) center/cover; pointer-events:none;
+          filter:drop-shadow(0 6px 10px #0008); transition:all .8s cubic-bezier(.4,1.3,.5,1); opacity:0; z-index:6; }
+  .note { position:absolute; left:50%; top:330px; transform:translateX(-50%) rotate(-3deg) scale(0); background:#fbf3e4; color:var(--ink);
+          font:italic 700 22px 'Playfair Display',serif; padding:12px 18px; border-radius:4px; box-shadow:0 6px 16px #0007, 0 0 22px #ffd27a66; white-space:nowrap; transition:transform .4s cubic-bezier(.3,1.5,.5,1); z-index:7; }
+  .note.show { transform:translateX(-50%) rotate(-3deg) scale(1); }
+  #hp { display:flex; align-items:center; gap:3px; padding:2px 7px; }
+  #hp i { position:relative; width:24px; height:30px; border-radius:2px; overflow:hidden; background:#f3e6ea; }
+  #hp i::after { content:''; position:absolute; inset:0; background:url(assets/photo-1968.jpg) center/cover; filter:grayscale(1) brightness(.5) opacity(.35); transition:filter .4s; }
+  #hp i.got::after { filter:none; }
+  #hp i.got { box-shadow:0 0 6px var(--gold); }
+
+  /* wardrobe + photo */
+  #wardrobe .title { transition:opacity .3s; position:absolute; top:42px; left:0; right:0; text-align:center; color:#fff; font:700 26px 'Playfair Display',serif; text-shadow:0 2px 8px #8a3a56; }
+  /* full-body art so she is not cut off at the knees; feet rest just above the outfit cards */
+  #wardrobe .char { left:50%; width:240px; margin-left:-120px; height:430px; bottom:116px; }
+  .cards { position:absolute; left:16px; right:16px; bottom:22px; display:flex; gap:12px; }
+  .card { flex:1; height:96px; border-radius:16px; border:3px solid var(--frame); background:#fff; display:flex; align-items:center; gap:6px; padding:6px; cursor:pointer;
+          box-shadow:0 4px 12px #0005; animation:cardGlow 1.2s infinite; }
+  .card .th { width:58px; height:80px; border-radius:10px; background:#fde3ec center 4%/170% no-repeat; flex:none; }
+  .card span { font-weight:900; font-size:15px; color:var(--ink); line-height:1.1; }
+  .card.picked { border-color:var(--rose); box-shadow:0 0 0 3px var(--rose), 0 0 20px var(--rose); animation:none; }
+  @keyframes cardGlow { 50% { box-shadow:0 4px 12px #0005, 0 0 16px #f07aa5aa; } }
+  .flashwhite { position:absolute; inset:0; background:#fff; opacity:0; pointer-events:none; z-index:80; transition:opacity .5s; }
+  .polaroid { position:absolute; width:150px; padding:8px 8px 26px; background:#fff; border-radius:3px; box-shadow:0 10px 24px #0007; z-index:8;
+              transition:all .8s cubic-bezier(.3,1.3,.5,1); opacity:0; pointer-events:none; }
+  .polaroid .pic { position:relative; height:170px; overflow:hidden; background:url(assets/bg-store.jpg) 0 58%/260% no-repeat; }
+  .polaroid .pic img { position:absolute; left:50%; bottom:-20px; height:205px; transform:translateX(-50%); }
+  .polaroid small { position:absolute; bottom:5px; left:0; right:0; text-align:center; font:italic 700 12px 'Playfair Display',serif; color:var(--ink); }
+
+  /* end card */
+  #end { background:#2a1f24 url(assets/bg-front.jpg) center/cover; }
+  #end .logo { position:absolute; top:52px; left:0; right:0; text-align:center; color:#fff; font:700 44px 'Playfair Display',serif; text-shadow:0 3px 12px #b0577a, 0 0 18px #fff6; }
+  #end .logo small { display:block; font:900 12px Nunito,sans-serif; letter-spacing:3px; color:#c2557a; text-shadow:none; }
+  /* lettering for the blank board above the door */
+  #end .sign { position:absolute; left:203px; top:259px; width:104px; height:42px; color:#7a4a32; font:italic 700 15px 'Playfair Display',serif; text-align:center; line-height:42px; }
+  #end .snap { position:absolute; left:14px; top:150px; width:84px; transform:rotate(-8deg); padding:4px 4px 12px; background:#fff; box-shadow:0 6px 14px #0006; }
+  #end .snap div { height:104px; background:url(assets/photo-1968.jpg) center/cover; }
+  #end .q { position:absolute; bottom:150px; left:16px; right:16px; text-align:center; color:#fff; font:italic 700 26px 'Playfair Display',serif; text-shadow:0 2px 10px #000, 0 0 4px #000; }
+  #end .cta { position:absolute; bottom:60px; left:50%; transform:translateX(-50%); background:var(--rose); color:#fff; font-weight:900; font-size:22px; overflow:hidden;
+              padding:14px 44px; border-radius:30px; border:3px solid #fff; animation:pulse 1s infinite; cursor:pointer; white-space:nowrap; box-shadow:0 0 22px #f07aa5aa; }
+  #end .cta::after { content:''; position:absolute; top:0; bottom:0; left:-70px; width:50px; background:linear-gradient(90deg,#fff0,#fffc,#fff0); transform:skewX(-20deg); animation:sweep2 2.2s infinite; }
+  @keyframes sweep2 { 0%,55%{left:-70px} 100%{left:260px} }
+  @keyframes pulse { 50%{ transform:translateX(-50%) scale(1.07); } }
+  #end .again { position:absolute; bottom:18px; left:0; right:0; text-align:center; color:#fff; opacity:.8; font-size:12px; text-decoration:underline; cursor:pointer; text-shadow:0 1px 3px #000; }
+  #loader { position:absolute; inset:0; z-index:100; background:#fff4f7; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; transition:opacity .4s; }
+  #loader .t { color:#c2557a; font:700 30px 'Playfair Display',serif; }
+  #loader .lb { width:200px; height:10px; border-radius:5px; background:#fff; border:2px solid var(--frame); overflow:hidden; }
+  #loader .lb i { display:block; height:100%; width:0; background:linear-gradient(90deg,#ffb3cf,var(--rose)); transition:width .2s; }
+  #loader small { color:var(--ink); opacity:.6; font-size:12px; }
+  #toast { position:absolute; left:50%; top:46%; transform:translateX(-50%); background:#000c; color:#fff; padding:10px 16px; border-radius:10px; font-weight:900; display:none; z-index:99; white-space:nowrap; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="bloom"></div>
+  <div id="loader"><div class="t">Bloom Corner</div><div class="lb"><i id="loadBar"></i></div><small id="loadPct">Loading 0%</small></div>
+  <!-- game -->
+  <div id="game" class="layer hidden">
+    <div id="hud"><div class="pill" id="hp"><i id="hp0"></i><i id="hp1"></i></div></div>
+    <div id="bar"><i></i><span>BLOOMING 0%</span></div>
+    <div id="order"><div class="face" id="orderFace"></div><div class="txt"><span id="orderL1"></span><br><small style="font-weight:700;opacity:.7" id="orderL2"></small></div><div class="want" id="want"></div></div>
+    <div id="board"></div>
+  </div>
+
+  <!-- hook: the wilted shop and the chain's notice -->
+  <div id="hook" class="layer">
+    <div class="dim" style="background:#2a1a2266"></div>
+    <div class="notice"><big>BREWLINE</big>COFFEE<i>Coming soon to this corner.</i></div>
+    <img class="char" src="assets/ch-clara-sad.png" style="left:-60px;height:380px">
+    <div class="bubble" style="right:14px;top:330px;width:170px">Grandma's shop...<br>I won't let it go.</div>
+    <div class="tap">Tap to continue</div>
+  </div>
+
+  <!-- reveals -->
+  <div id="reveal" class="layer hidden">
+    <div class="dim"></div>
+    <div class="rays" id="rays" style="left:30px;top:55px;width:300px;height:300px"></div>
+    <div class="halo" id="halo"></div>
+    <div class="big" id="bigItem"></div>
+    <div class="half" id="halfL"></div>
+    <div class="half" id="halfR"></div>
+    <div class="polaroid" id="pola2"><div class="pic"><img id="pola2Img" src="assets/ch-sundress.png"></div><small>Bloom Corner, today</small></div>
+    <div class="note" id="note"></div>
+    <img class="char" id="leoR" src="assets/ch-leo-moved.png" style="left:-40px;height:250px;opacity:0;transform:translateX(-40px)">
+    <img class="char" id="claraR" src="assets/ch-clara-surprised.png" style="right:-40px;height:260px;opacity:0;transform:translateX(40px)">
+    <div class="bubble hidden" id="revealLine" style="right:16px;bottom:240px;max-width:210px;transition:opacity .3s"></div>
+  </div>
+
+  <!-- Leo walks in between the two boards -->
+  <div id="talk" class="layer hidden">
+    <div class="dim" style="background:#2a1a2244"></div>
+    <img class="char" src="assets/ch-leo.png" style="right:-50px;height:400px">
+    <img class="char" src="assets/ch-clara.png" style="left:-80px;height:300px;opacity:.85">
+    <div class="bubble" style="left:16px;top:110px;width:220px"><b>LEO</b>Wow. Let me shoot you for the reopening!</div>
+  </div>
+
+  <!-- outfit pick + photo -->
+  <div id="wardrobe" class="layer hidden">
+    <div class="dim" style="background:#2a1a2233"></div>
+    <div class="title" id="wardTitle">Pick an outfit!</div>
+    <img class="char" id="wardChar" src="assets/ch-clara-full.png">
+    <div class="bubble hidden" id="leoLine" style="left:14px;top:80px;width:170px"><b>LEO</b>Perfect. Say "bloom"!</div>
+    <div class="cards" id="cards">
+      <div class="card" id="cardSun"><div class="th" style="background-image:url(assets/ch-sundress.png)"></div><span>🌼<br>Sundress</span></div>
+      <div class="card" id="cardEve"><div class="th" style="background-image:url(assets/ch-evening.png)"></div><span>🌙<br>Evening</span></div>
+    </div>
+    <div class="polaroid" id="pola"><div class="pic"><img id="polaImg" src="assets/ch-sundress.png"></div><small>Bloom Corner, today</small></div>
+  </div>
+
+  <!-- end -->
+  <div id="end" class="layer hidden">
+    <div class="logo"><small>A COZY FLOWER SHOP MERGE</small>Bloom Corner</div>
+    <div class="sign">Bloom Corner</div>
+    <div class="snap"><div></div></div>
+    <div class="q" id="endQ"></div>
+    <div class="cta" id="cta">PLAY NOW</div>
+    <div class="again" id="again">Play again</div>
+  </div>
+
+  <div class="flashwhite" id="flashW"></div>
+  <canvas id="fxc"></canvas>
+  <div id="mute" class="pill">🔊</div>
+  <div id="drag"></div>
+  <div id="hand"></div>
+  <div id="toast"></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+// ---- sprite sheets: every sheet uses the 1264x848 3x2 tile layout, shipped at 60% (made by optimize-bloom.ps1) ----
+const GRID = { cols:[85,492,898], rows:[78,485], size:280, k:.6 };
+const SHEETS = {
+  flw: { src:'assets/flw-sheet.jpg', ...GRID },
+  fsh: { src:'assets/fsh-sheet.jpg', ...GRID },
+  caf: { src:'assets/caf-sheet.jpg', ...GRID },
+  // ui sheet: 0 seed crate, 1 ribbon basket, 2 kraft parcel, 3 hat box, 4 photo album, 5 camera
+  ui:  { src:'assets/ui-sheet.jpg', ...GRID },
+  hand: { src:'assets/hand.png', cols:[0], rows:[0], size:160, count:1 },
+};
+// The sheets have a cream tile behind every icon. Cut each icon out and flood-fill that tile
+// colour from the crop edges to transparent, so a dragged item carries no tile background.
+const ICONS = {};
+function loadImg(src) { return new Promise((ok, err) => { const i = new Image(); i.onload = () => ok(i); i.onerror = err; i.src = src; }); }
+async function buildIcons() {
+  for (const [name, s] of Object.entries(SHEETS)) {
+    const img = await loadImg(asset(s.src));
+    ICONS[name] = [];
+    for (let idx = 0; idx < (s.count ?? 6); idx++) {
+      const sk = s.k ?? 1, n = Math.round(s.size * sk), cv = document.createElement('canvas'); cv.width = cv.height = n;
+      const cx = cv.getContext('2d');
+      cx.drawImage(img, Math.round(s.cols[idx % 3] * sk), Math.round(s.rows[Math.floor(idx / 3)] * sk), n, n, 0, 0, n, n);
+      const d = cx.getImageData(0, 0, n, n), px = d.data;
+      const ref = [px[0], px[1], px[2]], seen = new Uint8Array(n * n), stack = [];
+      const near = p => Math.abs(px[p * 4] - ref[0]) + Math.abs(px[p * 4 + 1] - ref[1]) + Math.abs(px[p * 4 + 2] - ref[2]) < 70;
+      for (let k = 0; k < n; k++) stack.push(k, (n - 1) * n + k, k * n, k * n + n - 1);
+      while (stack.length) {
+        const p = stack.pop(); if (seen[p] || !near(p)) continue;
+        seen[p] = 1; px[p * 4 + 3] = 0;
+        const x = p % n, y = (p / n) | 0;
+        if (x > 0) stack.push(p - 1); if (x < n - 1) stack.push(p + 1);
+        if (y > 0) stack.push(p - n); if (y < n - 1) stack.push(p + n);
+      }
+      cx.putImageData(d, 0, 0);
+      ICONS[name][idx] = cv.toDataURL();
+    }
+  }
+}
+function sprite(el, sheet, idx) {
+  el.style.backgroundImage = `url(${ICONS[sheet][idx]})`;
+  el.style.backgroundSize = 'contain';
+  el.style.backgroundPosition = 'center';
+}
+function look(it) {
+  if (it.lv) return [it.t, it.lv - 1];
+  if (it.t === 'gen') return ['ui', it.g === 'ribbon' ? 1 : 0];
+  if (it.t === 'box') return ['ui', 2];
+}
+
+// ---- sound: AI-generated clips in ./audio (ElevenLabs via fal), played through WebAudio ----
+const sfx = (() => {
+  const NAMES = ['pick', 'drop', 'merge1', 'merge2', 'merge6', 'spawn', 'paper', 'deny', 'sting', 'bell', 'tap', 'coin', 'shutter', 'sparkle', 'birds', 'music'];
+  // fetch the bytes straight away; decoding needs an AudioContext, which needs a user gesture
+  const raw = Object.fromEntries(NAMES.map(n => [n, fetch(`audio/${n}.mp3`).then(r => r.arrayBuffer()).catch(() => null)]));
+  const buf = {}, norm = {};
+  let ac, master, muted = false;
+  // clips come at very different loudness: normalise every clip to one peak, then limit the mix
+  const TARGET_PEAK = .5;
+  function play(name, vol = 1, rate = 1, loop = false) {
+    if (!ac || !buf[name]) return;
+    const s = ac.createBufferSource(), g = ac.createGain();
+    s.buffer = buf[name]; s.playbackRate.value = rate; s.loop = loop; g.gain.value = vol * norm[name];
+    if (loop) { s.loopStart = .3; s.loopEnd = Math.max(1, s.buffer.duration - 1.2); }   // skip the fade-out tail at the seam
+    s.connect(g); g.connect(master); s.start(); return s;
+  }
+  return {
+    async unlock() {
+      if (ac) return; ac = new (window.AudioContext || window.webkitAudioContext)();
+      const limiter = ac.createDynamicsCompressor();
+      limiter.threshold.value = -10; limiter.knee.value = 6; limiter.ratio.value = 12; limiter.attack.value = .003; limiter.release.value = .2;
+      master = ac.createGain(); master.gain.value = muted ? 0 : .9; master.connect(limiter); limiter.connect(ac.destination);
+      await Promise.all(NAMES.map(async n => {
+        const b = await raw[n]; if (!b) return;
+        try {
+          buf[n] = await ac.decodeAudioData(b);
+          let pk = 0; for (let c = 0; c < buf[n].numberOfChannels; c++) for (const v of buf[n].getChannelData(c)) pk = Math.max(pk, Math.abs(v));
+          norm[n] = pk > .001 ? Math.min(8, TARGET_PEAK / pk) : 1;
+        } catch {}
+      }));
+      play('birds', .3, 1, true); play('music', .45, 1, true);
+    },
+    toggle() { muted = !muted; if (master) master.gain.value = muted ? 0 : .9; return muted; },
+    pick: () => play('pick', .8),
+    drop: () => play('drop', .8),
+    deny: () => play('deny', .8),
+    spawn: () => play('spawn', .8),
+    paper: () => play('paper', .8),
+    // pitch climbs a little with each level so the chain feels like it is building up
+    merge: lv => lv >= 6 ? play('merge6', .9) : play(lv >= 4 ? 'merge2' : 'merge1', .8, 1 + (lv - 2) * .05),
+    sting: () => play('sting', .8),
+    bell: () => play('bell', .8),
+    tap: () => play('tap', .7),
+    coin: () => play('coin', .8),
+    shutter: () => play('shutter', 1),
+    sparkle: () => play('sparkle', .8),
+  };
+})();
+
+// ---- particle FX on a canvas over the stage (stage units: 360×640) ----
+const fx = (() => {
+  const cv = $('fxc'), cx = cv.getContext('2d'), DPR = Math.min(2, devicePixelRatio || 1);
+  cv.width = 360 * DPR; cv.height = 640 * DPR; cx.scale(DPR, DPR);
+  const P = [], amb = { motes: false, petals: false };
+  const R = (a, b) => a + Math.random() * (b - a);
+  const add = p => P.push({ t: 0, ...p });
+  function sparks(x, y, n, colors, speed = 3.2, size = 3) {
+    for (let i = 0; i < n; i++) {
+      const a = R(0, Math.PI * 2), v = speed * R(.4, 1.2);
+      add({ k: 'spark', x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1, g: .09, max: R(28, 48), s: R(size * .6, size * 1.4), c: colors[i % colors.length] });
+    }
+  }
+  function stars(x, y, n, spread = 30, c = '#fff6c8') {
+    for (let i = 0; i < n; i++) add({ k: 'star', x: x + R(-spread, spread), y: y + R(-spread, spread), vx: 0, vy: R(-.4, -.1), max: R(30, 50), s: R(5, 9), c });
+  }
+  function ring(x, y, c = '#f07aa5', r = 46, w = 4) { add({ k: 'ring', x, y, max: 24, r, w, c }); }
+  // petals burst out of a merge or fall across the screen
+  function petals(x, y, n = 10) {
+    for (let i = 0; i < n; i++) { const a = R(0, Math.PI * 2), v = R(1, 3); add({ k: 'petal', x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1.5, g: .05, max: R(40, 70), s: R(4, 7), r: R(0, 6), vr: R(-.15, .15), c: ['#ffb3cf', '#ff8fb8', '#ffe0ec'][i % 3] }); }
+  }
+  function trail(x, y) { add({ k: 'spark', x: x + R(-4, 4), y: y + R(-4, 4), vx: R(-.3, .3), vy: R(-.3, .3), g: 0, max: R(18, 28), s: R(2, 4), c: '#ffe7a0' }); }
+  function frame() {
+    requestAnimationFrame(frame);   // schedule first, so one bad particle can never stop the loop
+    cx.clearRect(0, 0, 360, 640);
+    if (amb.motes && Math.random() < .35) add({ k: 'mote', x: R(20, 340), y: R(80, 600), vx: R(-.15, .15), vy: R(-.35, -.1), max: R(90, 160), s: R(1.5, 3.2), c: '#ffe7b0' });
+    if (amb.petals && Math.random() < .25) add({ k: 'petal', x: R(-20, 360), y: -10, vx: R(.2, 1), vy: R(.8, 1.6), g: 0, max: 400, s: R(4, 7), r: R(0, 6), vr: R(-.05, .05), c: ['#ffb3cf', '#ff8fb8', '#ffe0ec'][(Math.random() * 3) | 0] });
+    for (let i = P.length - 1; i >= 0; i--) {
+      const p = P[i]; p.t++;
+      if (p.t > p.max || p.y > 660 || !isFinite(p.x) || !isFinite(p.y)) { P.splice(i, 1); continue; }
+      const u = p.t / p.max;
+      p.x += p.vx || 0; p.y += p.vy || 0; if (p.g) p.vy += p.g;
+      cx.globalCompositeOperation = p.k === 'petal' ? 'source-over' : 'lighter';
+      if (p.k === 'spark' || p.k === 'mote') {
+        const a = p.k === 'mote' ? Math.sin(u * Math.PI) * .7 : 1 - u;
+        const gr = cx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.s * 2.2);
+        gr.addColorStop(0, p.c); gr.addColorStop(1, 'rgba(0,0,0,0)');
+        cx.globalAlpha = a; cx.fillStyle = gr; cx.beginPath(); cx.arc(p.x, p.y, p.s * 2.2, 0, 7); cx.fill();
+      } else if (p.k === 'star') {
+        const s = p.s * Math.sin(u * Math.PI); cx.globalAlpha = 1; cx.fillStyle = p.c;
+        cx.beginPath(); cx.moveTo(p.x, p.y - s); cx.lineTo(p.x + s * .22, p.y - s * .22); cx.lineTo(p.x + s, p.y); cx.lineTo(p.x + s * .22, p.y + s * .22);
+        cx.lineTo(p.x, p.y + s); cx.lineTo(p.x - s * .22, p.y + s * .22); cx.lineTo(p.x - s, p.y); cx.lineTo(p.x - s * .22, p.y - s * .22); cx.fill();
+      } else if (p.k === 'ring') {
+        cx.globalAlpha = 1 - u; cx.strokeStyle = p.c; cx.lineWidth = p.w * (1 - u) + .5;
+        cx.beginPath(); cx.arc(p.x, p.y, p.r * (.2 + u), 0, 7); cx.stroke();
+      } else if (p.k === 'petal') {
+        p.r += p.vr; cx.globalAlpha = p.max > 300 ? .85 : 1 - u * .8; cx.fillStyle = p.c;
+        cx.save(); cx.translate(p.x, p.y); cx.rotate(p.r); cx.beginPath(); cx.ellipse(0, 0, p.s, p.s * .55, 0, 0, 7); cx.fill(); cx.restore();
+      }
+    }
+    cx.globalAlpha = 1; cx.globalCompositeOperation = 'source-over';
+  }
+  requestAnimationFrame(frame);
+  return { sparks, stars, ring, petals, trail, amb, clear: () => P.length = 0 };
+})();
+const GOLD = ['#ffd27a', '#fff1b8', '#ffb347'], PINK = ['#f07aa5', '#ffd6e5', '#ffffff'];
+
+// ---- analytics hooks (console + window.__events) ----
+window.__events = [];
+function track(name, data) { const e = { name, t: +(performance.now() / 1000).toFixed(2), ...data }; __events.push(e); console.log('[event]', e); }
+
+// ---- params: ?end=2 -> E2 end card (cozy, no secret) ----
+const params = new URLSearchParams(location.search);
+const E2 = params.get('end') === '2';
+$('endQ').textContent = E2 ? 'Save Grandma\'s flower shop!' : 'Who was Grandma\'s secret love?';
+
+// ---- scale stage to fit ----
+const stage = $('stage');
+function fit() { const k = Math.min(innerWidth / 360, innerHeight / 640); stage.style.transform = `translate(-50%,-50%) scale(${k})`; stage._k = k; }
+addEventListener('resize', fit); fit();
+function toStage(r) { const s = stage.getBoundingClientRect(); return { x: (r.left - s.left) / stage._k, y: (r.top - s.top) / stage._k, w: r.width / stage._k, h: r.height / stage._k }; }
+function centerOf(el) { const b = toStage(el.getBoundingClientRect()); return { x: b.x + b.w / 2, y: b.y + b.h / 2 }; }
+
+// ---- board state ----
+const COLS = 5, ROWS = 4, CELL = 62;
+let grid, done, merges, firstTouch, idleTimer, handTimer, lvl;
+const C = (t, lv) => ({ t, lv });
+// Two boards in a row: Clara revives Grandma's flower corner, then Leo (met between the boards) wants a summer outfit for the photo.
+// Each ends with one half of Grandma's torn 1968 photo.
+const LEVELS = [
+  { chain: 'flw', gen: 'seed', face: 'clara', l1: `"Let's make it bloom again!"`, l2: "Revive Grandma's flower corner", bar: 'BLOOMING', done: 'IN BLOOM', mirror: false },
+  { chain: 'fsh', gen: 'ribbon', face: 'leo', l1: '"Ready for your photo?"', l2: 'Style a summer outfit', bar: 'STYLING', done: 'STYLED', mirror: true },
+];
+const L = () => LEVELS[lvl];
+function seed() {
+  const { chain, gen, mirror } = L();
+  const g = Array(COLS * ROWS).fill(null);
+  const put = (r, c, v) => g[r * COLS + (mirror ? COLS - 1 - c : c)] = v;
+  const lock = under => ({ t: 'lock', under });
+  put(0, 0, lock(C('caf', 1))); put(0, 1, C(chain, 2)); put(0, 3, C('caf', 2)); put(0, 4, lock(C('caf', 1)));
+  put(1, 0, { t: 'gen', g: gen }); put(1, 1, lock(C('caf', 1))); put(1, 2, C(chain, 3)); put(1, 4, { t: 'box' });
+  put(2, 2, lock(C('caf', 2)));   // next to the chain merges, so the uncover is seen early
+  put(2, 0, C(lvl ? 'caf' : chain, 1)); put(2, 1, C(chain, 2)); put(2, 3, C(chain, 5));
+  put(3, 0, lock(C('caf', 2))); put(3, 2, C(chain, 4)); put(3, 3, C('caf', 3)); put(3, 4, lock(C('caf', 1)));
+  if (!lvl) put(0, 2, C(chain, 1));   // two loose seed packets on the first board
+  return g;
+}
+function setupLevel() {
+  const lv = L();
+  grid = seed(); done = false;
+  $('orderFace').style.backgroundImage = `url(assets/ch-${lv.face}.png)`;
+  $('orderL1').textContent = lv.l1; $('orderL2').textContent = lv.l2;
+  sprite($('want'), lv.chain, 5);
+  document.querySelector('#bar i').style.width = '0';
+  document.querySelector('#bar span').textContent = lv.bar + ' 0%';
+  render();
+}
+const boardEl = $('board');
+const cellEl = i => boardEl.children[i];
+function render(popIdx, popClass = 'pop') {
+  boardEl.innerHTML = '';
+  grid.forEach((it, i) => {
+    const cell = document.createElement('div'); cell.className = 'cell'; cell.dataset.i = i;
+    if (it) {
+      if (it.t === 'lock') {
+        // locked: the item under the kraft paper shows through, greyed out, so it reads as "something is here"
+        cell.classList.add('locked');
+        const ghost = document.createElement('div'); ghost.className = 'ghost';
+        const [sh, idx] = look(it.under); sprite(ghost, sh, idx);
+        const c = document.createElement('div'); c.className = 'kraft';
+        cell.append(ghost, c);
+      } else {
+        const el = document.createElement('div'); el.className = 'item'; el.dataset.i = i;
+        const [sh, idx] = look(it); sprite(el, sh, idx);
+        if (it.lv === 6) el.classList.add('special');
+        if (i === popIdx) el.classList.add(popClass);
+        if (it.lv) { const lv = document.createElement('div'); lv.className = 'lv'; lv.textContent = 'Lv' + it.lv; el.appendChild(lv); }
+        cell.appendChild(el);
+      }
+    }
+    boardEl.appendChild(cell);
+  });
+}
+const maxLv = { flw: 6, fsh: 6, caf: 4 };
+function canMerge(a, b) { return a && b && a.t === b.t && a.lv && a.lv === b.lv && a.lv < maxLv[a.t]; }
+
+// ---- drag & drop ----
+const dragEl = $('drag');
+let drag = null, hoverCell = null;
+function local(e) { const r = stage.getBoundingClientRect(); return { x: (e.clientX - r.left) / stage._k, y: (e.clientY - r.top) / stage._k }; }
+function setHover(cell) {
+  if (hoverCell === cell) return;
+  hoverCell?.classList.remove('ok', 'no'); hoverCell = cell;
+  if (!cell || +cell.dataset.i === drag.i) return;
+  const b = grid[+cell.dataset.i];
+  if (b?.t === 'lock') cell.classList.add('no');
+  else if (canMerge(grid[drag.i], b)) cell.classList.add('ok');
+}
+boardEl.addEventListener('pointerdown', e => {
+  if (done) return;
+  const item = e.target.closest('.item'); if (!item) return;
+  touched();
+  const i = +item.dataset.i, it = grid[i];
+  if (it.t === 'gen') return spawn(i);
+  if (it.t === 'box') return openBox(i);
+  drag = { i, el: item }; sfx.pick();
+  const [sh, idx] = look(it); sprite(dragEl, sh, idx);
+  item.style.opacity = .3; item.parentElement.classList.add('origin');
+  dragEl.style.display = 'block'; moveDrag(e);
+  boardEl.setPointerCapture(e.pointerId);
+});
+boardEl.addEventListener('pointermove', e => {
+  if (!drag) return; moveDrag(e);
+  setHover(document.elementFromPoint(e.clientX, e.clientY)?.closest('.cell'));
+});
+function moveDrag(e) { const p = local(e); dragEl.style.left = p.x - CELL / 2 + 'px'; dragEl.style.top = p.y - CELL / 2 + 'px'; }
+boardEl.addEventListener('pointerup', e => {
+  if (!drag) return;
+  dragEl.style.display = 'none';
+  const target = document.elementFromPoint(e.clientX, e.clientY)?.closest('.cell');
+  const from = drag.i; drag.el.style.opacity = 1; drag.el.parentElement.classList.remove('origin');
+  hoverCell?.classList.remove('ok', 'no'); hoverCell = null; drag = null;
+  if (!target) return;
+  const to = +target.dataset.i; if (to === from) return;
+  const a = grid[from], b = grid[to];
+  if (b && b.t === 'lock') {
+    target.classList.add('shake'); setTimeout(() => target.classList.remove('shake'), 400);
+    sfx.deny(); if (!lockTip) { lockTip = true; toast('Merge next to it to unwrap!'); }
+    return;
+  }
+  if (canMerge(a, b)) return merge(from, to);
+  sfx.drop(); grid[to] = a; grid[from] = b; render(); scheduleHint();
+});
+
+function merge(from, to) {
+  const a = grid[from], lv = a.lv + 1;
+  grid[from] = null; grid[to] = C(a.t, lv);
+  merges++; track('merge_' + merges, { item: a.t + lv });
+  // unwrap neighbouring kraft parcels
+  const r = Math.floor(to / COLS), c = to % COLS;
+  const lifted = [];
+  [[r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]].forEach(([rr, cc]) => {
+    if (rr < 0 || cc < 0 || rr >= ROWS || cc >= COLS) return;
+    const k = rr * COLS + cc; if (grid[k]?.t === 'lock') { lifted.push(k); grid[k] = grid[k].under; }
+  });
+  render(to); sfx.merge(lv);
+  const main = a.t === L().chain, p = centerOf(cellEl(to)), big = main && lv >= 5;
+  flash(p); fx.ring(p.x, p.y, big ? '#ffd27a' : '#f07aa5', big ? 70 : 46);
+  fx.sparks(p.x, p.y, big ? 22 : 12, big ? GOLD : PINK.concat(GOLD), big ? 4 : 3.2);
+  fx.stars(p.x, p.y, big ? 5 : 2, 28);
+  if (main) fx.petals(p.x, p.y, big ? 14 : 8);
+  if (main && lv === 6) {
+    stage.classList.remove('quake'); void stage.offsetWidth; stage.classList.add('quake');
+    fx.ring(p.x, p.y, '#fff1b8', 120, 6); fx.sparks(p.x, p.y, 30, GOLD, 5.5, 4);
+  }
+  if (lifted.length) setTimeout(sfx.paper, 120);
+  lifted.forEach(k => {
+    // the flying paper is only an animation: it must not sit on top of the item afterwards
+    const cell = cellEl(k), cl = document.createElement('div'); cl.className = 'kraft off'; cell.appendChild(cl);
+    setTimeout(() => cl.remove(), 650);
+    const q = centerOf(cell); setTimeout(() => fx.sparks(q.x, q.y, 8, ['#e9d8b4', '#c99d70', '#fff'], 2.5, 2.5), 120);
+  });
+  if (main) progress(lv);
+  if (main && lv === 6) { done = true; clearTimeout(idleTimer); setTimeout(lvl ? startWardrobe : startReveal1, 1100); }
+  else scheduleHint();
+}
+function flash(p) {
+  const f = document.createElement('div'); f.className = 'flashfx';
+  f.style.left = p.x - 45 + 'px'; f.style.top = p.y - 45 + 'px';
+  stage.appendChild(f); setTimeout(() => f.remove(), 450);
+}
+function progress(lv) {
+  const pct = { 3: 25, 4: 50, 5: 75, 6: 100 }[lv]; if (!pct) return;
+  document.querySelector('#bar i').style.width = pct + '%';
+  document.querySelector('#bar span').textContent = (pct === 100 ? L().done + ' ' : L().bar + ' ') + pct + '%';
+  const bar = $('bar'); bar.classList.remove('shine'); void bar.offsetWidth; bar.classList.add('shine');
+  // on the first board the shop itself comes back to life with the bar
+  if (lvl === 0) { $('bloom').style.opacity = pct / 100; if (pct === 100) fx.amb.petals = true; }
+  setTimeout(() => { fx.stars(65 + 230 * pct / 100, 57, 3, 8); fx.sparks(65 + 230 * pct / 100, 57, 8, PINK, 2.2, 2.5); }, 450);
+}
+function emptyNear(i) {
+  const r0 = Math.floor(i / COLS), c0 = i % COLS; let best = -1, bd = 99;
+  grid.forEach((v, k) => { if (v) return; const d = Math.abs(Math.floor(k / COLS) - r0) + Math.abs(k % COLS - c0); if (d < bd) { bd = d; best = k; } });
+  return best;
+}
+function spawn(i) {
+  const k = emptyNear(i); if (k < 0) return toast('Board is full!');
+  const from = centerOf(cellEl(i)), to = centerOf(cellEl(k));
+  grid[k] = C(L().chain, 1); track('spawn'); sfx.spawn(); render(k, 'flyin');
+  const el = cellEl(k).querySelector('.item'); el.style.setProperty('--dx', from.x - to.x + 'px'); el.style.setProperty('--dy', from.y - to.y + 'px');
+  cellEl(i).querySelector('.item')?.classList.add('jiggle');
+  fx.sparks(from.x, from.y, 6, GOLD, 2);
+  setTimeout(() => fx.sparks(to.x, to.y + 12, 8, PINK, 2, 2.5), 420);
+  scheduleHint();
+}
+function openBox(i) {
+  grid[i] = C('caf', 1); sfx.paper(); render(i);
+  const p = centerOf(cellEl(i)); fx.sparks(p.x, p.y, 10, ['#e9d8b4', '#c99d70', '#fff'], 2.5);
+  scheduleHint();
+}
+
+// ---- hints ----
+function pairs() {
+  const list = [];
+  for (let a = 0; a < grid.length; a++) for (let b = a + 1; b < grid.length; b++) if (canMerge(grid[a], grid[b])) list.push([a, b]);
+  list.sort((p, q) => (grid[q[0]].t === L().chain) - (grid[p[0]].t === L().chain)); // prefer the level's own chain
+  return list;
+}
+let lvlStartMerges = 0;
+function scheduleHint() {
+  clearTimeout(idleTimer); document.querySelectorAll('.hint').forEach(e => e.classList.remove('hint'));
+  idleTimer = setTimeout(() => {
+    // the guided first move must be the chain pair, not the loose seed packets
+    const p = pairs().find(q => grid[q[0]].t === L().chain && grid[q[0]].lv > 1) || pairs()[0];
+    if (!p) { const gen = grid.findIndex(v => v?.t === 'gen'); cellEl(gen)?.querySelector('.item')?.classList.add('hint'); return; }
+    p.forEach(k => cellEl(k).querySelector('.item').classList.add('hint'));
+    if (merges === 0) showHand(p[0], p[1]);
+  }, merges === 0 ? 2000 : lvlStartMerges === merges ? 1200 : 3000);   // first hint waits, so the board is seen before the hand
+}
+const hand = $('hand');
+// the fingertip sits about 22% in and 12% down the 52px hand image
+const TIP = { x: 11, y: 6 };
+function showHand(a, b) {
+  const pos = k => { const q = centerOf(cellEl(k)); return { x: q.x - TIP.x, y: q.y - TIP.y }; };
+  const A = pos(a), B = pos(b); let t = 0;
+  hand.classList.remove('tapping'); clearInterval(handTimer);
+  hand.style.left = A.x + 'px'; hand.style.top = A.y + 'px';
+  hand.style.transition = 'none'; hand.style.opacity = 0; hand.style.display = 'block';
+  requestAnimationFrame(() => { hand.style.transition = 'opacity .45s'; hand.style.opacity = 1; });
+  handTimer = setTimeout(() => {
+    hand.style.transition = '';
+    handTimer = setInterval(() => { t = (t + 0.02) % 1.3; const u = Math.min(t, 1); hand.style.left = A.x + (B.x - A.x) * u + 'px'; hand.style.top = A.y + (B.y - A.y) * u + 'px'; }, 16);
+  }, 900);
+}
+function pointAt(el) {
+  const p = centerOf(el); clearInterval(handTimer); clearTimeout(handTimer); hand.style.opacity = 1;
+  hand.style.left = p.x - TIP.x + 'px'; hand.style.top = p.y - TIP.y + 'px';
+  hand.classList.add('tapping'); hand.style.display = 'block';
+}
+function hideHand() { clearInterval(handTimer); clearTimeout(handTimer); hand.style.display = 'none'; hand.classList.remove('tapping'); }
+function touched() {
+  hideHand();
+  if (!firstTouch) { firstTouch = true; track('first_interaction'); }
+}
+
+// ---- scenes ----
+const show = id => $(id).classList.remove('hidden'), hide = id => $(id).classList.add('hidden');
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1200); }
+function trailOf(el, ms) { const id = setInterval(() => { const p = centerOf(el); fx.trail(p.x, p.y); fx.trail(p.x, p.y); }, 30); setTimeout(() => clearInterval(id), ms); }
+const T = []; const later = (fn, ms) => T.push(setTimeout(fn, ms));
+
+// first gesture: browsers only allow audio after one; the board appears on the first tap
+$('hook').addEventListener('pointerdown', () => { sfx.unlock(); sfx.tap(); hide('hook'); show('game'); scheduleHint(); });
+$('mute').addEventListener('pointerdown', e => { e.stopPropagation(); sfx.unlock(); $('mute').textContent = sfx.toggle() ? '🔇' : '🔊'; });
+
+// ---- the torn photo: one image, two clip paths that share the same jagged tear ----
+const TEAR = [[52, 0], [47, 8], [55, 17], [48, 27], [54, 36], [46, 47], [53, 58], [47, 68], [55, 79], [49, 89], [53, 100]];
+const tearPts = TEAR.map(([x, y]) => `${x}% ${y}%`);
+const clipL = `polygon(0 0, ${tearPts.join(', ')}, 0 100%)`;
+const clipR = `polygon(100% 0, ${tearPts.join(', ')}, 100% 100%)`;
+$('halfL').style.clipPath = clipL; $('halfR').style.clipPath = clipR;
+// Grandma is on the right half, the young man on the left: she is found first, he is the twist
+$('hp0').style.clipPath = clipR; $('hp1').style.clipPath = clipL;
+function placeHalf(el, x, y, extra = '') { el.style.left = x + 'px'; el.style.top = y + 'px'; el.style.transform = extra; }
+// resting spot in the reveal: the two halves sit apart under the item until both are found
+const HALF_X = 90, HALF_Y = 280, GAP = 28, APART = 'scale(.85) rotate(', TOP = [36, 70];
+function sayLine(who, text) {
+  const b = $('revealLine'); b.innerHTML = `<b>${who}</b>${text}`; b.classList.remove('hidden');
+}
+
+function startReveal1() {
+  track('reveal1_seen');
+  sprite($('bigItem'), 'flw', 5);
+  hide('game'); show('reveal'); fx.amb.motes = true; sfx.sparkle();
+  $('note').classList.remove('show'); $('revealLine').classList.add('hidden');
+  later(() => { $('bigItem').classList.add('in'); $('halo').classList.add('on'); $('rays').classList.add('on'); }, 150);
+  // half a photo slips out of the old basket's weave and drops into place
+  later(() => {
+    const h = $('halfR'); h.style.transition = 'none'; placeHalf(h, HALF_X, 150, 'scale(.3) rotate(20deg)'); h.style.opacity = 1;
+    requestAnimationFrame(() => requestAnimationFrame(() => { h.style.transition = ''; placeHalf(h, HALF_X + GAP, HALF_Y, APART + '5deg)'); trailOf(h, 800); }));
+    fx.petals(180, 205, 16); fx.sparks(180, 205, 20, GOLD, 4, 3);
+  }, 800);
+  later(() => { $('hp0').classList.add('got'); sfx.coin(); }, 1600);
+  later(() => { $('note').textContent = '"Bloom Corner, 1968."'; $('note').style.top = '530px'; $('note').classList.add('show'); sfx.sting(); }, 1900);
+  later(() => {
+    // the basket gives way to the photo: Grandma's half moves up so Clara can look at it
+    $('bigItem').style.opacity = 0; $('note').classList.remove('show'); $('halo').classList.remove('on');
+    placeHalf($('halfR'), TOP[0] + GAP + 20, TOP[1] + 20, 'rotate(3deg)');
+    const c = $('claraR'); c.style.opacity = 1; c.style.transform = 'none';
+    sayLine('CLARA', 'Grandma...? Who tore this?');
+  }, 2600);
+  later(leoEnters, 4900);
+}
+function leoEnters() {
+  hide('reveal'); fx.amb.motes = false; resetReveal();
+  show('talk'); sfx.bell();
+  later(nextLevel, 2800);
+}
+function resetReveal() {
+  $('bigItem').classList.remove('in'); $('bigItem').style.opacity = 1;
+  ['halo', 'rays'].forEach(id => $(id).classList.remove('on'));
+  $('note').classList.remove('show'); $('revealLine').classList.add('hidden');
+  ['claraR', 'leoR'].forEach(id => { $(id).style.opacity = 0; });
+  $('claraR').style.transform = 'translateX(40px)'; $('leoR').style.transform = 'translateX(-40px)';
+  ['halfL', 'halfR'].forEach(id => $(id).style.opacity = 0);
+  $('pola2').style.opacity = 0;
+}
+function nextLevel() {
+  lvl = 1; lvlStartMerges = merges; track('level2_start');
+  hide('talk'); $('bloom').style.opacity = 1;
+  setupLevel(); show('game'); scheduleHint();
+}
+
+// ---- outfit pick, then Leo takes the photo ----
+let outfit, wardTimer;
+function startWardrobe() {
+  hide('game'); fx.amb.petals = false;
+  outfit = null; $('wardChar').src = asset('assets/ch-clara-full.png'); $('wardChar').style.transition = ''; $('wardChar').style.transform = 'none'; $('leoLine').classList.add('hidden');
+  ['cardSun', 'cardEve'].forEach(id => $(id).classList.remove('picked')); $('cards').style.display = 'flex'; $('wardTitle').style.opacity = 1;
+  show('wardrobe'); sfx.sparkle();
+  wardTimer = setTimeout(() => pick('sundress', true), 4000);
+}
+function pick(kind, auto) {
+  if (outfit) return; outfit = kind; clearTimeout(wardTimer); hideHand();
+  track(auto ? 'outfit_auto' : 'outfit_' + kind);
+  $(kind === 'sundress' ? 'cardSun' : 'cardEve').classList.add('picked');
+  // full body on the wardrobe stage, half body inside the polaroid frame
+  const src = `assets/ch-${kind}.png`, full = `assets/ch-${kind}-full.png`;
+  // turn edge-on, swap the outfit at the exact moment she is invisible, turn back.
+  // The image comes from the preloaded, already-decoded copy, so the swap is instant.
+  const w = $('wardChar'); w.style.transition = 'transform .18s ease-in'; w.style.transform = 'scale(.95) rotateY(90deg)'; sfx.sparkle();
+  later(() => { w.src = asset(full); w.style.transition = 'transform .3s cubic-bezier(.3,1.4,.5,1)'; w.style.transform = 'none'; fx.sparks(180, 330, 26, PINK.concat(GOLD), 4, 3); fx.stars(180, 320, 8, 90); fx.petals(180, 330, 14); }, 180);
+  $('polaImg').src = asset(src); $('pola2Img').src = asset(src);
+  later(() => { $('cards').style.display = 'none'; $('wardTitle').style.opacity = 0; $('leoLine').classList.remove('hidden'); }, 1100);
+  later(() => {
+    // shutter: white flash, then the polaroid drops in
+    sfx.shutter(); const f = $('flashW'); f.style.transition = 'none'; f.style.opacity = 1;
+    requestAnimationFrame(() => requestAnimationFrame(() => { f.style.transition = 'opacity .6s'; f.style.opacity = 0; }));
+    $('leoLine').classList.add('hidden');
+    const p = $('pola'); p.style.transition = 'none'; p.style.left = '105px'; p.style.top = '-260px'; p.style.transform = 'rotate(-12deg)'; p.style.opacity = 1;
+    requestAnimationFrame(() => requestAnimationFrame(() => { p.style.transition = ''; p.style.top = '170px'; p.style.transform = 'rotate(-4deg) scale(1.15)'; }));
+    track('photo_taken');
+  }, 2300);
+  later(startReveal2, 4300);
+}
+$('cardSun').addEventListener('click', () => pick('sundress'));
+$('cardEve').addEventListener('click', () => pick('evening'));
+
+// ---- the second half in Grandma's hat box; the halves join; same corner, 60 years apart ----
+function startReveal2() {
+  track('reveal2_seen');
+  hide('wardrobe'); $('pola').style.opacity = 0;
+  sprite($('bigItem'), 'ui', 3);
+  resetReveal(); show('reveal'); fx.amb.motes = true;
+  $('halfR').style.transition = 'none'; placeHalf($('halfR'), HALF_X + GAP, HALF_Y, APART + '5deg)'); $('halfR').style.opacity = 1;
+  later(() => { $('bigItem').classList.add('in'); $('halo').classList.add('on'); $('rays').classList.add('on'); sfx.sparkle(); }, 150);
+  later(() => {
+    const h = $('halfL'); h.style.transition = 'none'; placeHalf(h, HALF_X, 150, 'scale(.3) rotate(-20deg)'); h.style.opacity = 1;
+    requestAnimationFrame(() => requestAnimationFrame(() => { h.style.transition = ''; placeHalf(h, HALF_X - GAP, HALF_Y, APART + '-5deg)'); trailOf(h, 800); }));
+    fx.sparks(180, 205, 20, GOLD, 4, 3);
+  }, 800);
+  later(() => { $('hp1').classList.add('got'); sfx.coin(); }, 1600);
+  // the halves slide together along the tear and flash into one photo, lifted to the top
+  later(() => {
+    $('bigItem').style.opacity = 0; $('halo').classList.remove('on');
+    ['halfL', 'halfR'].forEach(id => { $(id).style.transition = ''; placeHalf($(id), HALF_X, HALF_Y, 'scale(.85)'); });
+  }, 2000);
+  later(() => {
+    sfx.merge(6); flash({ x: 180, y: 392 }); fx.ring(180, 392, '#fff1b8', 120, 6); fx.sparks(180, 392, 34, GOLD, 5, 3.5); fx.stars(180, 392, 8, 80);
+    ['halfL', 'halfR'].forEach(id => placeHalf($(id), TOP[0], TOP[1], 'rotate(-3deg)'));
+  }, 2800);
+  // today's polaroid lands beside it: same corner, same pose
+  later(() => {
+    const p = $('pola2'); p.style.transition = 'none'; p.style.left = '380px'; p.style.top = '120px'; p.style.transform = 'rotate(20deg)'; p.style.opacity = 1;
+    requestAnimationFrame(() => requestAnimationFrame(() => { p.style.transition = ''; p.style.left = '196px'; p.style.top = '96px'; p.style.transform = 'rotate(6deg) scale(.95)'; }));
+    $('note').textContent = '1968 · today'; $('note').style.top = '322px'; $('note').classList.add('show');
+  }, 3500);
+  later(() => {
+    $('note').classList.remove('show'); sfx.sting();
+    const l = $('leoR'); l.style.opacity = 1; l.style.transform = 'none';
+    sayLine('LEO', "That's... my grandfather's camera.");
+  }, 4800);
+  later(() => {
+    const c = $('claraR'); c.style.opacity = 1; c.style.transform = 'none';
+    sayLine('CLARA', 'Grandma never told me about him.');
+  }, 7000);
+  later(endCard, 9300);
+}
+
+let logoTimer;
+function endCard() {
+  hideHand();
+  hide('reveal'); fx.amb.motes = false; resetReveal();
+  show('end'); fx.amb.petals = true;
+  clearInterval(logoTimer); logoTimer = setInterval(() => fx.stars(180 + (Math.random() - .5) * 240, 80 + (Math.random() - .5) * 40, 1, 4), 500);
+  track('endcard_seen', { variant: E2 ? 'E2' : 'E1' });
+}
+$('end').addEventListener('click', e => { if (e.target.id === 'again') return; sfx.coin(); fx.sparks(180, 556, 18, PINK.concat(GOLD), 3.5); track('cta_click'); toast('→ App Store / Google Play'); });
+$('again').addEventListener('click', start);
+
+function start() {
+  T.forEach(clearTimeout); T.length = 0; clearTimeout(wardTimer); clearInterval(logoTimer);
+  lvl = 0; merges = 0; lvlStartMerges = 0;
+  hideHand();
+  ['game', 'reveal', 'talk', 'wardrobe', 'end'].forEach(hide); show('hook');
+  fx.amb.motes = fx.amb.petals = false; fx.clear();
+  $('bloom').style.opacity = 0; resetReveal();
+  $('hp0').classList.remove('got'); $('hp1').classList.remove('got');
+  setupLevel();
+}
+let lockTip = false;
+track('load');
+// preload every image behind the loading screen, then cut the icons
+const PRELOAD = ['bg-wilted.jpg', 'bg-store.jpg', 'bg-front.jpg', 'photo-1968.jpg', 'ch-clara.png', 'ch-clara-sad.png', 'ch-clara-surprised.png',
+  'ch-sundress.png', 'ch-evening.png', 'ch-leo.png', 'ch-leo-moved.png', 'ch-clara-full.png', 'ch-sundress-full.png', 'ch-evening-full.png']
+  .map(f => 'assets/' + f).concat(Object.values(SHEETS).map(s => s.src));
+// Each image is fetched once into a blob URL and kept decoded, so swapping a portrait later
+// (outfit change) never waits on the network, even over a slow tunnel.
+const BLOB = {}, KEEP = [];
+const asset = path => BLOB[path] || path;
+async function preload(src) {
+  try { BLOB[src] = URL.createObjectURL(await (await fetch(src)).blob()); } catch {}
+  const img = await loadImg(asset(src)); await img.decode?.().catch(() => {}); KEEP.push(img);
+}
+let loaded = 0;
+Promise.all(PRELOAD.map(src => preload(src).catch(() => null).then(() => {
+  loaded++; const pct = Math.round(loaded / PRELOAD.length * 100);
+  $('loadBar').style.width = pct + '%'; $('loadPct').textContent = 'Loading ' + pct + '%';
+}))).then(buildIcons).then(() => {
+  sprite(hand, 'hand', 0);
+  start();
+  const l = $('loader'); l.style.opacity = 0; setTimeout(() => l.remove(), 400);
+  track('ready');
+});
+</script>
+</body>
+</html>
