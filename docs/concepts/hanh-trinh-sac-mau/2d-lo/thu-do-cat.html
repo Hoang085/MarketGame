@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thử đổ cát</title>
+<style>
+  :root { --bg: #1b1240; --card: #2d1d66; --ink: #ece8ff; --muted: #b7aee6; --line: #4a3699; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: system-ui, sans-serif; }
+  .wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px 40px; display: flex; flex-wrap: wrap; gap: 24px; }
+  .stage { flex: 1 1 420px; }
+  canvas { width: 100%; max-width: 560px; aspect-ratio: 560 / 760; display: block; border-radius: 24px; box-shadow: 0 10px 40px #0008; }
+  .side { flex: 0 1 380px; font-size: 14px; }
+  h1 { font-size: 22px; margin: 0 0 6px; }
+  .lead { color: var(--muted); line-height: 1.55; margin: 0 0 16px; }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+  .row > span { color: var(--muted); min-width: 52px; }
+  select, button { font: inherit; background: #3b2a80; color: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: 7px 10px; cursor: pointer; }
+  button:disabled { opacity: 0.45; cursor: default; }
+  .add { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+  .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid #fff8; }
+  .need { margin: 6px 0 14px; padding: 10px 12px; background: var(--card); border-radius: 12px; line-height: 1.7; }
+  .msg { min-height: 22px; color: #ffcf3a; font-weight: 600; }
+  .note { color: var(--muted); font-size: 12.5px; line-height: 1.6; margin-top: 18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="stage"><canvas id="cv" width="560" height="760"></canvas></div>
+  <div class="side">
+    <h1>Thử anim đổ cát (lọ 2D)</h1>
+    <p class="lead">Lọ lấp theo từng hàng từ đáy lên. Đưa khay vào 5 chỗ đổ; khay nào có màu hàng đang cần thì tự bay lên đổ. Hàng chưa đủ hết các màu thì chưa lên hàng trên, cát còn lại nằm trong khay.</p>
+    <div class="row"><span>Lọ</span><select id="shape"></select></div>
+    <div class="row"><span>Tranh</span><select id="pic"></select></div>
+    <div class="need" id="need"></div>
+    <div class="row" id="trays"></div>
+    <div class="msg" id="msg"></div>
+    <div class="row"><button id="auto">Tự thêm khay đến hết</button><button id="reset">Làm lại</button>
+      <select id="speed"><option value="1">Tốc độ 1×</option><option value="0.5">Chậm 0,5×</option><option value="2">Nhanh 2×</option></select></div>
+    <p class="note">Mỗi hàng ô cát có thể gồm nhiều màu. Đổ màu nào thì chỉ lấp các ô màu đó của hàng đang lấp; đủ hết các màu thì hàng xong và cát chảy tiếp lên hàng trên. Vì vậy ở chỗ mép giữa hai màu (sóng, thuyền, đồi), cần có đủ các màu đó trong chỗ đổ cùng lúc, các khay sẽ thay nhau đổ từng chút.</p>
+  </div>
+</div>
+<script src="../tranh-map.js"></script>
+<script src="../tranh-lo.js"></script>
+<script>
+// Du lieu lop anh (2d-lo/layers.json, sinh boi tools/blender/lo-2d-layers.py)
+const LAYERS = {"bottle":{"size":[460,570],"anchor":[230,526],"sx":5,"sy":4.924},"gourd":{"size":[410,600],"anchor":[205,556],"sx":5,"sy":4.924},"jar":{"size":[410,540],"anchor":[205,497],"sx":5,"sy":4.924},"lantern":{"size":[440,570],"anchor":[220,526],"sx":5,"sy":4.924}};
+const TOP = { bottle: 98, gourd: 104, jar: 92, lantern: 98 }; // cao mieng lo (cm)
+const SHAPE_NAME = { bottle: 'Bình cầu', gourd: 'Hồ lô', jar: 'Lọ thẳng', lantern: 'Lọ bầu dục' };
+// lo + tong so phan theo 2 man demo
+const LEVEL = { 'bai-cat': ['bottle', 8], 'doi-cat': ['gourd', 8], 'song-bien': ['jar', 8], 'dao-nho': ['lantern', 8],
+  'doi-cat-do': ['bottle', 12], 'thuyen-do': ['lantern', 12], 'hoang-hon': ['jar', 16], 'bai-bien': ['bottle', 12], 'lang-chai': ['jar', 16], 'mui-ne': ['gourd', 20] };
+const COL = TranhLo.PALETTE, NAME = { T: 'xanh ngọc', Y: 'vàng cát', O: 'cam', R: 'đỏ' };
+const CELL = TranhLo.CELL, SLOTS = 5;
+const cv = document.getElementById('cv'), c = cv.getContext('2d');
+const W = cv.width, H = cv.height;
+
+function shade(hex, k, a = 1) { const n = parseInt(hex.slice(1), 16), f = v => Math.max(0, Math.min(255, Math.round(v * k))); return `rgba(${f(n >> 16)},${f((n >> 8) & 255)},${f(n & 255)},${a})`; }
+function load(src) { return new Promise(ok => { const im = new Image(); im.onload = () => ok(im); im.src = src; }); }
+const IMG = {};
+const ready = Promise.all(Object.keys(LAYERS).flatMap(s => ['sau', 'truoc', 'mat-na'].map(async l => { IMG[s + l] = await load(`lo-${s}-${l}.png`); })));
+
+function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+// ---- trang thai ----
+// S.slots: 5 cho do, moi cho null hoac khay { k, cells (so o cat con trong khay), max }
+let S, layer;
+function setup(shape, pic) {
+  const L = LAYERS[shape], v = TranhLo.vessel(shape, pic, LEVEL[pic][1]), rand = rng(11);
+  for (const cl of v.cells) cl.g = rand();
+  S = { shape, pic, v, L, slots: Array(SLOTS).fill(null), pour: null, pours: 0, done: false, doneT: 0, parts: [], sparks: [] };
+  layer = document.createElement('canvas'); layer.width = L.size[0]; layer.height = L.size[1];
+  document.getElementById('msg').textContent = '';
+  ui();
+}
+const full = k => Math.round(4 * S.v.cpu[k]);          // so o cua 1 khay day (4 phan)
+const unitsOf = (k, n) => Math.round(n / S.v.cpu[k] * 10) / 10;
+// cat mau k con can = o con trong - cat dang nam trong cac khay
+const stillNeed = k => TranhLo.left(S.v, k) - S.slots.reduce((a, t) => a + (t && t.k === k ? t.cells : 0), 0);
+
+function addTray(k) {
+  const i = S.slots.indexOf(null);
+  if (i < 0) { document.getElementById('msg').textContent = 'Hết chỗ đổ (5 chỗ): chờ khay đổ xong.'; return; }
+  S.slots[i] = { k, cells: Math.min(full(k), Math.max(1, stillNeed(k))), max: full(k) };
+  document.getElementById('msg').textContent = '';
+  ui();
+}
+
+// ---- tu do: khay nao co mau hang dang can thi bay len do ----
+const FLY = 0.22;
+function nextPour() {
+  if (S.pour || S.done) return;
+  const acc = TranhLo.accepts(S.v);
+  const si = S.slots.findIndex(t => t && acc.includes(t.k));
+  if (si < 0) return;
+  const t = S.slots[si], list = TranhLo.planPour(S.v, t.k, t.cells);
+  if (!list.length) return;
+  // cat lap o theo so hat da roi cham be mat, khong theo thoi gian
+  const flowT = Math.max(0.25, list.length * 0.012);
+  S.pour = { si, t: 0, list, tray: t, start: t.cells, flowT, G: Math.max(8, Math.round(list.length * 1.2)), spawned: 0, landed: 0 };
+  S.pours++;
+}
+
+// ---- toa do ----
+const SCALE = 0.95, SLOT_Y = 34;
+function origin() { const L = S.L; return [W / 2 - L.size[0] / 2 * SCALE, H - 70 - L.size[1] * SCALE]; }
+function toPx(x, y) { const [ox, oy] = origin(), L = S.L; return [ox + (L.anchor[0] + x * L.sx) * SCALE, oy + (L.anchor[1] - y * L.sy) * SCALE]; }
+const slotX = i => W / 2 + (i - (SLOTS - 1) / 2) * 92;
+
+// ---- ve cat ----
+function drawSand(now, shownExtra) {
+  const L = S.L, lc = layer.getContext('2d'), v = S.v;
+  lc.setTransform(1, 0, 0, 1, 0, 0); lc.clearRect(0, 0, layer.width, layer.height);
+  const px = (x, y) => [L.anchor[0] + x * L.sx, L.anchor[1] - y * L.sy];
+  const shown = new Set(v.filled); for (const i of shownExtra) shown.add(i);
+  for (const cl of v.cells) {
+    // moi o chi mang mau cua vung no (x do sang lay tu anh goc); lam tron pixel de khong lo luoi
+    const [x0, y0] = px(cl.x, cl.y + CELL), [x1, y1] = px(cl.x + CELL, cl.y), x = Math.round(x0), y = Math.round(y0), w = Math.round(x1) - x, h = Math.round(y1) - y;
+    if (shown.has(cl.i)) lc.fillStyle = shade(COL[cl.c], cl.s * (0.9 + cl.g * 0.2));
+    else lc.fillStyle = shade(COL[cl.c], cl.s, 0.18);
+    lc.fillRect(x, y, w, h);
+  }
+  lc.globalCompositeOperation = 'destination-in'; lc.drawImage(IMG[S.shape + 'mat-na'], 0, 0);
+  lc.globalCompositeOperation = 'source-over';
+}
+
+function tray(k, x, y, ang, fill, dim) {
+  c.save(); c.translate(x, y); c.rotate(ang);
+  c.beginPath(); c.roundRect(-30, -22, 60, 44, 9); c.fillStyle = 'rgba(30,20,70,0.6)'; c.fill();
+  c.save(); c.clip(); c.fillStyle = COL[k]; c.fillRect(-30, 22 - 44 * fill, 60, 44 * fill); c.restore();
+  c.lineWidth = 4; c.strokeStyle = COL[k]; c.stroke();
+  c.fillStyle = 'rgba(255,255,255,0.5)'; c.fillRect(-22, -16, 16, 4);
+  if (dim) { c.fillStyle = 'rgba(20,10,50,0.45)'; c.fill(); }
+  c.restore();
+}
+
+let last = 0, auto = false;
+function frame(t, step) { // step: chay 1 khung de kiem tra, khong hen khung sau
+  const sp = +document.getElementById('speed').value;
+  const dt = Math.min(0.05, (t - last) / 1000) * sp; last = t; const now = t / 1000;
+  const L = S.L, [mx, my] = toPx(0, TOP[S.shape]);
+  nextPour();
+
+  // cap nhat dot do: bay tu cho do toi mieng (FLY), nghieng do, bay ve
+  const p = S.pour;
+  if (p) {
+    p.t += dt;
+    const flow = Math.min(1, Math.max(0, (p.t - FLY) / p.flowT));
+    for (const want = Math.round(p.G * flow); p.spawned < want; p.spawned++)
+      S.parts.push({ pour: p, x: mx + (Math.random() - 0.5) * 7, y: my - 26 - Math.random() * 10, vy: 60 + Math.random() * 60, c: COL[p.tray.k], s: 2 + Math.random() * 2.5 });
+    if (p.landed >= p.G && p.t >= FLY + p.flowT + FLY) {
+      TranhLo.applyPour(S.v, p.list); p.tray.cells -= p.list.length;
+      if (p.tray.cells <= 0) S.slots[p.si] = null;
+      S.pour = null;
+      if (TranhLo.isDone(S.v)) { S.done = true; S.doneT = now; for (let i = 0; i < 40; i++) S.sparks.push({ a: Math.random() * 7, r: 0, v: 80 + Math.random() * 160, life: 1 }); }
+      ui(); if (auto) autoStep();
+    }
+  }
+  const landed = p ? p.list.slice(0, Math.floor(p.list.length * p.landed / p.G)) : [];
+  // be mat cat ngay duoi mieng (cot giua): hat cham toi thi bien mat
+  let bottom = Infinity, surf = -Infinity; const ls = new Set(landed);
+  for (const cl of S.v.cells) {
+    if (Math.abs(cl.x + CELL / 2) > CELL) continue;
+    bottom = Math.min(bottom, cl.y);
+    if (S.v.filled.has(cl.i) || ls.has(cl.i)) surf = Math.max(surf, cl.y + CELL);
+  }
+  // hang dang lap o cot giua co the chua co cat: hat roi toi hang dang lap
+  const row = TranhLo.curRow(S.v, new Set([...S.v.filled, ...landed]));
+  const rowY = row >= 0 ? S.v.cells[S.v.rows[row][0]].y : 0;
+  const surfY = toPx(0, Math.max(bottom, Math.min(Math.max(surf, rowY), rowY + CELL)))[1];
+  for (const q of S.parts) { q.vy += 1400 * dt; q.y += q.vy * dt; if (q.y >= surfY) q.pour.landed++; }
+  S.parts = S.parts.filter(q => q.y < surfY);
+
+  // nen + bang chuyen
+  const gr = c.createLinearGradient(0, 0, 0, H); gr.addColorStop(0, '#41288f'); gr.addColorStop(1, '#2a1868');
+  c.fillStyle = gr; c.fillRect(0, 0, W, H);
+  c.fillStyle = '#c9b9f2'; c.fillRect(0, H - 70, W, 34); c.fillStyle = '#e4dbff'; c.fillRect(0, H - 70, W, 14);
+  // 5 cho do
+  c.fillStyle = '#9c86e0'; c.beginPath(); c.roundRect(slotX(0) - 46, SLOT_Y - 30, 92 * SLOTS, 60, 14); c.fill();
+  for (let i = 0; i < SLOTS; i++) { c.fillStyle = '#7c66c6'; c.beginPath(); c.roundRect(slotX(i) - 38, SLOT_Y - 25, 76, 50, 10); c.fill(); }
+  const acc = TranhLo.accepts(S.v);
+  S.slots.forEach((t, i) => { if (t && !(p && p.si === i)) tray(t.k, slotX(i), SLOT_Y, 0, t.cells / t.max, !acc.includes(t.k)); });
+
+  // lo
+  const bt = S.done ? now - S.doneT : 9, bounce = bt < 0.6 ? 1 + 0.08 * Math.sin(bt / 0.6 * Math.PI) : 1;
+  const [ox, oy] = origin();
+  c.save(); const pivX = W / 2, pivY = H - 70; c.translate(pivX, pivY); c.scale(2 - bounce, bounce); c.translate(-pivX, -pivY);
+  c.beginPath(); c.ellipse(W / 2, H - 66, 120, 12, 0, 0, 7); c.fillStyle = 'rgba(20,8,60,0.35)'; c.fill();
+  c.drawImage(IMG[S.shape + 'sau'], ox, oy, L.size[0] * SCALE, L.size[1] * SCALE);
+  drawSand(now, landed);
+  c.drawImage(layer, ox, oy, L.size[0] * SCALE, L.size[1] * SCALE);
+  for (const q of S.parts) { c.fillStyle = q.c; c.fillRect(q.x - q.s / 2, q.y - q.s / 2, q.s, q.s); }
+  c.drawImage(IMG[S.shape + 'truoc'], ox, oy, L.size[0] * SCALE, L.size[1] * SCALE);
+  if (bt < 1.2) { c.save(); c.globalCompositeOperation = 'lighter'; const x = ox - 120 + (L.size[0] * SCALE + 240) * (bt / 1.2);
+    const g2 = c.createLinearGradient(x - 60, 0, x + 60, 0); g2.addColorStop(0, 'rgba(255,255,255,0)'); g2.addColorStop(0.5, 'rgba(255,255,255,0.35)'); g2.addColorStop(1, 'rgba(255,255,255,0)');
+    c.fillStyle = g2; c.beginPath(); c.rect(ox, oy, L.size[0] * SCALE, L.size[1] * SCALE); c.clip(); c.fillRect(x - 60, oy, 120, L.size[1] * SCALE); c.restore(); }
+  c.restore();
+
+  // khay dang do
+  if (p) {
+    const end = FLY + p.flowT, a = Math.min(1, p.t / FLY), b = Math.max(0, Math.min(1, (p.t - end) / FLY));
+    const e = x => x * x * (3 - 2 * x), go = e(a) * (1 - e(b));
+    const hx = mx - 20, hy = my - 64, sx = slotX(p.si);
+    const f = Math.min(1, Math.max(0, (p.t - FLY) / p.flowT));
+    tray(p.tray.k, sx + (hx - sx) * go, SLOT_Y + (hy - SLOT_Y) * go, go * 1.0, (p.start - p.list.length * f) / p.tray.max);
+  }
+  for (const s of S.sparks) { s.r += s.v * dt; s.life -= dt * 0.9; if (s.life <= 0) continue; const [cx2, cy2] = toPx(0, 40);
+    c.fillStyle = `rgba(255,236,150,${s.life})`; const x = cx2 + Math.cos(s.a) * s.r, y = cy2 + Math.sin(s.a) * s.r; c.beginPath(); c.arc(x, y, 3 * s.life + 1, 0, 7); c.fill(); }
+  S.sparks = S.sparks.filter(s => s.life > 0);
+  if (S.done && bt > 0.2) { c.fillStyle = '#fff'; c.font = '800 26px system-ui'; c.textAlign = 'center'; c.fillText(TranhLo.PICTURES[S.pic].name + ' ✓', W / 2, 110); c.textAlign = 'left'; }
+  if (!step) requestAnimationFrame(frame);
+}
+
+// ---- giao dien ----
+function ui() {
+  const v = S.v, keys = Object.keys(v.units), acc = TranhLo.accepts(v);
+  const done = k => unitsOf(k, v.count[k] - TranhLo.left(v, k));
+  document.getElementById('need').innerHTML = '<b>Lọ cần</b>: ' + keys.map(k => `<span style="color:${COL[k]}">●</span> ${NAME[k]} ${done(k)}/${v.units[k]}`).join(' · ')
+    + (S.done ? `<br>Xong sau ${S.pours} lần khay bay lên đổ.` : `<br>Hàng đang lấp cần: ${acc.map(k => `<b style="color:${COL[k]}">${NAME[k]}</b>`).join(' + ')} · đã đổ ${S.pours} lần`);
+  const free = S.slots.includes(null) && !S.done;
+  document.getElementById('trays').innerHTML = keys.filter(k => stillNeed(k) > 0)
+    .map(k => `<button class="add" data-k="${k}" ${free ? '' : 'disabled'}><span class="dot" style="background:${COL[k]}"></span>+ Khay ${NAME[k]}</button>`).join('');
+  document.querySelectorAll('.add').forEach(b => b.onclick = () => addTray(b.dataset.k));
+}
+// tu dong: them khay mau hang dang can con thieu trong cho do
+function autoStep() {
+  if (!auto || S.done) return;
+  for (const k of TranhLo.accepts(S.v)) if (!S.slots.some(t => t && t.k === k) && stillNeed(k) > 0 && S.slots.includes(null)) addTray(k);
+}
+const shapeSel = document.getElementById('shape'), picSel = document.getElementById('pic');
+shapeSel.innerHTML = Object.keys(LAYERS).map(s => `<option value="${s}">${SHAPE_NAME[s]}</option>`).join('');
+picSel.innerHTML = Object.entries(TranhLo.PICTURES).map(([id, p]) => `<option value="${id}">${p.name}${p.special ? ' ★' : ''}</option>`).join('');
+picSel.value = 'mui-ne'; shapeSel.value = LEVEL['mui-ne'][0];
+picSel.onchange = () => { shapeSel.value = LEVEL[picSel.value][0]; auto = false; setup(shapeSel.value, picSel.value); };
+shapeSel.onchange = () => { auto = false; setup(shapeSel.value, picSel.value); };
+document.getElementById('reset').onclick = () => { auto = false; setup(shapeSel.value, picSel.value); };
+document.getElementById('auto').onclick = () => { auto = true; autoStep(); };
+ready.then(() => { setup(shapeSel.value, picSel.value); requestAnimationFrame(t => { last = t; frame(t); }); });
+</script>
+</body>
+</html>

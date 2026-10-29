@@ -1,0 +1,45 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "keepsake-mockup",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "C:/Users/mvhoa/AppData/Local/Temp/claude/C--Hoang-Game-Market/cdc1e0fe-4394-47de-99e9-0cf035e68f78/scratchpad/static-server.mjs"
+      ],
+      "port": 8765
+    },
+    {
+      "name": "concept-store-preview",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "C:/Users/mvhoa/AppData/Local/Temp/claude/C--Hoang-Game-Market/defecfbb-9540-42e5-9d87-e0d1d9881eba/scratchpad/cs-server.mjs"
+      ],
+      "port": 8766
+    },
+    {
+      "name": "lo-3d",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "C:/Users/mvhoa/AppData/Local/Temp/claude/C--Hoang-Game-Market/683a47ef-8420-46e7-a043-1dc49ab6b884/scratchpad/srv-3d.mjs"
+      ],
+      "port": 8767
+    },
+    {
+      "name": "bloom-playable",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "C:/Users/mvhoa/AppData/Local/Temp/claude/C--Hoang-Game-Market/84cb8e7c-d4b3-4cb1-9626-d05792f7c1bd/scratchpad/bloom-server.mjs"
+      ],
+      "port": 8769
+    },
+    {
+      "name": "docs-static",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/docs-server.mjs"
+      ],
+      "port": 8770
+    }
+  ]
+}

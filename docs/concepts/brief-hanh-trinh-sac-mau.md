@@ -1,5 +1,5 @@
 # Brief: "Hành Trình Sắc Màu" (tên tạm)
-Phiên bản: v1, 2026-10-23 | Giai đoạn: đã chốt luật và mockup 2D một màn, chưa có bản chơi được
+Phiên bản: v1.1, 2026-10-26 | Giai đoạn: đã họp chốt làm demo (Unity, art 2.5D), chưa có bản chơi được
 
 > Ghi chú chi tiết đi kèm bộ slide [Hành Trình Sắc Màu – Đề xuất dự án](https://claude.ai/artifact/VHVDwMcxASHLscsHgpHMYr). Mockup: [khay-cat-mockup.html](khay-cat-mockup.html). Các bản nháp cũ (prototype băng chuyền khối màu, concept 2D, băng chuyền ảnh du lịch) đã bị xóa ngày 2026-10-23.
 
@@ -18,7 +18,9 @@ Người chơi mục tiêu: người chơi puzzle casual ở thị trường qu�
 | Thể loại | Puzzle theo lượt, cụm "băng chuyền + màu" có thêm cát |
 | Bố cục màn hình | Từ trên xuống: băng chuyền món đồ, 5 chỗ đổ, bàn trượt khay (bàn trượt nằm trong vùng ngón cái) |
 | Bàn trượt | Lưới kiểu Klotski theo ảnh tham khảo nội bộ. Buồng cát cố định ở hàng trên, có miệng xả ở đáy |
-| Khay | Khay trống, hứng màu gì thì thành màu đó. Cát chảy tới khi khay đầy dung tích |
+| Khay | (Cập nhật 2026-10-27) Nhiều hình dạng (1 ô, thẳng, vuông 2×2, chữ L...), 4 phần cát mỗi ô. Phần lớn khay có màu sẵn, chỉ hứng đúng màu; vài khay trắng hứng màu đầu tiên rơi vào rồi khóa màu. Có khay khóa trục (mũi tên). Khay đầy rời bàn, mở đường cho khay khác |
+| Món đồ là tranh | (2026-10-27) Mỗi lọ khi đầy là một bức tranh cát (vd. biển Mũi Né: biển, sóng, đồi cát, thuyền, trời hoàng hôn), không phải các dải màu phẳng. Tham chiếu: `hanh-trinh-sac-mau/items/IT3-hero-muine-1.png`. Tranh chia thành các vùng màu; mỗi lần đổ, cát chảy vào đúng vùng màu đó và tranh hiện dần. Món thường đổ màu nào trước cũng được; món đặc biệt phải đổ theo vùng từ đáy lên (chốt 2026-10-27). Lượng cát mỗi màu của đơn hàng tính từ số ô của vùng đó trong tranh. Cát trong bể = tổng lượng các lọ của màn cần, nên bảng màu mỗi màn lấy theo tranh của màn đó |
+| Bể cát | (2026-10-27) Thiết kế theo từng màn. Demo dùng một bể lớn trộn nhiều dải màu, cát mô phỏng hạt nên màu dưới bể đổi dần. Bàn có thể có hình bất kỳ |
 | Khối băng | Chắn đường và trượt được như khay. Con số là số lượt còn lại trước khi tan |
 | Chỗ đổ | 5 chỗ. Khay chỉ đổ khi món đang chờ cần đúng màu của nó. Không khớp thì khay nằm yên, không có animation. Khay còn dư cát thì ở lại chiếm chỗ |
 | Animation đổ | Khay nhấc khỏi chỗ đổ, bay lên trên món đồ rồi nghiêng đổ xuống |
@@ -28,7 +30,9 @@ Người chơi mục tiêu: người chơi puzzle casual ở thị trường qu�
 | Món đặc biệt | Viền vàng, phải đổ đúng thứ tự lớp từ đáy lên |
 | Đồng hồ | Không có ở màn thường |
 | Số khay của màn | Tùy level design: có màn khay rời bàn thì sinh khay mới, có màn số khay cố định |
-| Góc nhìn và art | 2.5D: mô hình 3D, camera cố định nhìn từ trên, hơi nghiêng. Logic game vẫn là lưới 2D (đề xuất, chờ người dùng xác nhận lần cuối) |
+| Góc nhìn và art | 2.5D: mô hình 3D, camera cố định nhìn từ trên, hơi nghiêng. Logic game vẫn là lưới 2D (chốt 2026-10-26) |
+| Engine | Unity (chốt 2026-10-26) |
+| Style art | Bàn trượt, cát, khay, buồng cát làm theo ngôn ngữ hình của Sand Blocks: Drop Puzzle (Rollic): nền tím, ô lưới xanh đậm lõm, khay trong suốt viền màu bóng có nhãn %, cát hạt pixel vuông. Chỉ băng chuyền và đồ thủy tinh cần thiết kế style riêng nhưng phải ăn khớp (chốt 2026-10-26). Theo ngôn ngữ hình, không chép asset. **Style frame chốt: `hanh-trinh-sac-mau/style-frame-v2/SF2-full-belt-2.png`** (băng chuyền thẳng) |
 
 ## 3. Đề xuất chưa chốt, chờ thử trên prototype
 | Mục | Đề xuất |
@@ -89,7 +93,6 @@ Lời chê chung của người chơi (200 review Google Play Mỹ mỗi game): 
 - Cách kiếm tiền: IAP + sự kiện hay quảng cáo nhẹ.
 - Thị trường thử đầu tiên: [__]. Gợi ý: thử ở nơi chi phí thấp như Brazil, Thổ Nhĩ Kỳ; nhắm doanh thu ở Mỹ, Anh.
 - Thời gian và ngân sách prototype: [__].
-- Xác nhận lần cuối hướng art 2.5D.
 
 ## 9. Tài liệu liên quan
 - [Xu hướng puzzle 22/10/2026](../market/puzzle-trends-2026-10-22.md)

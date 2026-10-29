@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keepsake Lane: cũ và vintage</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#f6efe6; --ink:#3a2a2a; --muted:#8a7470; --rose:#e78aa0; --gold:#c9a24a; --teal:#3fd6c4; --card:#fffaf3; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:Nunito,sans-serif; }
+  header { text-align:center; padding:24px 16px 8px; }
+  h1 { font:700 24px 'Playfair Display',serif; margin:0 0 6px; }
+  h2 { font:700 19px 'Playfair Display',serif; text-align:center; margin:28px 0 4px; }
+  p.note { text-align:center; margin:0 auto 14px; font-size:14px; color:var(--muted); max-width:680px; padding:0 16px; }
+  .row { display:flex; gap:28px; justify-content:center; flex-wrap:wrap; padding:0 16px 8px; }
+  .col { display:flex; flex-direction:column; align-items:center; }
+  .tag { font-weight:800; font-size:13px; letter-spacing:.06em; text-transform:uppercase; margin-bottom:8px; padding:4px 12px; border-radius:99px; }
+  .tag.old { background:#3b2a1c; color:#e8dcc4; } .tag.new { background:var(--rose); color:#fff; }
+  .phone { position:relative; width:320px; height:569px; overflow:hidden; border-radius:22px; background:#000 center/cover; box-shadow:0 10px 30px #3a2a2a33; }
+  .old .phone { background-image:url(../BG01-shop-night-1.jpg); }
+  .new .phone { background-image:url(BG-boutique-day-1.jpg); }
+  .mys .phone { background-image:url(BG-boutique-dusk-1lamp-1.png); }
+  .tag.mys { background:#4a2d6b; color:#f3e2ff; }
+  .mys .bubble { background:#fdf7ff; color:#3d2450; border:3px solid #b98ad9; }
+  .mys .board { background:#2a1d3ce0; border:3px solid #b98ad9; }
+  .mys .tile { background:#f4e9fb; }
+  .mys .tile.dust::after { background:#2a1d3caa; }
+  .mys .bar { background:#2a1d3c; border:2px solid #b98ad9; color:#f3e2ff; }
+  .pick { font-size:11px; font-weight:800; color:#4a2d6b; margin-top:4px; }
+  .char { position:absolute; bottom:0; height:400px; filter:drop-shadow(0 6px 10px #0005); }
+  .bubble { position:absolute; border-radius:14px; padding:10px 14px; font-weight:800; font-size:14px; line-height:1.3; box-shadow:0 4px 10px #0004; }
+  .old .bubble { background:#f3e6c8; color:#3a2a1c; border:3px solid var(--gold); }
+  .new .bubble { background:#fff; color:#5a3040; border:3px solid var(--rose); }
+  .name { display:block; font-size:11px; letter-spacing:.08em; text-transform:uppercase; opacity:.7; margin-bottom:2px; }
+  .board { position:absolute; left:12px; right:12px; bottom:14px; display:grid; grid-template-columns:repeat(5,1fr); gap:5px; padding:8px; border-radius:14px; }
+  .old .board { background:#3b2a1cdd; border:3px solid var(--gold); }
+  .new .board { background:#fff6f0e6; border:3px solid #f2b8c6; }
+  .tile { aspect-ratio:1; border-radius:8px; position:relative; overflow:hidden; }
+  .old .tile { background:#5a4330; } .new .tile { background:#fde9ee; }
+  .tile .ic { position:absolute; inset:0; background-repeat:no-repeat; }
+  .tile.glow { box-shadow:0 0 0 3px var(--teal), 0 0 12px var(--teal); }
+  .tile.dust::after { content:''; position:absolute; inset:0; background:#fff8; }
+  .old .tile.dust::after { background:#2a1e14aa; }
+  .bar { position:absolute; top:14px; left:50%; transform:translateX(-50%); width:200px; height:20px; border-radius:10px; font-size:11px; font-weight:800; text-align:center; line-height:16px; overflow:hidden; }
+  .old .bar { background:#2a1e14; border:2px solid var(--gold); color:#e8dcc4; }
+  .new .bar { background:#fff; border:2px solid var(--rose); color:#7a3a50; }
+  .bar i { position:absolute; inset:0; width:35%; background:linear-gradient(90deg,#9be8de,var(--teal)); }
+  .bar span { position:relative; }
+  .cap { text-align:center; font-size:13px; margin-top:8px; color:var(--muted); max-width:320px; }
+  .chains { display:grid; gap:10px; max-width:720px; margin:0 auto; padding:0 16px; }
+  .chain { display:flex; align-items:center; gap:8px; background:var(--card); border-radius:14px; padding:10px; box-shadow:0 2px 8px #3a2a2a14; }
+  .chain b { width:110px; font-size:13px; flex:none; }
+  .chain .tile { width:calc((100% - 150px) / 6); flex:none; background:#f6efe6; }
+  .chain.old b { color:#7a5a3a; }
+  table { border-collapse:collapse; margin:0 auto; max-width:720px; width:calc(100% - 32px); background:var(--card); border-radius:14px; overflow:hidden; font-size:14px; }
+  th, td { padding:10px 12px; text-align:left; vertical-align:top; border-bottom:1px solid #eadfd4; }
+  th { background:#f0e2d6; font-size:12px; text-transform:uppercase; letter-spacing:.05em; }
+  footer { text-align:center; font-size:12px; color:var(--muted); padding:24px 16px 32px; }
+  @media (max-width:400px) { .phone { width:calc(100vw - 32px); height:calc((100vw - 32px) * 1.778); } .chain b { width:70px; } .chain .tile { width:calc((100% - 110px) / 6); } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Keepsake Lane: bản cũ, vintage sáng và vintage bí ẩn</h1>
+  <p class="note">Gameplay và mystery giữ nguyên. Chỉ đổi phần hình ảnh để nhắm người chơi nữ: nữ chính, nam chính, tiệm ban ngày và chuỗi item. Ảnh AI chỉ dùng để định hướng, bản thật sẽ do họa sĩ vẽ.</p>
+</header>
+
+<h2>Cảnh hội thoại mở đầu</h2>
+<div class="row">
+  <div class="col old">
+    <div class="tag old">Bản cũ</div>
+    <div class="phone">
+      <img class="char" src="../cutout/CH-clara.png" style="left:-40px">
+      <div class="bubble" style="right:14px;top:120px;width:150px"><span class="name">Clara</span>Grandma… what were you hiding?</div>
+    </div>
+  </div>
+  <div class="col new">
+    <div class="tag new">Bản vintage</div>
+    <div class="phone">
+      <img class="char" src="cutout/CH-victor-v4.png" style="right:-90px;height:380px;opacity:.95">
+      <img class="char" src="cutout/CH-clara-v4.png" style="left:-60px">
+      <div class="bubble" style="left:14px;top:70px;width:170px"><span class="name">Clara</span>Grandma's locket… whose photo is this?</div>
+      <div class="bubble" style="right:14px;top:170px;width:140px"><span class="name">Victor</span>I'll pay you anything for it.</div>
+    </div>
+  </div>
+  <div class="col mys">
+    <div class="tag mys">Vintage bí ẩn</div>
+    <div class="phone">
+      <img class="char" src="cutout/CH-victor-v5.png" style="right:-90px;height:380px">
+      <img class="char" src="cutout/CH-clara-v8-right.png" style="left:-60px">
+      <div class="bubble" style="left:14px;top:70px;width:170px"><span class="name">Clara</span>Someone's outside… watching the shop.</div>
+      <div class="bubble" style="right:14px;top:170px;width:140px"><span class="name">Victor</span>Looking for this key, darling?</div>
+    </div>
+    <div class="pick">★ Đề xuất</div>
+  </div>
+</div>
+<p class="note">Bản vintage bí ẩn giữ nhân vật đẹp và tiệm nữ tính, nhưng chuyển sang chạng vạng: trăng, một chiếc đèn lồng, bóng người đội mũ ngoài cửa sổ, ngăn kéo phát sáng, lá thư niêm phong. Victor là tuyến "kẻ thù hóa người yêu", vừa là nghi phạm vừa là đối tượng tình cảm.</p>
+
+<h2>Biểu cảm Clara (vintage bí ẩn)</h2>
+<p class="note">Giữ nguyên nhân vật, bỏ món đồ trên tay. Ánh sáng khớp nền chạng vạng: đèn lồng ấm bên phải, viền trăng tím lạnh bên trái; mặt vẫn sáng rõ.</p>
+<div class="row" id="heroines"></div>
+
+<h2>Màn bàn ghép</h2>
+<div class="row">
+  <div class="col old">
+    <div class="tag old">Bản cũ</div>
+    <div class="phone"><div class="bar"><i></i><span>Clue 1/3</span></div><div class="board" id="boardOld"></div></div>
+  </div>
+  <div class="col new">
+    <div class="tag new">Bản vintage</div>
+    <div class="phone"><div class="bar"><i></i><span>Clue 1/3</span></div><div class="board" id="boardNew"></div></div>
+  </div>
+  <div class="col mys">
+    <div class="tag mys">Vintage bí ẩn</div>
+    <div class="phone"><div class="bar"><i></i><span>Clue 1/3</span></div><div class="board" id="boardMys"></div></div>
+    <div class="pick">★ Đề xuất</div>
+  </div></div>
+
+<h2>Chuỗi item</h2>
+<p class="note">Bỏ bánh răng và đồ nghề, thay bằng locket, nước hoa và váy. Cấp cuối phát sáng xanh ngọc vì chứa manh mối: locket có ảnh cũ, chai nước hoa có mẩu thư.</p>
+<div class="chains" id="chains"></div>
+
+<h2>Thay đổi chính</h2>
+<table>
+  <tr><th></th><th>Bản cũ</th><th>Vintage bí ẩn (đề xuất)</th></tr>
+  <tr><td><b>Nữ chính</b></td><td>32 tuổi, mệt mỏi, áo len, tạp dề</td><td>Khoảng 26 tuổi, váy tea dress, cardigan, nơ lụa; biểu cảm giật mình, nghi ngờ</td></tr>
+  <tr><td><b>Nam chính</b></td><td>Chưa có (Victor là ông chủ có ria)</td><td>Victor khoảng 30 tuổi, đối thủ kiêm đối tượng tình cảm, cầm chìa khóa bí ẩn</td></tr>
+  <tr><td><b>Bối cảnh</b></td><td>Tiệm đồ cổ, đêm mưa</td><td>Tiệm vintage của bà lúc chạng vạng: trăng, một đèn lồng, sương mù</td></tr>
+  <tr><td><b>Bảng màu</b></td><td>Nâu gỗ, xanh rêu, đỏ rượu</td><td>Xanh đêm, tím mận, hồng phấn trầm, vàng đèn lồng; xanh ngọc cho manh mối</td></tr>
+  <tr><td><b>Tín hiệu bí ẩn</b></td><td>Đêm mưa, tông tối</td><td>Bóng người ngoài cửa sổ, ngăn kéo phát sáng, thư niêm phong sáp đỏ, item cấp cuối phát sáng</td></tr>
+  <tr><td><b>Item</b></td><td>Đồng hồ, bánh răng, đồ nghề</td><td>Locket, nước hoa, váy; giữ hộp nhạc, tách trà, thư</td></tr>
+  <tr><td><b>Giữ nguyên</b></td><td colspan="2">Gameplay merge, cấu trúc bàn ghép, mystery cái chết của bà, mỗi món phục chế hé lộ một manh mối</td></tr>
+</table>
+<footer>Concept nội bộ, 27/10/2026. Ảnh sinh bằng AI (Nano Banana 2.1, FLUX 1.1 pro), chỉ để định hướng.</footer>
+
+<script>
+// Cắt từng ô từ tấm 3x2 (1264x848, ô ~340px)
+const X = [55, 462, 868], Y = [48, 452], T = 340, W = 1264;
+function icon(sheet, i, el) {
+  const d = document.createElement('div'); d.className = 'ic';
+  const run = () => {
+    const s = el.clientWidth / T;
+    d.style.backgroundImage = `url(${sheet})`;
+    d.style.backgroundSize = `${W * s}px auto`;
+    d.style.backgroundPosition = `${-X[i % 3] * s}px ${-Y[Math.floor(i / 3)] * s}px`;
+  };
+  requestAnimationFrame(run); addEventListener('resize', run);
+  el.appendChild(d);
+}
+function board(id, cells) {
+  const b = document.getElementById(id);
+  for (const c of cells) {
+    const t = document.createElement('div'); t.className = 'tile' + (c?.cls ? ' ' + c.cls : '');
+    b.appendChild(t);
+    if (c?.s) icon(c.s, c.i, t);
+  }
+}
+const CLK = '../icons-v3/CLK-sheet-1.png', TOOL = '../icons-v3/GEN-TOOL-sheet-1.png';
+const LOC = 'LOC-sheet-2.png', PRF = 'PRF-sheet-1.png', DRS = 'DRS-sheet-2.png';const layout = (a, b, c) => [
+  { cls: 'dust', s: a, i: 3 }, { s: b, i: 1 }, null, { s: c, i: 0 }, { cls: 'dust', s: b, i: 4 },
+  { s: a, i: 0 }, null, { s: a, i: 3, cls: 'glow' }, { s: a, i: 3, cls: 'glow' }, { s: c, i: 2 },
+  { s: b, i: 0 }, { s: a, i: 2 }, null, { s: b, i: 2 }, null,
+  { cls: 'dust', s: c, i: 4 }, { s: c, i: 1 }, { s: a, i: 1 }, null, { cls: 'dust', s: a, i: 5 },
+];
+board('boardOld', layout(CLK, TOOL, TOOL));
+board('boardNew', layout(LOC, PRF, DRS));
+board('boardMys', layout(LOC, PRF, DRS));const heroines = document.getElementById('heroines');
+for (const [file, name, desc] of [
+  ['CH-clara-v5', 'Bản trước', 'Há miệng, ánh xanh hắt lên mặt làm da xám'],
+  ['CH-clara-v7-down', 'Liếc trái', 'Bản trước khi đổi hướng nhìn'],
+  ['CH-clara-v8-right', 'Nhìn sang phải (dùng ở cảnh hội thoại)', 'Liếc về phía Victor; ánh đèn ấm + viền trăng'],
+  
+]) {
+  const c = document.createElement('div'); c.className = 'col mys';
+  c.innerHTML = `<div class="phone" style="width:240px;height:427px">
+      <img class="char" src="cutout/CH-victor-v5.png" style="right:-80px;height:280px">
+      <img class="char" src="cutout/${file}.png" style="left:-40px;height:310px">
+    </div>
+    <div class="pick">${name}</div><div class="cap" style="max-width:240px">${desc}</div>`;
+  heroines.appendChild(c);
+}
+const chains = document.getElementById('chains');
+for (const [name, sheet, old] of [['Đồng hồ (cũ)', CLK, 1], ['Đồ nghề (cũ)', TOOL, 1], ['Locket', LOC], ['Nước hoa', PRF], ['Váy', DRS]]) {
+  const r = document.createElement('div'); r.className = 'chain' + (old ? ' old' : '');
+  r.innerHTML = `<b>${name}</b>`;
+  chains.appendChild(r);
+  for (let i = 0; i < 6; i++) { const t = document.createElement('div'); t.className = 'tile'; r.appendChild(t); icon(sheet, i, t); }
+}
+</script>
+</body>
+</html>

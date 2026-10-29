@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bloom Corner glossy v2</title>
+<style>
+  :root {
+    --bg: #faf6f1; --card: #ffffff; --ink: #2b2420; --muted: #7a6d64; --line: #eadfd4;
+    --v1: #9a8f86; --v2: #e0663a; --store: #2a8f86;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #1d1916; --card: #27221e; --ink: #f2ebe4; --muted: #b3a79d; --line: #3a322c; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, "Segoe UI", sans-serif; }
+  main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 64px; display: grid; gap: 28px; }
+  h1 { font-size: 24px; margin: 0 0 4px; }
+  h2 { font-size: 19px; margin: 0 0 4px; }
+  p { margin: 0; color: var(--muted); }
+  section { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: grid; gap: 14px; }
+  .cols { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); align-items: start; }
+  .col { display: grid; gap: 8px; }
+  .tag { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .03em; color: #fff; padding: 2px 9px; border-radius: 99px; justify-self: start; }
+  .tag.v1 { background: var(--v1); } .tag.v2 { background: var(--v2); } .tag.store { background: var(--store); }
+  .imgs { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+  figure { margin: 0; display: grid; gap: 4px; }
+  figcaption { font-size: 12px; color: var(--muted); }
+  img { width: 100%; height: auto; display: block; border-radius: 10px; border: 1px solid var(--line); cursor: zoom-in; background: #fff; }
+  .note { font-size: 13.5px; color: var(--ink); background: color-mix(in srgb, var(--v2) 10%, transparent); border-left: 3px solid var(--v2); padding: 8px 12px; border-radius: 6px; }
+  dialog { border: 0; padding: 0; background: transparent; max-width: 96vw; max-height: 96vh; }
+  dialog img { max-width: 96vw; max-height: 94vh; width: auto; cursor: zoom-out; }
+  dialog::backdrop { background: rgba(0,0,0,.8); }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Bloom Corner: style cartoon vẽ màu bóng bẩy, bản v2</h1>
+    <p>Mỗi mục so sánh 3 cột: bản cũ 27/10, bản mới 28/10 và ảnh của game đang có thứ hạng trên store. Bấm vào ảnh để phóng to.</p>
+  </header>
+  <div id="root"></div>
+</main>
+<dialog id="zoom"><img alt=""></dialog>
+<script>
+const V1 = "../web/", V2 = "web/", CROP = "store-crops/", STORE = "../../../../../../market/style-refs/merge-glossy-cartoon/";
+const S = f => ({ src: STORE + f + ".jpg", cap: f.replace(/-(\d)$/, " ($1)").replace(/-/g, " ") });
+const SECTIONS = [
+  {
+    title: "Nhân vật chính: Clara",
+    desc: "Phần thay đổi rõ nhất. Bản cũ là tranh minh họa có viền mực. Bản mới vẽ mặt và khối theo kiểu semi-3D giống nữ chính Tasty Travels, Hotel Legacy.",
+    v1: [{ src: V1 + "CH-clara.jpg", cap: "Clara bản cũ" }],
+    v2: [{ src: V2 + "CH-clara-c.jpg", cap: "Clara bản chọn (c)" }, { src: V2 + "CH-clara-d.jpg", cap: "Bản d" }, { src: V2 + "CH-clara-a.jpg", cap: "Bản a" }, { src: V2 + "CH-clara-b.jpg", cap: "Bản b" }],
+    store: [{ src: CROP + "ref-tt2-heroine.png", cap: "Tasty Travels (cắt cận)" }, { src: CROP + "ref-hl-heroine.png", cap: "Hotel Legacy (cắt cận)" }, { src: CROP + "ref-tt1-faces.png", cap: "Tasty Travels: hàng khách" }],
+    note: "Bản a và b gen bằng ảnh mẫu là cả màn hình nên vẫn ra kiểu minh họa. Bản c và d dùng ảnh cắt cận mặt nên bám style tốt hơn."
+  },
+  {
+    title: "Chuỗi item hoa (FLW)",
+    desc: "Item mới có khối tròn, highlight bóng và không có viền nâu dày, giống item trên board của Flambé và Hotel Legacy.",
+    v1: [{ src: V1 + "FLW-chain.jpg", cap: "Bản cũ" }],
+    v2: [{ src: V2 + "FLW-chain.jpg", cap: "Bản mới" }],
+    store: [S("flambe-1"), S("hotel-legacy-1")]
+  },
+  {
+    title: "Chuỗi item thời trang (FSH)",
+    desc: "Lấy chuỗi hoa v2 làm mẫu, nên góc nhìn, ánh sáng và tỉ lệ khớp nhau.",
+    v1: [{ src: V1 + "FSH-chain.jpg", cap: "Bản cũ" }],
+    v2: [{ src: V2 + "FSH-chain.jpg", cap: "Bản mới" }],
+    store: [S("tasty-travels-1"), S("seaside-escape-1")]
+  },
+  {
+    title: "Chuỗi item café (CAF)",
+    desc: "Cùng cách làm với chuỗi thời trang.",
+    v1: [{ src: V1 + "CAF-chain.jpg", cap: "Bản cũ" }],
+    v2: [{ src: V2 + "CAF-chain.jpg", cap: "Bản mới" }],
+    store: [S("tasty-travels-2"), S("flambe-2")]
+  },
+  {
+    title: "Nền tiệm ban ngày",
+    desc: "Bản mới sáng và sạch hơn, nhưng tông pastel còn nhạt hơn nền của game trên store.",
+    v1: [{ src: V1 + "BG-store.jpg", cap: "Bản cũ" }],
+    v2: [{ src: V2 + "BG-store.jpg", cap: "Bản mới" }],
+    store: [S("hotel-legacy-2"), S("travel-town-1")]
+  },
+  {
+    title: "Leo và màn chơi",
+    desc: "Chưa gen bản mới. Tạm để bản cũ cạnh ảnh store để thấy độ chênh.",
+    v1: [{ src: V1 + "CH-leo.jpg", cap: "Leo bản cũ" }, { src: V1 + "SCREEN-board.jpg", cap: "Màn chơi bản cũ" }],
+    v2: [],
+    store: [S("tasty-travels-1"), S("hotel-legacy-1")]
+  },
+  {
+    title: "Toàn bộ ảnh store của nhóm style này",
+    desc: "Tasty Travels, Travel Town, Hotel Legacy, Flambé, Seaside Escape, Family Farm Merge, Merge Age.",
+    store: ["tasty-travels", "travel-town", "hotel-legacy", "flambe", "seaside-escape", "family-farm-merge", "merge-age"].flatMap(g => [S(g + "-1"), S(g + "-2")])
+  }
+];
+const el = (tag, attrs = {}, kids = []) => { const n = Object.assign(document.createElement(tag), attrs); n.append(...kids); return n; };
+const zoom = document.getElementById("zoom"), zimg = zoom.querySelector("img");
+zoom.addEventListener("click", () => zoom.close());
+const fig = it => {
+  const img = el("img", { src: it.src, alt: it.cap, loading: "lazy" });
+  img.addEventListener("click", () => { zimg.src = it.src; zoom.showModal(); });
+  return el("figure", {}, [img, el("figcaption", { textContent: it.cap })]);
+};
+const col = (cls, label, items) => el("div", { className: "col" }, [
+  el("span", { className: "tag " + cls, textContent: label }),
+  items.length ? el("div", { className: "imgs" }, items.map(fig)) : el("p", { textContent: "Chưa có (fal hết credit)." })
+]);
+const root = document.getElementById("root");
+root.style.cssText = "display:grid;gap:28px";
+for (const s of SECTIONS) {
+  const cols = [];
+  if (s.v1) cols.push(col("v1", "Bản cũ 27/10", s.v1));
+  if (s.v2) cols.push(col("v2", "Bản mới 28/10", s.v2));
+  cols.push(col("store", "Game trên store", s.store));
+  const kids = [el("div", {}, [el("h2", { textContent: s.title }), el("p", { textContent: s.desc })]), el("div", { className: "cols" }, cols)];
+  if (s.note) kids.push(el("div", { className: "note", textContent: s.note }));
+  root.append(el("section", {}, kids));
+}
+</script>
+</body>
+</html>

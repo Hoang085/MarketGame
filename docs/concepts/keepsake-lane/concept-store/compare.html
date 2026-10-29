@@ -1,0 +1,266 @@
+<title>Bloom Corner Concept</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  /* Layout: báo cáo dọc, mỗi mục là một hàng so sánh 2 cột (bản cũ trái, bản mới phải), xuống 1 cột ở màn hẹp */
+  :root {
+    --bg: #f3f5f1; --card: #ffffff; --fg: #25302a; --muted: #66726a; --line: #dfe5dd;
+    --rose: #c2557a; --rose-soft: #f8e3ea; --sage: #4f7d61; --sage-soft: #e3eee6;
+    --plum: #4a2d6b; --plum-soft: #ece4f4;
+    --font: "Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --bg: #161b18; --card: #1f2621; --fg: #e7ece8; --muted: #a2ada5; --line: #313a34;
+    --rose: #e58aa8; --rose-soft: #3a2630; --sage: #8fc0a0; --sage-soft: #23332a;
+    --plum: #c9a6ec; --plum-soft: #2e2440; color-scheme: dark; } }
+  :root[data-theme="dark"] {
+    --bg: #161b18; --card: #1f2621; --fg: #e7ece8; --muted: #a2ada5; --line: #313a34;
+    --rose: #e58aa8; --rose-soft: #3a2630; --sage: #8fc0a0; --sage-soft: #23332a;
+    --plum: #c9a6ec; --plum-soft: #2e2440; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 15px; line-height: 1.55;
+    padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 48px; }
+  .wrap { max-width: 1040px; margin: 0 auto; display: flex; flex-direction: column; gap: 44px; }
+  header { display: flex; flex-direction: column; gap: 10px; }
+  .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--rose); }
+  h1 { font-size: clamp(26px, 4vw, 38px); line-height: 1.15; margin: 0; font-weight: 800; text-wrap: balance; }
+  h2 { font-size: 21px; margin: 0; font-weight: 700; text-wrap: balance; }
+  p { margin: 0; max-width: 68ch; }
+  .lead { color: var(--muted); font-size: 16px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill { font-size: 13px; font-weight: 600; padding: 4px 12px; border-radius: 99px; }
+  .pill.rose { background: var(--rose-soft); color: var(--rose); }
+  .pill.sage { background: var(--sage-soft); color: var(--sage); }
+  .pill.plum { background: var(--plum-soft); color: var(--plum); }
+  section { display: flex; flex-direction: column; gap: 14px; }
+  .note { color: var(--muted); font-size: 14px; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .col { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 0; }
+  .tag { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; padding: 4px 12px; border-radius: 99px; }
+  .tag.old { background: var(--plum-soft); color: var(--plum); }
+  .tag.new { background: var(--rose-soft); color: var(--rose); }
+  .cap { font-size: 13px; color: var(--muted); text-align: center; max-width: 320px; }
+  /* Màn hình điện thoại giả lập: màu bên trong cố định theo ảnh game, không theo theme */
+  .phone { position: relative; width: 300px; max-width: 100%; aspect-ratio: 9 / 16; overflow: hidden; border-radius: 22px;
+    background: #222 center / cover no-repeat; box-shadow: 0 10px 28px rgb(0 0 0 / .18); }
+  .phone.mys { background-image: url(vintage/BG-boutique-dusk-1lamp-1.png); }
+  .phone.store { background-image: url(concept-art/BG-store-day-2.png); }
+  .char { position: absolute; bottom: 0; height: 72%; max-width: none; filter: drop-shadow(0 6px 10px rgb(0 0 0 / .3)); }
+  .bubble { position: absolute; border-radius: 14px; padding: 8px 12px; font-weight: 700; font-size: 13px; line-height: 1.3;
+    box-shadow: 0 4px 10px rgb(0 0 0 / .25); max-width: 58%; }
+  .bubble small { display: block; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; opacity: .7; }
+  .mys .bubble { background: #fdf7ff; color: #3d2450; border: 3px solid #b98ad9; }
+  .store .bubble { background: #fff; color: #5a3040; border: 3px solid #eaa0b8; }
+  .board { position: absolute; left: 10px; right: 10px; bottom: 12px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; padding: 7px; border-radius: 14px; }
+  .mys .board { background: #2a1d3ce0; border: 3px solid #b98ad9; }
+  .store .board { background: #fffaf5e8; border: 3px solid #eaa0b8; }
+  .tile { aspect-ratio: 1; border-radius: 7px; position: relative; overflow: hidden; }
+  .mys .tile { background: #f4e9fb; } .store .tile { background: #fdeef2; }
+  .tile.dust::after { content: ""; position: absolute; inset: 0; background: #fff9; }
+  .mys .tile.dust::after { background: #2a1d3caa; }
+  .tile.glow { box-shadow: 0 0 0 3px #3fd6c4, 0 0 10px #3fd6c4; }
+  .ic { position: absolute; inset: 0; background-repeat: no-repeat; }
+  .bar { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 64%; height: 18px; border-radius: 9px; overflow: hidden;
+    font-size: 10px; font-weight: 800; text-align: center; line-height: 14px; }
+  .mys .bar { background: #2a1d3c; border: 2px solid #b98ad9; color: #f3e2ff; }
+  .store .bar { background: #fff; border: 2px solid #eaa0b8; color: #8a3a56; }
+  .bar i { position: absolute; inset: 0; width: 40%; }
+  .mys .bar i { background: #3fd6c4aa; } .store .bar i { background: #f6b6c9; }
+  .bar span { position: relative; }
+  /* Phối đồ */
+  .dress { display: grid; grid-template-columns: 300px 1fr; gap: 28px; align-items: start; }
+  .phone.closet { background: linear-gradient(#fbeff3, #f3e6ec); }
+  .phone.closet .char { height: 74%; left: 50%; transform: translateX(-50%); bottom: 92px; transition: opacity .2s; }
+  .slots { position: absolute; left: 10px; right: 10px; bottom: 12px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .slot { appearance: none; border: 3px solid #f2c4d3; background: #fff; border-radius: 12px; padding: 4px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px;
+    font: 700 10px var(--font); color: #8a3a56; }
+  .slot img { height: 48px; object-fit: cover; object-position: top; width: 100%; border-radius: 8px; background: #fdeef2; }
+  .slot[aria-pressed="true"] { border-color: #c2557a; box-shadow: 0 0 0 2px #c2557a55; }
+  .slot:focus-visible { outline: 3px solid #4f7d61; outline-offset: 2px; }
+  .closet-title { position: absolute; top: 12px; left: 0; right: 0; text-align: center; font: 800 14px var(--font); color: #8a3a56; }
+  .polaroid { background: #fff; padding: 12px 12px 40px; border-radius: 4px; box-shadow: 0 10px 24px rgb(0 0 0 / .2); transform: rotate(-2.5deg); max-width: 340px; position: relative; }
+  .polaroid img { display: block; width: 100%; border-radius: 2px; }
+  .polaroid figcaption { position: absolute; left: 0; right: 0; bottom: 10px; text-align: center; font: 600 14px var(--font); color: #5a3040; }
+  .flow { display: flex; flex-direction: column; gap: 10px; }
+  .flow ol { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; }
+  /* Chuỗi item */
+  .chains { display: flex; flex-direction: column; gap: 10px; }
+  .chain { display: grid; grid-template-columns: 130px repeat(6, 1fr); gap: 8px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 10px; }
+  .chain b { font-size: 14px; }
+  .chain b span { display: block; font-weight: 500; font-size: 12px; color: var(--muted); }
+  .chain .tile { background: #f6efe6; }
+  /* Bảng */
+  .tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  thead th { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  tbody th { font-weight: 700; white-space: nowrap; }
+  tbody tr:last-child > * { border-bottom: 0; }
+  td.win { background: var(--sage-soft); }
+  footer { font-size: 12px; color: var(--muted); }
+  @media (max-width: 720px) {
+    .pair, .dress { grid-template-columns: 1fr; }
+    .chain { grid-template-columns: repeat(6, 1fr); }
+    .chain b { grid-column: 1 / -1; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Concept đổi theme · 27/10/2026</span>
+    <h1>Bloom Corner: tiệm hoa, café và thời trang</h1>
+    <p class="lead">Bỏ mystery, nhắm người chơi nữ. Một "concept store" nơi nữ chính bán hoa, pha café và phối đồ. Item merge làm kiểu tròn dễ thương; nhân vật và nền giữ nét vẽ 2D như bản vintage. Gameplay merge giữ nguyên. Tên game là tên tạm.</p>
+    <div class="pills">
+      <span class="pill rose">Hoa: bản sắc, cái móc quảng cáo</span>
+      <span class="pill sage">Café, bánh: chuỗi phụ</span>
+      <span class="pill plum">Thời trang: phối đồ, chụp ảnh kỷ niệm</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>Cảnh hội thoại mở đầu</h2>
+    <div class="pair">
+      <div class="col">
+        <span class="tag old">Vintage bí ẩn (đã gửi)</span>
+        <div class="phone mys">
+          <img class="char" src="vintage/CH-victor-v5.png" alt="Victor" style="right:-34%">
+          <img class="char" src="vintage/CH-clara-v8-right.png" alt="Clara" style="left:-22%">
+          <div class="bubble" style="left:5%;top:9%"><small>Clara</small>Someone's outside… watching the shop.</div>
+          <div class="bubble" style="right:5%;top:27%"><small>Victor</small>Looking for this key, darling?</div>
+        </div>
+      </div>
+      <div class="col">
+        <span class="tag new">Concept store (mới)</span>
+        <div class="phone store">
+          <img class="char" src="concept-art/cutout/CH-leo.png" alt="Leo" style="right:-34%">
+          <img class="char" src="concept-art/cutout/CH-heroine.png" alt="Nữ chính" style="left:-22%">
+          <div class="bubble" style="left:5%;top:9%"><small>Clara</small>Grandma's flower shop is mine now!</div>
+          <div class="bubble" style="right:5%;top:27%"><small>Leo</small>Mind if I take your photo for my blog?</div>
+        </div>
+      </div>
+    </div>
+    <p class="note">Bản mới thay nghi phạm Victor bằng Leo, nhiếp ảnh gia và tuyến tình cảm. Leo cũng là người dẫn người chơi vào tính năng chụp ảnh. Drama nhẹ vẫn giữ: dựng lại tiệm của bà, cạnh tranh với một chuỗi café lớn.</p>
+  </section>
+
+  <section>
+    <h2>Màn bàn ghép</h2>
+    <div class="pair">
+      <div class="col">
+        <span class="tag old">Vintage bí ẩn</span>
+        <div class="phone mys"><div class="bar"><i></i><span>Clue 1/3</span></div><div class="board" id="boardMys"></div></div>
+        <p class="cap">Locket, nước hoa, váy; nền chạng vạng một đèn</p>
+      </div>
+      <div class="col">
+        <span class="tag new">Concept store</span>
+        <div class="phone store"><div class="bar"><i></i><span>Đơn hàng 3/5</span></div><div class="board" id="boardStore"></div></div>
+        <p class="cap">Hoa, café, phụ kiện thời trang; item tròn, màu kẹo</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Phối đồ và chụp ảnh kỷ niệm</h2>
+    <div class="dress">
+      <div class="col">
+        <div class="phone closet" id="closet">
+          <div class="closet-title">Tủ đồ</div>
+          <img class="char" id="outfitImg" src="concept-art/cutout/CH-heroine.png" alt="Nữ chính mặc bộ tạp dề tiệm hoa">
+          <div class="slots" role="group" aria-label="Chọn bộ đồ">
+            <button class="slot" id="o-apron" aria-pressed="true" data-src="concept-art/cutout/CH-heroine.png" data-alt="Nữ chính mặc bộ tạp dề tiệm hoa"><img src="concept-art/cutout/CH-heroine.png" alt="">Tạp dề</button>
+            <button class="slot" id="o-sun" aria-pressed="false" data-src="concept-art/cutout/CH-heroine-sundress.png" data-alt="Nữ chính mặc váy hoa và mũ cói"><img src="concept-art/cutout/CH-heroine-sundress.png" alt="">Váy hoa</button>
+            <button class="slot" id="o-eve" aria-pressed="false" data-src="concept-art/cutout/CH-heroine-evening.png" data-alt="Nữ chính mặc váy dạ hội hồng"><img src="concept-art/cutout/CH-heroine-evening.png" alt="">Dạ hội</button>
+          </div>
+        </div>
+        <p class="cap">Bấm để đổi bộ đồ</p>
+      </div>
+      <div class="flow">
+        <figure class="polaroid" style="margin:0">
+          <img src="concept-art/PHOTO-memory-1.png" alt="Ảnh kỷ niệm: nữ chính mặc váy hoa trước tường hoa, bên bàn café">
+          <figcaption>Buổi sáng đầu tiên ở Bloom Corner</figcaption>
+        </figure>
+        <p><b>Vòng chơi:</b></p>
+        <ol>
+          <li>Merge ra bó hoa, ly café, phụ kiện để giao đơn hàng.</li>
+          <li>Đồ merge cấp cao mở trang phục mới, bó hoa thành đạo cụ chụp ảnh.</li>
+          <li>Phối đồ ở tủ đồ, chọn góc tiệm đã trang trí làm phông.</li>
+          <li>Chụp ảnh, lưu vào album kỷ niệm. Mỗi sự kiện có một bộ ảnh riêng.</li>
+        </ol>
+        <p class="note">Phạm vi cho đội nhỏ: 1 nữ chính chân dung nửa người, 4 ô phối đồ (tóc, áo/váy, phụ kiện, đạo cụ), 20–30 món lúc ra mắt, thêm 5–10 món mỗi sự kiện. Trang phục chủ yếu đến từ merge và đơn hàng, để phối đồ không lấn át merge.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Chuỗi item mới</h2>
+    <div class="chains" id="chains"></div>
+  </section>
+
+  <section>
+    <h2>So sánh hai hướng</h2>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th></th><th>Vintage bí ẩn</th><th>Concept store hoa + café + thời trang</th></tr></thead>
+        <tbody>
+          <tr><th>Cái móc quảng cáo</th><td>Bóng người ngoài cửa sổ, món đồ chứa manh mối</td><td class="win">Bó hoa xấu thành bó hoa cưới; nữ chính đổi đồ rồi chụp ảnh</td></tr>
+          <tr><th>Tệp người chơi</th><td>Nữ 25–45 thích truyện bí ẩn, romance</td><td class="win">Nữ 18–45, rộng hơn; thích trang trí, thời trang, ảnh đẹp</td></tr>
+          <tr><th>Đối thủ</th><td class="win">Theme đồ cổ gần như trống (Merge Museum nhỏ)</td><td>Hoa: chỉ game nhỏ (Florescence, Florist Order). Café/đồ ăn và thời trang: đông, publisher lớn (Tasty Travels, Hollywood Merge)</td></tr>
+          <tr><th>Bằng chứng tiền</th><td>Mystery có tiền: Mystery Town ~40,6 triệu USD H1 2026</td><td>Đồ ăn: Tasty Travels ~127 triệu USD H1. Thời trang: Hollywood Merge ~15,8 triệu USD 6 tháng. Hoa: chưa có hit</td></tr>
+          <tr><th>Kiếm tiền thêm</th><td>Pass, sự kiện vụ án nhỏ</td><td class="win">Pass, sự kiện, bán trang phục, khung ảnh, phông nền</td></tr>
+          <tr><th>Khối lượng art</th><td class="win">Nhân vật nhiều biểu cảm, item, phòng</td><td>Thêm trang phục vẽ theo lớp và ảnh kỷ niệm; nặng hơn</td></tr>
+          <tr><th>Rủi ro chính</th><td>Theme đồ cổ chưa được kiểm chứng; sếp chê hình ảnh</td><td>Mix 3 thứ dễ loãng bản sắc; tính năng phối đồ có thể kéo nhầm tệp dress-up</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note">Đề xuất bước tiếp: làm 3 video quảng cáo cho concept store (mở đầu bằng hoa, bằng bánh, bằng đổi đồ chụp ảnh) và chạy cùng ngân sách nhỏ để so CTR, CPI trước khi dựng thêm.</p>
+  </section>
+
+  <footer>Ảnh do AI tạo (Nano Banana 2.1, FLUX 1.1 pro), chỉ dùng để định hướng nội bộ. Asset trong game sẽ do họa sĩ vẽ. Số liệu thị trường: ước tính AppMagic (báo cáo công khai) và thứ hạng App Store/Google Play US, GB thu thập 19–27/10/2026.</footer>
+</div>
+
+<script>
+  // Cắt từng ô từ tấm 3x2 (1264x848, mỗi ô ~340px)
+  const X = [55, 462, 868], Y = [48, 452], T = 340, W = 1264;
+  function icon(sheet, i, el) {
+    const d = document.createElement('div'); d.className = 'ic';
+    const run = () => {
+      const s = el.clientWidth / T;
+      d.style.backgroundImage = `url(${sheet})`;
+      d.style.backgroundSize = `${W * s}px auto`;
+      d.style.backgroundPosition = `${-X[i % 3] * s}px ${-Y[Math.floor(i / 3)] * s}px`;
+    };
+    requestAnimationFrame(run); addEventListener('resize', run);
+    el.appendChild(d);
+  }
+  function board(id, cells) {
+    const b = document.getElementById(id);
+    for (const c of cells) {
+      const t = document.createElement('div'); t.className = 'tile' + (c?.cls ? ' ' + c.cls : '');
+      b.appendChild(t);
+      if (c?.s) icon(c.s, c.i, t);
+    }
+  }
+  const layout = (a, b, c) => [
+    { cls: 'dust', s: a, i: 3 }, { s: b, i: 1 }, null, { s: c, i: 0 }, { cls: 'dust', s: b, i: 4 },
+    { s: a, i: 0 }, null, { s: a, i: 3, cls: 'glow' }, { s: a, i: 3, cls: 'glow' }, { s: c, i: 2 },
+    { s: b, i: 0 }, { s: a, i: 2 }, null, { s: b, i: 2 }, null,
+    { cls: 'dust', s: c, i: 4 }, { s: c, i: 1 }, { s: a, i: 1 }, null, { cls: 'dust', s: a, i: 5 },
+  ];
+  board('boardMys', layout('vintage/LOC-sheet-2.png', 'vintage/PRF-sheet-1.png', 'vintage/DRS-sheet-2.png'));
+  const FLW = 'concept-art/FLW-sheet-2.png', CAF = 'concept-art/CAF-sheet-1.png', FSH = 'concept-art/FSH-sheet-1.png';
+  board('boardStore', layout(FLW, CAF, FSH));
+  const chains = document.getElementById('chains');
+  for (const [name, sub, sheet] of [['Hoa', 'hạt giống → giỏ hoa', FLW], ['Café, bánh', 'hạt café → tiệc trà', CAF], ['Thời trang', 'ruy băng → váy hè', FSH]]) {
+    const r = document.createElement('div'); r.className = 'chain';
+    r.innerHTML = `<b>${name}<span>${sub}</span></b>`;
+    chains.appendChild(r);
+    for (let i = 0; i < 6; i++) { const t = document.createElement('div'); t.className = 'tile'; r.appendChild(t); icon(sheet, i, t); }
+  }
+  // Tủ đồ: đổi bộ đồ
+  const img = document.getElementById('outfitImg');
+  document.querySelectorAll('.slot').forEach(btn => btn.addEventListener('click', () => {
+    document.querySelectorAll('.slot').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+    img.src = btn.dataset.src; img.alt = btn.dataset.alt;
+  }));
+</script>

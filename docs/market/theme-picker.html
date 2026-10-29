@@ -1,0 +1,229 @@
+<title>Bloom Corner Themes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap">
+<style>
+/* Layout: cùng hệ với trang art style; mỗi theme là một mục có kệ ảnh store, mô tả truyện/item/ads, căn cứ và phiên bản Bloom Corner. */
+:root{
+  --bg:#f7f8fb; --surface:#ffffff; --ink:#1f2433; --muted:#636a7d; --line:#e1e4ec;
+  --petal:#3b5bdb; --petal-soft:#e6ebfb; --leaf:#3f7a52; --leaf-soft:#e3f0e6; --warn:#a15c00; --warn-soft:#fbefd9;
+  --display:"Baloo 2", "Trebuchet MS", system-ui, sans-serif;
+  --body:"Be Vietnam Pro", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#151821; --surface:#1e2230; --ink:#eef0f6; --muted:#a5abbd; --line:#2f3446;
+  --petal:#8ea4ff; --petal-soft:#25305a; --leaf:#86c79a; --leaf-soft:#1f3326; --warn:#f2b45c; --warn-soft:#3a2c17; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#151821; --surface:#1e2230; --ink:#eef0f6; --muted:#a5abbd; --line:#2f3446;
+  --petal:#8ea4ff; --petal-soft:#25305a; --leaf:#86c79a; --leaf-soft:#1f3326; --warn:#f2b45c; --warn-soft:#3a2c17; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font:15px/1.6 var(--body)}
+.wrap{max-width:1080px;margin:0 auto;padding-block:32px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:40px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(30px,5vw,46px);font-weight:800}
+h2{font-size:clamp(24px,3.4vw,32px);font-weight:800}
+h3{font-size:17px;font-weight:600;letter-spacing:.01em}
+p{margin:0}
+a{color:var(--petal)}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--petal)}
+header{display:grid;gap:14px}
+.how{display:flex;flex-wrap:wrap;gap:8px 18px;color:var(--muted);font-size:14px}
+.how b{color:var(--ink)}
+.tablebox{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:720px;font-size:14px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+tr:last-child td{border-bottom:0}
+td a{font-weight:600;text-decoration:none}
+.rank{font-family:var(--display);font-weight:800;font-size:20px;color:var(--petal);font-variant-numeric:tabular-nums}
+.pill{display:inline-block;padding:1px 9px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+.lv-cao{background:var(--leaf-soft);color:var(--leaf)}
+.lv-tb{background:var(--warn-soft);color:var(--warn)}
+.lv-thap{background:var(--petal-soft);color:var(--petal)}
+.votes{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:16px 18px;display:grid;gap:10px}
+.votes ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.votes li{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}
+.votes .who{font-weight:600}
+.votes .note{color:var(--muted);flex-basis:100%}
+.empty{color:var(--muted)}
+section.theme{display:grid;gap:18px;padding-top:28px;border-top:1px solid var(--line)}
+.shead{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline}
+.shead .rank{font-size:28px}
+.shead .en{color:var(--muted);font-size:14px;flex-basis:100%}
+.setting{max-width:70ch;font-size:16px}
+.shelf{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x proximity}
+.shot{flex:0 0 auto;display:grid;gap:6px;scroll-snap-align:start;margin:0}
+.shot img{height:320px;width:auto;max-width:none;border-radius:10px;border:1px solid var(--line);background:var(--surface);cursor:zoom-in}
+.shot figcaption{font-size:12px;color:var(--muted);max-width:220px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
+.cols > div{min-width:0;display:grid;gap:8px;align-content:start}
+ul.dots{margin:0;padding-left:18px;display:grid;gap:6px}
+.verdict{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
+.verdict > div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:4px;align-content:start}
+.verdict .lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.bloom{background:var(--petal-soft);border-radius:12px;padding:14px 16px;display:grid;gap:6px}
+.bloom .lbl{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--petal);font-weight:600}
+.games{display:flex;flex-wrap:wrap;gap:8px}
+.games span{font-size:13px;border:1px solid var(--line);border-radius:8px;padding:6px 10px;background:var(--surface)}
+.games small{display:block;color:var(--muted);font-size:12px}
+.pick{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button{font:600 14px var(--body);border-radius:999px;padding:9px 18px;border:1.5px solid var(--petal);background:transparent;color:var(--petal);cursor:pointer}
+button.primary{background:var(--petal);color:var(--bg)}
+button:focus-visible,textarea:focus-visible{outline:3px solid var(--petal);outline-offset:2px}
+button[disabled]{opacity:.5;cursor:default}
+.picked{font-weight:600;color:var(--leaf)}
+.noteform{display:grid;gap:8px;width:100%;max-width:560px}
+textarea{font:14px/1.5 var(--body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px;min-height:70px;resize:vertical}
+.status{font-size:13px;color:var(--muted)}
+dialog.zoom{border:0;padding:0;background:transparent;max-width:96vw;max-height:94vh}
+dialog.zoom img{max-width:96vw;max-height:94vh;width:auto;height:auto;border-radius:10px;display:block}
+dialog.zoom::backdrop{background:rgba(0,0,0,.75)}
+footer{color:var(--muted);font-size:13px;display:grid;gap:6px;max-width:72ch}
+@media (max-width:560px){.shot img{height:240px}}
+@media (prefers-reduced-motion:no-preference){.shelf{scroll-behavior:smooth}}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Bloom Corner · theme · 27/10/2026 · <a href="https://claude.ai/artifact/GP1rAvnavFZvRTGYyTYvbP" target="_blank" rel="noopener">Trang art style →</a></span>
+    <h1>Chọn theme cho Bloom Corner</h1>
+    <div class="how"><span><b>G</b> = Top Grossing</span><span><b>F</b> = Top Free</span><span>Chỉ game merge-2</span></div>
+  </header>
+
+  <section aria-labelledby="sum-h" style="display:grid;gap:14px">
+    <h2 id="sum-h">Tóm tắt các theme merge-2</h2>
+    <div class="tablebox"><table id="summary"><thead><tr><th>#</th><th>Theme</th><th>Game mẫu</th><th>Xu hướng</th><th>Cạnh tranh</th><th>Hợp đội nhỏ</th></tr></thead><tbody></tbody></table></div>
+  </section>
+
+  <section class="votes" aria-labelledby="votes-h">
+    <h3 id="votes-h">Lựa chọn đã ghi</h3>
+    <ul id="votelist"></ul>
+    <p class="empty" id="voteempty">Chưa ai chọn. Bấm "Chọn theme này" ở mục theme anh thích.</p>
+  </section>
+
+  <div id="themes" style="display:grid;gap:40px"></div>
+
+  <footer>
+    <p><b>Nguồn:</b> thứ hạng đo từ bảng xếp hạng App Store và Google Play (top 100 Free/Grossing, 19–27/10/2026, US, GB, BR, MX, TR, IN, VN). Số AppMagic là ngưỡng ước tính đọc ở chế độ chưa đăng nhập; một số số liệu doanh thu lấy từ blog AppMagic. Cách chia theme, xu hướng và độ hợp là nhận định của nhóm.</p>
+    <p>Ảnh là ảnh chụp màn hình công khai trên store của từng game, chỉ dùng tham khảo nội bộ. Báo cáo đầy đủ: docs/market/merge2-theme-list-2026-10-27.md.</p>
+  </footer>
+</div>
+
+<script>
+const THEMES = [{"slug":"bloom-corner-current","name_vi":"Bloom Corner hiện tại: tiệm hoa + café + thời trang + bí mật gia đình nhẹ","name_en":"Cozy flower shop with a light family secret (current Bloom Corner)","setting":"Một concept store nhỏ ở góc phố: tiệm hoa là chính, có quầy café và một góc thời trang. Nữ chính tiếp quản tiệm của gia đình đang có nguy cơ bị chuỗi cà phê lớn thay thế.","story_hooks":["Giữ lại tiệm hoa của gia đình trước sức ép của chuỗi lớn (\"Brewline Coffee\").","Mỗi màn hé thêm nửa tấm ảnh cũ năm 1968: một bí mật gia đình nhẹ, không u ám.","Khách quen của phố mang đến các tuyến truyện nhỏ: hẹn hò, cầu hôn, đám cưới cần hoa."],"item_chains":["Hạt giống → cây con → bông → bó hoa → lẵng hoa cưới","Hạt cà phê → espresso → latte → bánh ngọt kèm đồ uống","Cuộn vải → áo → váy → bộ đồ hoàn chỉnh","Mảnh ảnh cũ → ảnh phục hồi → trang album"],"ad_hooks":["Before/after: tiệm hoa xám xịt sắp đóng cửa → tiệm nở hoa rực rỡ","Tấm ảnh 1968 bị xé đôi: \"Bà đang giấu điều gì?\"","Ghép 2 nụ hoa thành bó hoa cưới ngay trên board"],"why_hot":["Hoa và vườn có sức hút đại chúng với nữ: Gardenscapes (match-3, không phải merge-2) đứng top 20 Grossing ở cả 7 nước. Merge-2 thì chưa có game hoa nào lọt top.","Bí mật gia đình là cái móc đã có tiền thật trong merge-2. Florescence (tiệm hoa + bà ngoại mất tích) và Love & Pies (café + bí ẩn) là hai game gần Bloom Corner nhất.","Theo báo cáo 26/10: Merge Gardens (merge-3, nhưng cùng tệp) tăng từ ~0,4–0,5 lên ~3 triệu USD/tháng sau khi thêm bí ẩn gia đình. Đây là bằng chứng gián tiếp rằng \"hoa + bí mật\" mạnh hơn \"hoa thuần\"."],"evidence":["Florescence, Love & Pies, Starbrew Cafe: không có mặt trong top 100 ở 7 nước suốt 9 ngày (đo được).","AppMagic (ước tính, ngưỡng, kỳ không rõ): Florescence <5 nghìn USD / <5 nghìn lượt tải; Love & Pies >200 nghìn USD / >20 nghìn lượt tải; Starbrew Cafe >100 nghìn USD / >20 nghìn lượt tải.","Lượt cài Google Play: Florescence 100.000+, Love & Pies 5.000.000+, Starbrew Cafe 500.000+."],"trend":"Chưa có xu hướng rõ. Các game gần nhất ra mắt 2021–2023 và đều đang ở tầm nhỏ. Chưa thấy game merge-2 tiệm hoa nào mới ra 2025–2026 đạt thứ hạng (đo được). Khoảng trống còn mở, nhưng nhu cầu chưa được chứng minh ở quy mô lớn.","competition":"Thấp. Không có publisher lớn nào đang chiếm theme tiệm hoa trong merge-2. Đối thủ gần nhất là các game nhỏ (Florescence, Flower Shop Makeover) hoặc game café cũ (Love & Pies, Merge Inn). Tuy vậy, cái móc \"gia đình + bí mật\" đang được dùng rất nhiều (Gossip Harbor, Seaside Escape, Whisper Castle).","fit_team":"Cao. Thế giới nhỏ (một con phố), ít nhân vật, chương truyện ngắn và nhẹ nhàng, hợp nhịp LiveOps nhỏ (mùa hoa, ngày lễ, đám cưới). Rủi ro là ba chuỗi hoa, café và thời trang làm khối lượng item phình to; nên giữ hoa là chính.","bloom_version":"Giữ như hiện tại: tiệm hoa ấm áp ở góc phố, mỗi đơn hoa hé thêm một mảnh tấm ảnh năm 1968. Café và thời trang chỉ là chuỗi phụ.","games":[{"name":"Florescence: Merge Garden","publisher":"Game Garden","appstore":"https://apps.apple.com/us/app/florescence-merge-garden/id6446687401","gplay":"https://play.google.com/store/apps/details?id=com.gamegarden.florescence","rank_note":"Không có trong top 100 (7 nước); AppMagic <5 nghìn USD; ra 2022–2023","images":["theme-refs/bloom-corner-current/florescence-1.jpg","theme-refs/bloom-corner-current/florescence-2.jpg"]},{"name":"Love & Pies - Merge Mystery","publisher":"Trailmix","appstore":"https://apps.apple.com/us/app/love-pies-merge-mystery/id1563239332","gplay":"https://play.google.com/store/apps/details?id=com.Trailmix.LoveAndPiesMerge","rank_note":"Không có trong top 100; AppMagic >200 nghìn USD; ra 2021","images":["theme-refs/bloom-corner-current/love-and-pies-1.jpg","theme-refs/bloom-corner-current/love-and-pies-2.jpg"]},{"name":"Starbrew Cafe: Mystical Merge","publisher":"Extra Dimension Games","appstore":"https://apps.apple.com/us/app/starbrew-cafe-mystical-merge/id6456751444","gplay":"https://play.google.com/store/apps/details?id=games.extradimension.cafemerge","rank_note":"Không có trong top 100; AppMagic >100 nghìn USD; ra 2023","images":["theme-refs/bloom-corner-current/starbrew-cafe-1.jpg","theme-refs/bloom-corner-current/starbrew-cafe-2.jpg"]}],"suggested_rank":1},{"slug":"mystery-detective","name_vi":"Bí ẩn / điều tra (thị trấn, biệt thự, lâu đài, ma ám)","name_en":"Mystery & detective","setting":"Thị trấn nhỏ, biệt thự hay lâu đài cũ có điều gì đó không ổn. Nữ chính trở về và phát hiện manh mối; có nhánh tối hơn là nhà ma, kinh dị nhẹ.","story_hooks":["Ai đã phóng hỏa? Ai là người bí ẩn trong bóng tối? (Mystery Town)","Bà để lại biệt thự cùng những căn phòng bị khóa (Merge Mansion)","Mẹ con lạc vào lâu đài có bí mật (Whisper Castle); hành lang ma ám (Haunted Merge)"],"item_chains":["Manh mối: mảnh giấy → lá thư → nhật ký","Chìa khóa → ổ khóa → cánh cửa phòng bí mật","Dụng cụ: kính lúp, đèn pin, hộp đồ nghề","Cây cảnh, đồ sửa vườn (Merge Mansion)"],"ad_hooks":["Câu hỏi treo: \"Ai đã phóng hỏa?\"","Bóng người lạ sau cửa sổ","Căn phòng bị khóa, chìa khóa phát sáng trên board","Jump-scare nhẹ ở nhánh kinh dị"],"why_hot":["Mystery Town (ra 2024–2025, studio không thuộc nhóm lớn) đạt ~40,6 triệu USD trong H1 2026 (blog AppMagic) và đang ở Grossing Google GB 20–23. Đây là ví dụ hiếm về studio ngoài \"big 4\" thắng lớn với merge-2.","Merge Mansion (2020) vẫn trụ ở Grossing iOS US 69–75 sau 6 năm: theme bí ẩn có độ bền.","Nhánh tối mới có chỗ đứng: Haunted Merge (11/2025) ~9 triệu USD H1 2026 (blog AppMagic).","Bí ẩn tạo lý do để mở chương mới mà không cần drama nặng; móc \"câu hỏi treo\" hợp video ads ngắn (suy luận)."],"evidence":["Mystery Town: Grossing Google GB 20–23, US 39–40; Grossing iOS GB 27–29, US 50–54 (đo được, 9 ngày).","Merge Mansion: Grossing iOS US 69–75, GB 81–93. Whisper Castle (05/2026): Grossing Google GB 46–50, Free Google GB 32–54 (đo được).","Haunted Merge: không có trong top 100 ở 7 nước (đo được); Google 1.000.000+ lượt cài.","AppMagic (ước tính): Mystery Town ~40,6 triệu USD H1 2026 (blog); Haunted Merge ~9 triệu USD H1 2026 (blog); Whisper Castle >1 triệu USD / >500 nghìn lượt tải; Merge Mansion hiển thị \"$5M\" (ô tìm kiếm, dạng thu gọn)."],"trend":"Đang lên. Mystery Town (2024–2025), Haunted Merge (11/2025), Whisper Castle (05/2026) đều là game mới, đều có kết quả; Merge Mansion là bằng chứng độ bền.","competition":"Trung bình. Có Mystery Town (Cedar Games), Merge Mansion (Metacore), Whisper Castle (Microfun), nhưng chưa bị một publisher chiếm hẳn như theme đồ ăn. Nhánh \"cozy mystery\" sáng màu ít game hơn nhánh u tối.","fit_team":"Cao. Truyện bí ẩn chia được thành từng manh mối nhỏ, hợp nhịp LiveOps ít người; không cần nhiều nhân vật hay cảnh lớn. Phải viết tốt, vì người chơi rời game khi bí ẩn hết hấp dẫn.","bloom_version":"Tiệm hoa vẫn là bối cảnh, nhưng tấm ảnh 1968 trở thành vụ bí ẩn chính: mỗi chương là một manh mối (lá thư kẹp trong sổ đặt hoa, chiếc chìa khóa trong chậu cây cũ).","games":[{"name":"Mystery Town: Merge Games","publisher":"Cedar Games Studio","appstore":"https://apps.apple.com/us/app/mystery-town-merge-games/id6503603603","gplay":"https://play.google.com/store/apps/details?id=com.cedargames.mysterytown","rank_note":"G Google GB 20–23, US 39–40; G iOS GB 27–29; ra 2024–2025","images":["theme-refs/mystery-detective/mystery-town-1.jpg","theme-refs/mystery-detective/mystery-town-2.jpg"]},{"name":"Merge Mansion: Puzzles & Story","publisher":"Metacore","appstore":"https://apps.apple.com/us/app/merge-mansion-puzzles-story/id1484442152","gplay":"https://play.google.com/store/apps/details?id=com.everywear.game5","rank_note":"G iOS US 69–75, GB 81–93; ra 2020","images":["theme-refs/mystery-detective/merge-mansion-1.jpg","theme-refs/mystery-detective/merge-mansion-2.jpg"]},{"name":"Whisper Castle: Merge & Story","publisher":"Microfun","appstore":"https://apps.apple.com/us/app/whisper-castle-merge-story/id6749889618","gplay":"https://play.google.com/store/apps/details?id=com.mf.coffee","rank_note":"G Google GB 46–50; F Google GB 32–54; ra 05/2026","images":["theme-refs/mystery-detective/whisper-castle-1.jpg","theme-refs/mystery-detective/whisper-castle-2.jpg"]},{"name":"Haunted Merge: Horror Story","publisher":"WhaleJoy","appstore":"https://apps.apple.com/us/app/haunted-merge-horror-story/id6752369665","gplay":"https://play.google.com/store/apps/details?id=com.whalejoy.horrorstory.gp","rank_note":"Không có trong top 100; ~9 triệu USD H1 2026 (blog AppMagic); ra 11/2025","images":["theme-refs/mystery-detective/haunted-merge-1.jpg","theme-refs/mystery-detective/haunted-merge-2.jpg"]}],"suggested_rank":2},{"slug":"family-drama-rescue","name_vi":"Drama gia đình / giải cứu / trả thù","name_en":"Family drama, rescue & revenge","setting":"Mẹ đơn thân và con nhỏ rơi vào cảnh khổ (nhà cháy, bão tuyết, bị chồng phản bội), phải làm lại từ đầu ở một thị trấn cảng, thung lũng hay tiệm bánh.","story_hooks":["Bị chồng phản bội, đuổi khỏi nhà, phải nuôi con một mình (Gossip Harbor)","Trả thù kẻ đã cướp tiệm bánh của gia đình (Just Desserts)","Sống sót qua mùa đông cùng các con (Frost Valley)","Cứu thú cưng và làm lại cuộc đời (Pets Harbor)"],"item_chains":["Củi → lò sưởi; gạch → tường","Dụng cụ sửa chữa (búa, hộp đồ nghề)","Đồ cứu trợ: chăn, sữa, thức ăn","Bánh, kem, đồ ăn bán kiếm sống"],"ad_hooks":["Thanh nhiệt độ: \"Giúp họ!\" chọn đúng món (củi, gạch, kính) để cứu mẹ con","Before/after: nhà đổ nát → nhà ấm áp","Cảnh phản bội, cảnh khóc, cảnh trả thù"],"why_hot":["Đây là theme của game merge-2 kiếm tiền nhất: Gossip Harbor đứng Grossing iOS US 2–3 và vượt 100 triệu USD/tháng từ 03/2026 (blog AppMagic).","Theo phân tích creative công khai (báo cáo 27/10), 100% creative của Gossip Harbor mở bằng cảnh gia đình gặp nạn. Móc cảm xúc này kéo nữ 30–55 rất mạnh.","Nhiều game mới 2026 lặp lại công thức: Frost Valley (Google 10M+ lượt cài), Just Desserts, Pets Harbor."],"evidence":["Gossip Harbor: Grossing iOS US 2–3, GB 5–6; Free Google US 1–4 (đo được).","Just Desserts (05/2026): Grossing Google IN 40–45, VN 40–44, GB 87–91. Pets Harbor (02/2026): Grossing iOS VN 18–19. Frost Valley (2026): Free Google GB 45–53; Grossing iOS IN 55–70 (đo được). Ba game mới này yếu ở US.","AppMagic (ước tính): Gossip Harbor >50 triệu USD / >10 triệu lượt tải (ô tìm kiếm); Frost Valley hiển thị \"$500K\" (dạng thu gọn)."],"trend":"Bão hòa ở đỉnh. Gossip Harbor (2022) vẫn dẫn đầu; các game bắt chước ra 2026 có kết quả ở thị trường phụ (VN, IN) nhưng chưa vào được US/GB.","competition":"Rất cao. Microfun (Gossip Harbor, Seaside Escape, Whisper Castle) và Century Games (Just Desserts) chiếm theme; người chơi US/GB đã xem móc này hàng trăm lần.","fit_team":"Thấp đến trung bình. Truyện drama cần nhiều cảnh cảm xúc và video ads dài (báo cáo 27/10: 90% creative của Gossip Harbor dài hơn 50 giây), đều tốn công. Có thể mượn một phần cảm xúc, nhưng khó cạnh tranh trực diện.","bloom_version":"Nữ chính mất chồng và nhà, cùng con gái về tiếp quản tiệm hoa đổ nát của bà. Mở đầu bằng cảnh mưa tuyết trước cửa tiệm đóng kín.","games":[{"name":"Gossip Harbor: Merge & Story","publisher":"Microfun","appstore":"https://apps.apple.com/us/app/gossip-harbor-merge-story/id1623318294","gplay":"https://play.google.com/store/apps/details?id=com.mergegames.gossipharbor","rank_note":"G iOS US 2–3, GB 5–6; F Google US 1–4; ra 2022","images":["theme-refs/family-drama-rescue/gossip-harbor-1.jpg","theme-refs/family-drama-rescue/gossip-harbor-2.jpg"]},{"name":"Just Desserts: Revenge & Merge","publisher":"Century Games","appstore":"https://apps.apple.com/us/app/just-desserts-revenge-merge/id6761531281","gplay":"https://play.google.com/store/apps/details?id=com.justdesserts.global","rank_note":"G Google IN 40–45, VN 40–44, GB 87–91; ra 05/2026","images":["theme-refs/family-drama-rescue/just-desserts-1.jpg","theme-refs/family-drama-rescue/just-desserts-2.jpg"]},{"name":"Frost Valley: Merge & Story","publisher":"Tuyoo Games","appstore":"https://apps.apple.com/us/app/frost-valley-merge-story/id6758984040","gplay":"https://play.google.com/store/apps/details?id=com.liteorange.hometopia","rank_note":"F Google GB 45–53; G iOS IN 55–70; Google 10M+ lượt cài; ra 2026","images":["theme-refs/family-drama-rescue/frost-valley-1.jpg","theme-refs/family-drama-rescue/frost-valley-2.jpg"]},{"name":"Pets Harbor: Merge & Restore","publisher":"Gaming Flight","appstore":"https://apps.apple.com/us/app/pets-harbor-merge-restore/id6754548168","gplay":"https://play.google.com/store/apps/details?id=com.mergegames.petsharbor","rank_note":"G iOS VN 18–19; G Google VN 30–32; ra 02/2026","images":["theme-refs/family-drama-rescue/pets-harbor-1.jpg","theme-refs/family-drama-rescue/pets-harbor-2.jpg"]}],"suggested_rank":3},{"slug":"cozy-shop","name_vi":"Tiệm nhỏ cozy thuần (café, quán ăn, tiệm bánh dễ thương)","name_en":"Pure cozy small shop","setting":"Một quán café, quán ăn hay tiệm bánh nhỏ, thường có thú cưng hoặc nhân vật dễ thương; không có xung đột lớn.","story_hooks":["Mở lại quán ăn của gia đình và làm quen khách quen (Merge Inn)","Các bé mèo nấu súp và xây nhà chung (Cats & Soup)","Phục vụ khách trên một con phố nhỏ (Hello Town)"],"item_chains":["Nguyên liệu → món ăn → combo","Đồ uống: hạt cà phê → cốc cà phê → đồ uống đặc biệt","Bánh: bột → bánh → bánh kem trang trí"],"ad_hooks":["ASMR nấu ăn dễ thương","Mèo/thú cưng làm việc","Before/after quán bẩn → quán xinh"],"why_hot":["Là thẩm mỹ cozy đang được ưa chuộng; game mới vẫn ra đều: Cats & Soup: Merge Magic Recipe (04/2025), Hello Town (12/2024). Cả hai có hơn 1 triệu lượt cài Google Play.","Merge Inn (2021) từng lớn (Google 10M+ lượt cài) nhưng nay đã chững.","Hạn chế (báo cáo 26/10): theme dễ thương thuần chưa tạo được hit kiếm tiền trong merge-2."],"evidence":["Cả 3 game không có mặt trong top 100 ở 7 nước suốt 9 ngày (đo được).","AppMagic (ước tính): Merge Inn >100 nghìn USD / >50 nghìn lượt tải; Cats & Soup: Merge Magic Recipe hiển thị \"$200K\", Hello Town hiển thị \"$50K\" (dạng thu gọn)."],"trend":"Ổn định ở mức nhỏ: có game mới nhưng không bứt lên.","competition":"Thấp đến trung bình. Nhiều game nhỏ, không ai chiếm hẳn; Cats & Soup có thương hiệu sẵn.","fit_team":"Cao về sản xuất: thế giới nhỏ, không cần drama, LiveOps theo mùa và món mới. Thấp về khả năng kiếm tiền và thu hút người chơi qua ads.","bloom_version":"Bỏ tấm ảnh 1968 và chuỗi lớn: chỉ còn một tiệm hoa ấm áp với khách quen dễ thương và một chú mèo nhà.","games":[{"name":"Merge Inn - Cafe Merge Game","publisher":"Original Games","appstore":"https://apps.apple.com/us/app/merge-inn-tasty-match-puzzle/id1541160673","gplay":"https://play.google.com/store/apps/details?id=com.mergegame.merge","rank_note":"Không có trong top 100; AppMagic >100 nghìn USD; ra 2021","images":["theme-refs/cozy-shop/merge-inn-1.jpg","theme-refs/cozy-shop/merge-inn-2.jpg"]},{"name":"Cats & Soup: Merge Magic Recipe","publisher":"NEOWIZ","appstore":"https://apps.apple.com/us/app/cats-soup-magic-recipe/id6446347021","gplay":"https://play.google.com/store/apps/details?id=com.hidea.cat.magicrecipe","rank_note":"Không có trong top 100; Google 1M+ lượt cài; ra 04/2025","images":["theme-refs/cozy-shop/cats-soup-recipe-1.jpg","theme-refs/cozy-shop/cats-soup-recipe-2.jpg"]},{"name":"Hello Town: Merge & Story","publisher":"Springcomes","appstore":"https://apps.apple.com/us/app/hello-town-merge-story/id6737850281","gplay":"https://play.google.com/store/apps/details?id=com.spcomes.hellotown","rank_note":"Không có trong top 100; Google 1M+ lượt cài; ra 12/2024","images":["theme-refs/cozy-shop/hello-town-1.jpg","theme-refs/cozy-shop/hello-town-2.jpg"]}],"suggested_rank":4},{"slug":"fashion-celebrity","name_vi":"Thời trang / ngôi sao / tình cảm","name_en":"Fashion, celebrity & romance","setting":"Thảm đỏ Hollywood, công ty thời trang, biệt thự sang; nữ chính đi từ bị bẽ mặt đến thành ngôi sao, xen chuyện tình cảm.","story_hooks":["Ngôi sao bị bôi nhọ trên thảm đỏ, phải lấy lại danh tiếng (Hollywood Merge)","Cô gái bị phản bội, makeover và tìm tình yêu thật (Merge Fashion)","Người giúp việc lột xác thành mỹ nhân (Fallen Beauty)"],"item_chains":["Vải → váy → bộ đồ dạ hội","Mỹ phẩm: son, phấn, bộ trang điểm","Trang sức, túi xách, giày"],"ad_hooks":["Makeover \"từ xấu thành đẹp\"","Bị bẽ mặt trước ống kính: \"Giúp cô ấy!\"","Cảnh ngoại tình, cầu hôn"],"why_hot":["Hollywood Merge (02/2026) đạt ~15,8 triệu USD trong khoảng 6 tháng đầu (blog AppMagic) và đứng Grossing iOS GB 32–35.","Thời trang là động lực mạnh với nữ; Google/Ipsos (báo cáo 27/10): người chi tiền merge thích tùy biến gấp 1,6 lần người không chi.","Các game webtoon tình cảm (Merge Fashion 10M+ lượt cài) kéo được tải lớn ở TR, BR."],"evidence":["Hollywood Merge: Grossing iOS GB 32–35, BR 29–32, TR 29–34; Grossing Google GB 34–36, US 50–54 (đo được).","Merge Fashion: Romance Story: Free iOS TR 20–33, BR 46–72. Fallen Beauty (02/2026): Grossing iOS TR 55–60 (đo được). Hai game này không có thứ hạng ở US/GB.","AppMagic (ước tính): Hollywood Merge ~15,8 triệu USD từ ra mắt đến giữa 2026 (blog); Merge Fashion hiển thị \"$500K\", Fallen Beauty hiển thị \"$1M\" (dạng thu gọn); Merge Restyle ~13 triệu USD, kỳ không rõ (blog)."],"trend":"Đang lên: Hollywood Merge và Fallen Beauty đều ra năm 2026.","competition":"Cao. Có VoyagerOne (Hollywood Merge, đã có tệp từ game match-3 cũ) cùng nhiều publisher Trung Quốc và Hồng Kông.","fit_team":"Thấp. Theme này đòi số lượng trang phục và cảnh truyện tình cảm rất lớn (Hollywood Merge quảng cáo 1.000 bộ đồ). Review (báo cáo 26/10) cho thấy một phần người chơi chỉ muốn phối đồ, không thích merge.","bloom_version":"Góc thời trang trở thành trọng tâm: nữ chính là stylist kiêm thợ cắm hoa cho các buổi chụp ảnh và đám cưới. Mỗi chương là một bộ đồ kèm bó hoa cho một khách hàng.","games":[{"name":"Hollywood Merge","publisher":"VoyagerOne","appstore":"https://apps.apple.com/us/app/hollywood-merge/id6755455500","gplay":"https://play.google.com/store/apps/details?id=com.hollywood.merge","rank_note":"G iOS GB 32–35; G Google GB 34–36, US 50–54; ra 02/2026","images":["theme-refs/fashion-celebrity/hollywood-merge-1.jpg","theme-refs/fashion-celebrity/hollywood-merge-2.jpg"]},{"name":"Merge Fashion: Romance Story","publisher":"Infiniplay","appstore":"https://apps.apple.com/us/app/merge-fashion-romance-story/id6737874398","gplay":"https://play.google.com/store/apps/details?id=com.infiniplay.merge.fashion.romance.story","rank_note":"F iOS TR 20–33, BR 46–72; ra 11/2024","images":["theme-refs/fashion-celebrity/merge-fashion-1.jpg","theme-refs/fashion-celebrity/merge-fashion-2.jpg"]},{"name":"Fallen Beauty: Merge & Story","publisher":"Kinetic Energy Game","appstore":"https://apps.apple.com/us/app/fallen-beauty-merge-story/id6758072393","gplay":"https://play.google.com/store/apps/details?id=com.fallenbeauty.google","rank_note":"G iOS TR 55–60, IN 65–77; ra 02/2026","images":["theme-refs/fashion-celebrity/fallen-beauty-1.jpg","theme-refs/fashion-celebrity/fallen-beauty-2.jpg"]}],"suggested_rank":5},{"slug":"cooking-restaurant","name_vi":"Nấu ăn / nhà hàng","name_en":"Cooking & restaurant","setting":"Nhà hàng, bếp, xe đồ ăn ở bãi biển hoặc khắp thế giới; nữ chính là đầu bếp muốn mở nhà hàng riêng.","story_hooks":["Đầu bếp trẻ xây dựng nhà hàng mơ ước (Merge Cooking, Flambé)","Thi nấu ăn, tìm công thức các nước (Foodstars)","Quán ăn ven biển cùng chú mèo (Yumtopia)"],"item_chains":["Rau củ, thịt, bơ → món chính","Bột → bánh → bánh kem","Đồ uống, nước ép, cà phê","Dụng cụ bếp: chảo, lò nướng"],"ad_hooks":["\"Merge to cook\": 2 quả cà chua → hũ nước ép","Công thức: 4 nguyên liệu gộp thành một món","Before/after căn bếp"],"why_hot":["Là theme có nhu cầu chứng minh mạnh nhất sau drama: Merge Cooking đứng Grossing iOS US 29–33; Flambé và Foodstars vào top 50 Grossing GB.","Món ăn là item dễ đọc, dễ làm đẹp, ai cũng hiểu.","Game mới vẫn liên tục ra: Flambé (05/2025), Foodstars (12/2025), Yumtopia (08/2026)."],"evidence":["Merge Cooking: Grossing iOS US 29–33, GB 52–60. Flambé: Grossing Google GB 25–26; Grossing iOS GB 29–36. Foodstars: Grossing Google GB 47–49; Free iOS BR 20–36. Yumtopia: Grossing iOS VN 39–42 (đo được).","AppMagic (ước tính): Flambé và Foodstars mỗi game hiển thị \"$5M\" (ô tìm kiếm, dạng thu gọn); Yumtopia >100 nghìn USD / >50 nghìn lượt tải."],"trend":"Ổn định và đông. Game mới vẫn có kết quả, nhưng hầu hết do publisher đã có game nấu ăn trước đó (Happibits, Microfun).","competition":"Rất cao. Happibits (Merge Cooking, Foodstars), Microfun (Flambé), Century Games (Tasty Travels, Just Desserts), Supersolid (Cook & Merge) mỗi bên có từ 1 đến 3 game.","fit_team":"Trung bình về sản xuất (món ăn dễ vẽ, LiveOps theo món mới), thấp về cạnh tranh UA: ads món ăn khó khác biệt.","bloom_version":"Quầy café thành trọng tâm: tiệm thành quán cà phê kiêm tiệm hoa, đơn hàng chủ yếu là đồ uống và bánh, hoa chỉ để trang trí.","games":[{"name":"Merge Cooking","publisher":"Happibits","appstore":"https://apps.apple.com/us/app/merge-cooking/id1643509748","gplay":"https://play.google.com/store/apps/details?id=com.merge.cooking.theme.restaurant.food","rank_note":"G iOS US 29–33, GB 52–60; ra 2022","images":["theme-refs/cooking-restaurant/merge-cooking-1.jpg","theme-refs/cooking-restaurant/merge-cooking-2.jpg"]},{"name":"Flambé: Merge & Cook","publisher":"Microfun","appstore":"https://apps.apple.com/us/app/flamb%C3%A9-merge-and-cook/id6618142292","gplay":"https://play.google.com/store/apps/details?id=com.cola.game","rank_note":"G Google GB 25–26; G iOS GB 29–36; ra 05/2025","images":["theme-refs/cooking-restaurant/flambe-1.jpg","theme-refs/cooking-restaurant/flambe-2.jpg"]},{"name":"Foodstars: Merge & Cook","publisher":"Happibits","appstore":"https://apps.apple.com/us/app/foodstars-merge-cook/id6753862216","gplay":"https://play.google.com/store/apps/details?id=com.merge.game.foodstars","rank_note":"G Google GB 47–49; F iOS BR 20–36; ra 12/2025","images":["theme-refs/cooking-restaurant/foodstars-1.jpg","theme-refs/cooking-restaurant/foodstars-2.jpg"]},{"name":"Yumtopia: Merge & Cook","publisher":"Playchamp","appstore":"https://apps.apple.com/us/app/yumtopia-merge-cook/id6754022871","gplay":"https://play.google.com/store/apps/details?id=com.merge.foodie.cooking.restaurant","rank_note":"G iOS VN 39–42; ra 08/2026","images":["theme-refs/cooking-restaurant/yumtopia-1.jpg","theme-refs/cooking-restaurant/yumtopia-2.jpg"]}],"suggested_rank":6},{"slug":"renovation-inheritance","name_vi":"Thừa kế & cải tạo (khách sạn, nhà, makeover)","name_en":"Inheritance & renovation","setting":"Nữ chính thừa kế một khách sạn, căn nhà hay biệt thự xuống cấp và phải cải tạo từng phòng để cứu nó.","story_hooks":["Khách sạn của gia đình sắp phá sản (Hotel Legacy, Merge Hotel Empire)","Cải tạo nhà cho khách hàng, xen chuyện tình cảm (Merge Restyle)"],"item_chains":["Đồ nội thất: ghế → sofa → bộ phòng khách","Dụng cụ sửa chữa, sơn, giấy dán tường","Đồ phòng khách sạn: khăn, chìa khóa, xe đẩy hành lý"],"ad_hooks":["Before/after căn phòng xám → phòng đẹp","\"Help her\": chọn món sửa phòng đúng","Chọn 1 trong 3 kiểu nội thất"],"why_hot":["Hotel Legacy (01/2026) vào Free iOS GB 12–20 và Grossing iOS GB 21–24 ngay năm đầu.","Cải tạo + chọn nội thất là vòng lặp meta quen thuộc từ Homescapes và Design Home; người chơi nữ đã quen."],"evidence":["Hotel Legacy: Grossing iOS GB 21–24, US 57–63; Free iOS GB 12–20. Merge Hotel Empire: Grossing iOS GB 63–69. Merge Restyle: Grossing Google BR 65–70, GB 97–99 (đo được).","AppMagic (ước tính): Hotel Legacy >2 triệu USD / >1 triệu lượt tải; Merge Hotel Empire hiển thị \"$1M\" (dạng thu gọn); Merge Restyle ~13 triệu USD, kỳ không rõ (blog)."],"trend":"Ổn định; có game mới thắng (Hotel Legacy 2026) nhờ UA mạnh của Century Games.","competition":"Cao. Century Games (Hotel Legacy) và Moon Active (Merge Hotel Empire); ngoài merge-2 còn có Playrix (Homescapes).","fit_team":"Trung bình. Mỗi phòng cần nhiều asset nội thất; có thể làm dần theo LiveOps, nhưng khối lượng art lớn.","bloom_version":"Tiệm hoa là tòa nhà thừa kế cần cải tạo từng góc: quầy hoa, góc café, phòng thử đồ, tầng áp mái nơi tìm thấy tấm ảnh 1968.","games":[{"name":"Hotel Legacy: Merge Game","publisher":"Century Games","appstore":"https://apps.apple.com/us/app/hotel-legacy-merge-game/id6752886832","gplay":"https://play.google.com/store/apps/details?id=com.fatr.global","rank_note":"F iOS GB 12–20; G iOS GB 21–24; ra 01/2026","images":["theme-refs/renovation-inheritance/hotel-legacy-1.jpg","theme-refs/renovation-inheritance/hotel-legacy-2.jpg"]},{"name":"Merge Hotel Empire - Design Game","publisher":"Moon Active","appstore":"https://apps.apple.com/us/app/merge-hotel-empire-design-game/id1577970257","gplay":"https://play.google.com/store/apps/details?id=puzzle.merge.hotel.empire","rank_note":"G iOS GB 63–69; ra 2022","images":["theme-refs/renovation-inheritance/merge-hotel-empire-1.jpg","theme-refs/renovation-inheritance/merge-hotel-empire-2.jpg"]},{"name":"Merge Restyle","publisher":"Higgs Gaming","appstore":"https://apps.apple.com/us/app/merge-restyle/id6738049542","gplay":"https://play.google.com/store/apps/details?id=com.play.merge.restyle","rank_note":"G Google BR 65–70, GB 97–99; ra 11/2024","images":["theme-refs/renovation-inheritance/merge-restyle-1.jpg","theme-refs/renovation-inheritance/merge-restyle-2.jpg"]}],"suggested_rank":7},{"slug":"travel-island","name_vi":"Du lịch / đảo nghỉ dưỡng","name_en":"Travel & island getaway","setting":"Thị trấn biển, hòn đảo nhiệt đới hoặc hành trình qua nhiều nước; nữ chính phục vụ khách du lịch và mở rộng khu nghỉ.","story_hooks":["Xây lại thị trấn du lịch bên bờ biển (Travel Town)","Đi khắp thế giới nếm món ăn các nước (Tasty Travels)","Ngôi sao sa cơ làm lại cuộc đời trên đảo (Seaside Escape)"],"item_chains":["Đồ bãi biển: vỏ sò, phao, ô dù","Đồ uống nhiệt đới, kem","Hành lý, mũ, kính râm","Cây nhiệt đới, thú vật"],"ad_hooks":["Bãi biển nắng, nước trong xanh","Mini-game trong ads (Tasty Travels; review chê vì không có trong game)","Merge đồ uống nhiệt đới phát sáng"],"why_hot":["Hai trong ba game merge-2 lớn nhất thuộc theme này: Tasty Travels ~127 triệu USD H1 2026 (blog AppMagic), Travel Town >10 triệu USD (ô tìm kiếm).","Màu nắng, biển, nghỉ dưỡng là \"khát vọng thư giãn\" của nữ 30–55 (suy luận); dễ làm ads sáng, nổi bật."],"evidence":["Tasty Travels: Grossing iOS US 13–15, GB 9–11; Google Grossing 7 nước 13–26. Travel Town: Grossing iOS GB 7–10, VN 6–9. Seaside Escape: Grossing iOS GB 35–45 (đo được).","AppMagic (ước tính): Tasty Travels ~127 triệu USD H1 2026 (blog); Travel Town >10 triệu USD / >500 nghìn lượt tải; Seaside Escape >5 triệu USD / >500 nghìn."],"trend":"Bão hòa ở đỉnh. Game lớn ra 2021–2024; không thấy game du lịch mới năm 2025–2026 vào top (đo được).","competition":"Rất cao. Century Games (Tasty Travels), Moon Active (Travel Town), Microfun (Seaside Escape).","fit_team":"Thấp. Theme rộng (nhiều địa điểm) cần nhiều bản đồ và cảnh; ads phải đọ trực tiếp với ba game hàng đầu.","bloom_version":"Tiệm hoa chuyển ra một thị trấn biển: bán hoa cho khách du lịch và các đám cưới trên bãi biển.","games":[{"name":"Tasty Travels: Merge Game","publisher":"Century Games","appstore":"https://apps.apple.com/us/app/tasty-travels-merge-game/id6471045672","gplay":"https://play.google.com/store/apps/details?id=com.fatmerge.global","rank_note":"G iOS US 13–15, GB 9–11; ra 2024","images":["theme-refs/travel-island/tasty-travels-1.jpg","theme-refs/travel-island/tasty-travels-2.jpg"]},{"name":"Travel Town - Merge Adventure","publisher":"Moon Active","appstore":"https://apps.apple.com/us/app/travel-town-merge-adventure/id1521236603","gplay":"https://play.google.com/store/apps/details?id=io.randomco.travel","rank_note":"G iOS GB 7–10; G Google BR 10, GB 17; ra 2021","images":["theme-refs/travel-island/travel-town-1.jpg","theme-refs/travel-island/travel-town-2.jpg"]},{"name":"Seaside Escape: Merge & Story","publisher":"Microfun","appstore":"https://apps.apple.com/us/app/seaside-escape-merge-story/id6443755785","gplay":"https://play.google.com/store/apps/details?id=com.gamedots.seasideescape","rank_note":"G iOS GB 35–45, US 54–69; ra 2022","images":["theme-refs/travel-island/seaside-escape-1.jpg","theme-refs/travel-island/seaside-escape-2.jpg"]}],"suggested_rank":8},{"slug":"farm-village","name_vi":"Nông trại / làng / khám phá đảo","name_en":"Farm, village & island exploration","setting":"Nông trại, ngôi làng thời đồ đá hay hòn đảo hoang; người chơi mở rộng bản đồ, dọn sương mù và xây làng.","story_hooks":["Xây lại nông trại của gia đình (Family Farm Merge)","Dựng làng cho bộ tộc thời đồ đá trên đảo (Merge Age)"],"item_chains":["Hạt giống → cây trồng → nông sản","Vật nuôi: bò, gà → sữa, trứng","Vật liệu: gỗ, đá → nhà"],"ad_hooks":["Bản đồ đảo đen trắng → màu sắc","Thuyền đắm → thuyền được sửa","Merge bò sữa phát sáng"],"why_hot":["Có game mới 2026 của publisher lớn: Family Farm Merge (05/2026, Century Games, dùng thương hiệu Family Farm sẵn có), Merge Age (04/2026).","Nông trại là theme quen với nữ lớn tuổi (Hay Day, Township), dễ hiểu."],"evidence":["Family Farm Merge: Grossing iOS BR 43–46, GB 73–79; Free iOS BR 31–44. Merge Age: Grossing iOS VN 56–69 (đo được).","AppMagic (ước tính): Family Farm Merge hiển thị \"$2M\" (ô tìm kiếm, dạng thu gọn). Merge Age: không có số liệu."],"trend":"Mới có game lớn quay lại (2026), chưa rõ là xu hướng hay chỉ là thương hiệu cũ chuyển sang merge.","competition":"Trung bình. Century Games với thương hiệu Family Farm; nông trại ngoài merge thì có Hay Day, Township.","fit_team":"Thấp. Meta bản đồ khám phá cần nhiều vùng đất và vật thể; truyện thường mỏng, khó tạo móc ads khác biệt.","bloom_version":"Thay tiệm ở phố bằng một vườn hoa ngoại ô: trồng, thu hoạch và mở rộng các luống hoa, nhà kính, xưởng cắm hoa.","games":[{"name":"Family Farm Merge","publisher":"Century Games","appstore":"https://apps.apple.com/us/app/family-farm-merge/id6760998152","gplay":"https://play.google.com/store/apps/details?id=com.roomperfect.global","rank_note":"G iOS BR 43–46, GB 73–79; ra 05/2026","images":["theme-refs/farm-village/family-farm-merge-1.jpg","theme-refs/farm-village/family-farm-merge-2.jpg"]},{"name":"Merge Age: Stone Haven","publisher":"Puzzle1Studio","appstore":"https://apps.apple.com/us/app/merge-age-stone-haven/id6756160382","gplay":"https://play.google.com/store/apps/details?id=com.puzzle1studio.go.stoneagemerge","rank_note":"G iOS VN 56–69; ra 04/2026","images":["theme-refs/farm-village/merge-age-1.jpg","theme-refs/farm-village/merge-age-2.jpg"]}],"suggested_rank":9}];
+const el = (t, a = {}, ...kids) => { const n = document.createElement(t); for (const [k, v] of Object.entries(a)) k === "class" ? n.className = v : n.setAttribute(k, v); for (const c of kids) n.append(c); return n; };
+const head = s => String(s).split(/[.:]/)[0].trim();
+const level = s => { const f = head(s).toLowerCase(); return /cao|đang lên|thấp \(ít/.test(f) && !/thấp$/.test(f) ? "cao" : /trung|bão hòa nhẹ|ổn định/.test(f) ? "tb" : "thap"; };
+const nameOf = slug => (THEMES.find(s => s.slug === slug) || {}).name_vi || slug;
+const zoom = el("dialog", {class: "zoom"}); const zimg = el("img", {alt: ""}); zoom.append(zimg); document.body.append(zoom);
+zoom.addEventListener("click", () => zoom.close());
+const zoomable = img => { img.addEventListener("click", () => { zimg.src = img.src; zimg.alt = img.alt; zoom.showModal(); }); return img; };
+
+const tbody = document.querySelector("#summary tbody");
+for (const s of THEMES) {
+  const top = s.games.slice(0, 3).map(g => g.name.split(/[:\-–]/)[0].trim()).join(", ");
+  tbody.append(el("tr", {},
+    el("td", {}, el("span", {class: "rank"}, String(s.suggested_rank))),
+    el("td", {}, el("a", {href: "#" + s.slug}, s.name_vi)),
+    el("td", {}, top),
+    el("td", {}, head(s.trend)),
+    el("td", {}, head(s.competition)),
+    el("td", {}, head(s.fit_team))));
+}
+
+const host = document.getElementById("themes");
+const pickUIs = [];
+const list = arr => { const u = el("ul", {class: "dots"}); for (const t of arr) u.append(el("li", {}, t)); return u; };
+for (const s of THEMES) {
+  const sec = el("section", {class: "theme", id: s.slug, "aria-labelledby": "h-" + s.slug});
+  sec.append(el("div", {class: "shead"},
+    el("span", {class: "rank"}, String(s.suggested_rank)),
+    el("h2", {id: "h-" + s.slug}, s.name_vi),
+    el("span", {class: "en"}, s.name_en)));
+  sec.append(el("p", {class: "setting"}, s.setting));
+  const shelf = el("div", {class: "shelf", tabindex: "0", "aria-label": "Ảnh store của game mẫu"});
+  for (const g of s.games) for (const src of g.images)
+    shelf.append(el("figure", {class: "shot"}, zoomable(el("img", {src, alt: g.name + " – ảnh store", loading: "lazy"})), el("figcaption", {}, g.name)));
+  sec.append(shelf);
+  sec.append(el("div", {class: "cols"},
+    el("div", {}, el("h3", {}, "Mô-típ truyện"), list(s.story_hooks)),
+    el("div", {}, el("h3", {}, "Chuỗi item tiêu biểu"), list(s.item_chains)),
+    el("div", {}, el("h3", {}, "Móc quảng cáo"), list(s.ad_hooks))));
+  sec.append(el("div", {class: "cols"},
+    el("div", {}, el("h3", {}, "Vì sao hot"), list(s.why_hot)),
+    el("div", {}, el("h3", {}, "Căn cứ"), list(s.evidence))));
+  sec.append(el("div", {class: "verdict"},
+    el("div", {}, el("span", {class: "lbl"}, "Xu hướng"), el("p", {}, s.trend)),
+    el("div", {}, el("span", {class: "lbl"}, "Cạnh tranh"), el("p", {}, s.competition)),
+    el("div", {}, el("span", {class: "lbl"}, "Hợp đội 3–6 người"), el("p", {}, s.fit_team))));
+  sec.append(el("div", {class: "bloom"}, el("span", {class: "lbl"}, "Bloom Corner theo theme này"), el("p", {}, s.bloom_version)));
+  const games = el("div", {class: "games"});
+  for (const g of s.games) {
+    const sp = el("span", {}, g.name + " · " + g.publisher);
+    const links = el("small", {}, (g.rank_note || "") + " ");
+    if (g.appstore) links.append(el("a", {href: g.appstore, target: "_blank", rel: "noopener"}, "App Store"), " ");
+    if (g.gplay) links.append(el("a", {href: g.gplay, target: "_blank", rel: "noopener"}, "Google Play"));
+    sp.append(links); games.append(sp);
+  }
+  sec.append(games);
+  const pick = el("div", {class: "pick"});
+  sec.append(pick);
+  pickUIs.push({slug: s.slug, pick});
+  host.append(sec);
+}
+
+// Chọn theme: mỗi người một phiếu ở votes/<id>, ai cũng xem được.
+let db = null, uid = null, user = null, mine = null, writable = true;
+function renderPickers() {
+  for (const {slug, pick} of pickUIs) {
+    pick.replaceChildren();
+    if (!db || !uid) { pick.append(el("span", {class: "status"}, "Mở trang này trên claude.ai (đã đăng nhập) để chọn theme.")); continue; }
+    if (!writable) { pick.append(el("span", {class: "status"}, "Anh/chị chỉ có quyền xem; nhờ người chia sẻ cấp quyền Contributor để chọn.")); continue; }
+    if (mine && mine.theme === slug) pick.append(el("span", {class: "picked"}, "✓ Bạn đã chọn theme này"));
+    const btn = el("button", {class: mine && mine.theme === slug ? "" : "primary", type: "button"}, mine && mine.theme === slug ? "Sửa ghi chú" : "Chọn theme này");
+    btn.addEventListener("click", () => openForm(slug, pick));
+    pick.append(btn);
+  }
+}
+function openForm(slug, pick) {
+  pick.replaceChildren();
+  const ta = el("textarea", {id: "note-" + slug, placeholder: "Ghi chú (không bắt buộc): ví dụ giữ tiệm hoa nhưng thêm bí ẩn…"});
+  if (mine && mine.theme === slug) ta.value = mine.note || "";
+  const save = el("button", {class: "primary", type: "button"}, "Lưu lựa chọn");
+  const cancel = el("button", {type: "button"}, "Huỷ");
+  const st = el("span", {class: "status", role: "status"});
+  save.addEventListener("click", async () => {
+    save.disabled = true; st.textContent = "Đang lưu…";
+    try { await db.doc("votes/" + uid).set({theme: slug, note: ta.value.trim().slice(0, 1000), at: new Date().toISOString()}); mine = {theme: slug, note: ta.value.trim()}; renderPickers(); }
+    catch (e) { save.disabled = false; if (e && e.code === "invalid_argument") { writable = false; renderPickers(); } else st.textContent = "Chưa lưu được, thử lại sau ít phút."; }
+  });
+  cancel.addEventListener("click", renderPickers);
+  pick.append(el("div", {class: "noteform"}, el("label", {for: ta.id}, "Chọn: " + nameOf(slug)), ta, el("div", {class: "pick"}, save, cancel, st)));
+  ta.focus();
+}
+async function renderVotes(docs) {
+  const ul = document.getElementById("votelist");
+  let ps = {};
+  try { ps = user ? await user.profiles(docs.map(d => d.id)) : {}; } catch (_) {}
+  ul.replaceChildren();
+  for (const d of docs) {
+    const v = d.data() || {};
+    const who = (ps[d.id] && ps[d.id].name) || "Một người xem";
+    ul.append(el("li", {}, el("span", {class: "who"}, who + (d.id === uid ? " (bạn)" : "")), el("span", {}, "chọn " + nameOf(v.theme)), v.note ? el("span", {class: "note"}, "“" + v.note + "”") : ""));
+  }
+  document.getElementById("voteempty").hidden = docs.length > 0;
+}
+renderPickers();
+(async () => {
+  if (!window.claude || !window.claude.use) return;
+  [db, user] = await Promise.all([claude.use("db"), claude.use("user")]);
+  if (user) { try { uid = await user.id(); } catch (_) {} try { if (await user.can("data.write") === false) writable = false; } catch (_) {} }
+  if (db) {
+    db.collection("votes").onSnapshot(snap => {
+      const me = snap.docs.find(d => d.id === uid);
+      mine = me ? me.data() : null;
+      renderPickers(); renderVotes(snap.docs);
+    }, () => {});
+  }
+  renderPickers();
+})();
+</script>

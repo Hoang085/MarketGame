@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Keepsake Lane playable</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root { --paper:#f6ead0; --ink:#3a2a1c; --brass:#c9a24a; --wine:#7a2232; --teal:#3fd6c4; --gold:#ffd27a; --cell:62px; }
+  * { box-sizing:border-box; -webkit-user-select:none; user-select:none; -webkit-tap-highlight-color:transparent; }
+  html, body { margin:0; height:100%; background:#120e0b; overflow:hidden; font-family:Nunito,sans-serif; }
+  #stage { position:absolute; left:50%; top:50%; width:360px; height:640px; transform-origin:center; overflow:hidden;
+           border-radius:18px; background:#1b1410 url(assets/bg-shop.jpg) center/cover; touch-action:none; }
+  #stage.quake { animation:quake .45s; }
+  @keyframes quake { 20%{margin-left:-5px} 40%{margin-left:5px;margin-top:-3px} 60%{margin-left:-3px;margin-top:3px} 80%{margin-left:2px} }
+  .layer { position:absolute; inset:0; transition:opacity .4s; }
+  .hidden { opacity:0; pointer-events:none; }
+  #fxc { position:absolute; inset:0; width:360px; height:640px; pointer-events:none; z-index:58; }
+
+  /* HUD */
+  #hud { position:absolute; top:10px; left:10px; right:10px; display:flex; justify-content:flex-end; align-items:center; }
+  .pill { background:#2a1e14dd; color:#fff; border:2px solid var(--brass); border-radius:14px; padding:3px 10px; font-weight:900; font-size:13px; }
+  #bar { position:absolute; top:46px; left:50%; transform:translateX(-50%); width:230px; height:22px; border-radius:11px;
+         background:#2a1e14; border:2px solid var(--brass); overflow:hidden; }
+  #bar i { position:absolute; left:0; top:0; bottom:0; width:0; background:linear-gradient(90deg,#2fb3a5,var(--teal)); transition:width .5s; box-shadow:0 0 10px var(--teal); }
+  #bar span { position:relative; display:block; text-align:center; font-size:11px; line-height:18px; font-weight:900; color:#fff; text-shadow:0 1px 2px #000; }
+  #bar::after { content:''; position:absolute; top:0; bottom:0; left:-60px; width:50px; background:linear-gradient(90deg,#fff0,#fffa,#fff0); transform:skewX(-20deg); }
+  #bar.shine::after { animation:sweep .8s; }
+  @keyframes sweep { to { left:260px; } }
+
+  /* order card */
+  #order { position:absolute; top:80px; left:12px; right:12px; height:92px; background:var(--paper); border:3px solid var(--brass);
+           border-radius:14px; display:flex; align-items:center; gap:10px; padding:6px 10px; box-shadow:0 4px 12px #0008; }
+  #order .face { width:70px; height:80px; border-radius:10px; background:#3b2a1c url(assets/ch-henry.png) center 8%/150% no-repeat; flex:none; }
+  #order .txt { flex:1; color:var(--ink); font-size:13px; font-weight:900; line-height:1.25; }
+  #order .want { width:66px; height:66px; flex:none; border-radius:12px; background-color:#efe0bd; position:relative; animation:wantGlow 2s infinite; }
+  @keyframes wantGlow { 0%,100%{box-shadow:inset 0 0 0 3px var(--teal)} 50%{box-shadow:inset 0 0 0 3px var(--teal),0 0 14px var(--teal)} }
+
+  /* board */
+  #board { position:absolute; left:10px; right:10px; bottom:16px; padding:8px; border-radius:16px;
+           background:linear-gradient(#d9b47a,#c49a5c); border:3px solid #8a6436; box-shadow:0 6px 18px #000a;
+           display:grid; grid-template-columns:repeat(5,var(--cell)); grid-auto-rows:var(--cell); gap:4px; justify-content:center; }
+  .cell { position:relative; border-radius:12px; background:var(--paper); box-shadow:inset 0 -3px 0 #e0cfa8; transition:box-shadow .15s, background .15s; }
+  .cell.origin { box-shadow:inset 0 0 0 3px #fff8, inset 0 -3px 0 #e0cfa8; }
+  .cell.ok { background:#e3fbf6; box-shadow:0 0 0 3px var(--teal), 0 0 16px var(--teal); animation:okPulse .6s infinite; }
+  @keyframes okPulse { 50% { box-shadow:0 0 0 4px var(--teal), 0 0 24px var(--teal); } }
+  .cell.no { box-shadow:0 0 0 3px #e0574a, inset 0 0 12px #e0574a88; }
+  .item { position:absolute; inset:3px; border-radius:10px; background-repeat:no-repeat; touch-action:none; cursor:grab; }
+  .item.pop { animation:pop .45s; }
+  @keyframes pop { 0%{transform:scale(.3)} 45%{transform:scale(1.28,.82)} 70%{transform:scale(.9,1.12)} 100%{transform:scale(1)} }
+  .item.flyin { animation:flyin .45s cubic-bezier(.3,.7,.4,1); }
+  @keyframes flyin { 0%{transform:translate(var(--dx),var(--dy)) scale(.3)} 55%{transform:translate(calc(var(--dx)*.35),calc(var(--dy)*.35 - 34px)) scale(1.1)} 80%{transform:scale(1.1,.9)} 100%{transform:none} }
+  .item.jiggle { animation:jiggle .3s; }
+  @keyframes jiggle { 25%{transform:rotate(-8deg) scale(1.08)} 75%{transform:rotate(8deg) scale(1.08)} }
+  .item.hint { animation:breathe 1s infinite; }
+  @keyframes breathe { 0%,100%{box-shadow:0 0 0 0 #3fd6c400; transform:none} 50%{box-shadow:0 0 0 3px var(--teal),0 0 14px var(--teal); transform:scale(1.06)} }
+  .item.special { box-shadow:0 0 0 3px var(--gold),0 0 20px var(--gold); }
+  .lv { position:absolute; right:3px; bottom:2px; font-size:10px; font-weight:900; color:#8a6436; }
+  /* locked cell: darker tray + greyed item under a translucent dusty sheet + padlock tag */
+  .cell.locked { background:#cdb88f; box-shadow:inset 0 2px 6px #0004; }
+  .ghost { position:absolute; inset:6px; background-repeat:no-repeat; filter:grayscale(1) brightness(.7); opacity:.75; }
+  .cloth { position:absolute; inset:2px; border-radius:10px; overflow:hidden;
+           background:repeating-linear-gradient(135deg,#ffffff40 0 5px,#0000 5px 11px), radial-gradient(circle at 30% 25%,#f4efe666,#d9d1c444 70%);
+           border:2px dashed #fff9; }
+  .cloth::after { content:'🔒'; position:absolute; right:2px; bottom:1px; font-size:14px; filter:drop-shadow(0 1px 1px #0006); }
+  .cloth.off { animation:lift .6s forwards; pointer-events:none; }
+  @keyframes lift { 40%{ transform:translateY(-14px) rotate(-8deg) scale(1.1); opacity:1 } to { transform:translateY(-46px) rotate(-22deg) scale(.8); opacity:0; } }
+  .cell.shake { animation:shake .35s; }
+  @keyframes shake { 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+  #mute { position:absolute; left:50%; top:10px; transform:translateX(-50%); z-index:70; cursor:pointer; }
+  #drag { position:absolute; width:var(--cell); height:var(--cell); pointer-events:none; z-index:50; border-radius:10px; background-repeat:no-repeat;
+          transform:scale(1.22) rotate(-6deg); filter:drop-shadow(0 12px 10px #0009) drop-shadow(0 0 8px #fff8); display:none; }
+  #hand { position:absolute; width:52px; height:52px; background-repeat:no-repeat; z-index:60; pointer-events:none; display:none; filter:drop-shadow(0 3px 4px #0008); }
+  #hand.tapping { animation:tapHand .8s ease-in-out infinite; }
+  @keyframes tapHand { 50% { transform:translate(4px,6px) scale(.9); } }
+  .btn.off { opacity:.4; filter:grayscale(1); animation:none; pointer-events:none; }
+  .flashfx { position:absolute; pointer-events:none; z-index:55; width:90px; height:90px; border-radius:50%;
+             background:radial-gradient(circle,#fff 0,#fffb 25%,#3fd6c400 70%); animation:burst .45s forwards; }
+  @keyframes burst { from{transform:scale(.2);opacity:1} to{transform:scale(1.7);opacity:0} }
+
+  /* light rays used behind the watch and from the attic door */
+  .rays { position:absolute; border-radius:50%; pointer-events:none; opacity:0; transition:opacity .6s;
+          background:repeating-conic-gradient(from 0deg,#ffe9a855 0 8deg,#ffe9a800 8deg 22deg);
+          -webkit-mask:radial-gradient(circle,#000 0,#000 30%,#0000 70%); mask:radial-gradient(circle,#000 0,#000 30%,#0000 70%);
+          animation:spin 14s linear infinite; }
+  .rays.on { opacity:1; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  /* dialogue / scenes */
+  .dim { position:absolute; inset:0; background:#000a; }
+  .char { position:absolute; bottom:0; height:340px; filter:drop-shadow(0 6px 10px #0009); transition:transform .4s, opacity .4s; }
+  .bubble { position:absolute; background:var(--paper); color:var(--ink); border:3px solid var(--brass); border-radius:14px;
+            padding:10px 14px; font-weight:900; font-size:16px; box-shadow:0 4px 10px #0008; animation:bubbleIn .35s; }
+  @keyframes bubbleIn { from { transform:scale(.6); opacity:0 } }
+  .tap { position:absolute; bottom:14px; left:0; right:0; text-align:center; color:#fff; font-size:12px; opacity:.7; animation:blink 1.2s infinite; }
+  @keyframes blink { 50%{opacity:.2} }
+  /* reveal: the restored item floats on a glow, no tile behind it */
+  .halo { position:absolute; left:50%; top:200px; width:300px; height:300px; margin:-150px 0 0 -150px; border-radius:50%; pointer-events:none;
+          background:radial-gradient(circle,#fff3c4cc 0,#ffd27a88 22%,#3fd6c433 48%,#3fd6c400 70%); opacity:0; transform:scale(.4); transition:opacity .5s, transform .6s; }
+  .halo.on { opacity:1; transform:none; animation:haloPulse 2.4s ease-in-out infinite; }
+  @keyframes haloPulse { 50% { transform:scale(1.08); } }
+  .big { position:absolute; left:50%; top:105px; width:200px; height:200px; margin-left:-100px; background-repeat:no-repeat;
+         filter:drop-shadow(0 0 14px #ffe7a0) drop-shadow(0 0 30px #ffd27a99); transform:scale(.2); transition:transform .5s cubic-bezier(.3,1.6,.5,1); }
+  .big.in { transform:none; animation:bob 2.6s ease-in-out .5s infinite; }
+  @keyframes bob { 50% { transform:translateY(-6px); } }
+  /* two slots the key halves land in, then fuse */
+  .tray { position:absolute; left:50%; top:318px; width:180px; height:74px; margin-left:-90px; display:flex; gap:10px; justify-content:center; opacity:0; transition:opacity .4s; }
+  .tray.on { opacity:1; }
+  .slot { width:80px; height:74px; border-radius:14px; border:2px dashed #ffe7a088; background:#0004; position:relative; }
+  .kimg { position:absolute; width:80px; height:80px; background-repeat:no-repeat; transition:all .7s cubic-bezier(.4,1.4,.5,1); z-index:6; pointer-events:none; }
+  .note { position:absolute; left:50%; top:330px; transform:translateX(-50%) rotate(-3deg) scale(0); background:#f3e6c8; color:var(--ink);
+          font:italic 700 22px 'Playfair Display',serif; padding:12px 18px; border-radius:4px; box-shadow:0 6px 16px #000a, 0 0 22px #ffd27a66; white-space:nowrap; transition:transform .4s cubic-bezier(.3,1.5,.5,1); }
+  .note.show { transform:translateX(-50%) rotate(-3deg) scale(1); }
+  .key { position:absolute; font-size:44px; left:200px; top:200px; transition:all .9s cubic-bezier(.5,-.3,.5,1.3); z-index:5; filter:drop-shadow(0 0 8px var(--gold)); }
+  .btns { position:absolute; left:16px; right:16px; bottom:30px; display:flex; gap:12px; }
+  .btn { flex:1; text-align:center; padding:14px 0; border-radius:14px; font-weight:900; font-size:17px; color:#fff; border:3px solid var(--brass); cursor:pointer; animation:btnGlow 1.4s infinite; }
+  .sell { background:var(--wine); animation:none; } .keep { background:#1f8f84; --g:var(--teal); animation-duration:1s; }
+  @keyframes btnGlow { 0%,100%{box-shadow:0 0 0 0 transparent} 50%{box-shadow:0 0 18px 2px var(--g)} }
+  /* attic scene */
+  .bgimg { position:absolute; inset:0; background:center/cover no-repeat; transition:opacity .7s; }
+  .flash { position:absolute; inset:0; background:radial-gradient(circle at 50% 40%,#fff3c4,#ffd27a00 60%); opacity:0; transition:opacity .5s; }
+  #hk { display:flex; align-items:center; gap:2px; padding:1px 8px; }
+  #hk i { width:28px; height:24px; background-repeat:no-repeat; filter:grayscale(1) brightness(.45); transition:filter .4s; }
+  #hk i.got { filter:drop-shadow(0 0 4px #ffd27a); }
+
+  /* end card */
+  #end { background:#120e0b url(assets/bg-shopfront.jpg) center/cover; }
+  #end .logo { position:absolute; top:40px; left:0; right:0; text-align:center; color:#f3e6c8; font:700 40px 'Playfair Display',serif; text-shadow:0 3px 10px #000, 0 0 18px #ffd27a66; }
+  #end .logo small { display:block; font:900 12px Nunito,sans-serif; letter-spacing:3px; color:var(--teal); }
+  /* covers the AI-garbled text on the BG03 shop sign */
+  #end .sign { position:absolute; left:58px; right:58px; top:312px; height:34px; border-radius:4px; background:#173b2c;
+               border:2px solid var(--brass); color:#f0d48a; font:700 17px 'Playfair Display',serif; text-align:center; line-height:30px; }
+  #end .q { position:absolute; bottom:150px; left:16px; right:16px; text-align:center; color:#fff; font:italic 700 26px 'Playfair Display',serif; text-shadow:0 2px 10px #000; }
+  #end .cta { position:absolute; bottom:60px; left:50%; transform:translateX(-50%); background:#1f8f84; color:#fff; font-weight:900; font-size:22px; overflow:hidden;
+              padding:14px 44px; border-radius:30px; border:3px solid var(--brass); animation:pulse 1s infinite; cursor:pointer; white-space:nowrap; box-shadow:0 0 22px #3fd6c488; }
+  #end .cta::after { content:''; position:absolute; top:0; bottom:0; left:-70px; width:50px; background:linear-gradient(90deg,#fff0,#fffc,#fff0); transform:skewX(-20deg); animation:sweep2 2.2s infinite; }
+  @keyframes sweep2 { 0%,55%{left:-70px} 100%{left:260px} }
+  @keyframes pulse { 50%{ transform:translateX(-50%) scale(1.07); } }
+  #end .again { position:absolute; bottom:18px; left:0; right:0; text-align:center; color:#fff; opacity:.6; font-size:12px; text-decoration:underline; cursor:pointer; }
+  /* loading screen: covers everything until every image is in, so nothing appears half-drawn */
+  #loader { position:absolute; inset:0; z-index:100; background:#120e0b; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; transition:opacity .4s; }
+  #loader .t { color:#f3e6c8; font:700 30px 'Playfair Display',serif; }
+  #loader .lb { width:200px; height:10px; border-radius:5px; background:#2a1e14; border:2px solid var(--brass); overflow:hidden; }
+  #loader .lb i { display:block; height:100%; width:0; background:linear-gradient(90deg,#2fb3a5,var(--teal)); transition:width .2s; }
+  #loader small { color:#f3e6c8; opacity:.6; font-size:12px; }
+  #toast { position:absolute; left:50%; top:46%; transform:translateX(-50%); background:#000c; color:#fff; padding:10px 16px; border-radius:10px; font-weight:900; display:none; z-index:99; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="loader"><div class="t">Keepsake Lane</div><div class="lb"><i id="loadBar"></i></div><small id="loadPct">Loading 0%</small></div>
+  <!-- game -->
+  <div id="game" class="layer hidden">
+    <div id="hud"><div class="pill" id="hk"><i id="hk0"></i><i id="hk1"></i></div></div>
+    <div id="bar"><i></i><span>RESTORING 0%</span></div>
+    <div id="order"><div class="face" id="orderFace"></div><div class="txt"><span id="orderL1"></span><br><small style="font-weight:700;opacity:.7" id="orderL2"></small></div><div class="want" id="want"></div></div>
+    <div id="board"></div>
+  </div>
+
+  <!-- hook -->
+  <div id="hook" class="layer">
+    <div class="dim"></div>
+    <img class="char" src="assets/ch-henry.png" style="left:-30px">
+    <div class="bubble" style="right:16px;top:170px;width:170px">It was hers...<br>Can you fix it?</div>
+    <div class="tap">Tap to continue</div>
+  </div>
+
+  <!-- reveal -->
+  <div id="reveal" class="layer hidden">
+    <div class="dim"></div>
+    <div class="rays" id="raysWatch" style="left:30px;top:55px;width:300px;height:300px"></div>
+    <div class="halo" id="halo"></div>
+    <div class="big" id="bigItem"></div>
+    <div class="tray" id="tray"><div class="slot"></div><div class="slot"></div></div>
+    <div class="kimg" id="halfL" style="opacity:0"></div>
+    <div class="kimg" id="halfR" style="opacity:0"></div>
+    <div class="kimg" id="fullKey" style="opacity:0"></div>
+    <div class="note" id="note" style="top:410px"></div>
+    <img class="char" id="claraR" src="assets/ch-clara.png" style="left:-40px;height:250px;opacity:0;transform:translateX(-40px)">
+    <div class="bubble hidden" id="revealLine" style="right:16px;bottom:110px;max-width:200px;transition:opacity .3s"></div>
+  </div>
+
+  <!-- choice -->
+  <div id="choice" class="layer hidden">
+    <div class="dim" style="background:#0005"></div>
+    <div id="talk">
+      <img class="char" src="assets/ch-victor.png" style="right:-40px;bottom:120px;height:400px">
+      <img class="char" src="assets/ch-clara.png" style="left:-70px;bottom:120px;height:300px">
+      <div style="position:absolute;left:0;right:0;bottom:0;height:200px;background:linear-gradient(transparent,#1b1410 45%)"></div>
+      <div class="bubble" style="left:16px;top:70px;width:210px">I'll pay $5,000<br>for that key. Tonight.</div>
+    </div>
+    <div class="note" id="willNote" style="top:260px">"Don't sell the key."</div>
+    <div class="btns" id="btns"><div class="btn sell" id="sell">SELL $5,000</div><div class="btn keep" id="keepBtn">KEEP IT</div></div>
+  </div>
+
+  <!-- attic door (KEEP branch): closed and open versions of the same painting, cross-faded -->
+  <div id="attic" class="layer hidden">
+    <div class="bgimg" style="background-image:url(assets/bg-attic.jpg)"></div>
+    <div class="bgimg" id="atticOpen" style="background-image:url(assets/bg-attic-open.jpg);opacity:0"></div>
+    <div class="rays" id="raysDoor" style="left:-20px;top:100px;width:400px;height:400px"></div>
+    <div class="flash" id="flash"></div>
+    <div class="kimg" id="key2" style="opacity:0;left:140px;top:540px;transition:all .9s cubic-bezier(.5,-.3,.5,1.3)"></div>
+  </div>
+
+  <!-- end -->
+  <div id="end" class="layer hidden">
+    <div class="logo"><small>A COZY MYSTERY MERGE</small>Keepsake Lane</div>
+    <div class="sign">Bell &amp; Keys Antiques</div>
+    <div class="q" id="endQ">What did Grandma hide?</div>
+    <div class="cta" id="cta">PLAY NOW</div>
+    <div class="again" id="again">Play again</div>
+  </div>
+
+  <canvas id="fxc"></canvas>
+  <div id="mute" class="pill">🔊</div>
+  <div id="drag"></div>
+  <div id="hand"></div>
+  <div id="toast"></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+// ---- sprite sheets (crop rects measured on the original 1264x848 sheets; k = scale of the shipped copy) ----
+// The shipped copies in ./assets are resized JPEG/PNG made by optimize-assets.ps1 (originals stay in concept-art/).
+const SHEETS = {
+  clk:  { src:'assets/clk-sheet-1.jpg', cols:[75,482,888], rows:[68,475], size:300, k:.6 },
+  tool: { src:'assets/gen-tool-sheet-1.jpg', cols:[62,468,873], rows:[58,463], size:330, k:.6 },
+  mbox: { src:'assets/box-sheet-1.jpg', cols:[75,482,888], rows:[68,475], size:300, k:.6 },
+  // KEY-sheet-3 is drawn without glow or sparkles, so the halves join cleanly
+  key:  { src:'assets/key-sheet-3.jpg', cols:[75,482,888], rows:[68,475], size:300, k:.6 },
+  hand: { src:'assets/hand.png', cols:[0], rows:[0], size:160, count:1 },
+};
+// clk / mbox level n -> sheet index n-1; tool sheet: 0 tin, 1 basket, 2 rag, 3 brush, 4 oil, 5 cardboard box;
+// key sheet: 0 wooden chest, 1 full key, 2 left half, 3 right half, 4 sealed note, 5 magnifier
+// The sheets have a cream tile behind every icon. Cut each icon out and flood-fill that tile
+// colour from the crop edges to transparent, so a dragged item carries no tile background.
+const ICONS = {}, BOUNDS = {};
+function loadImg(src) { return new Promise((ok, err) => { const i = new Image(); i.onload = () => ok(i); i.onerror = err; i.src = src; }); }
+async function buildIcons() {
+  for (const [name, s] of Object.entries(SHEETS)) {
+    const img = await loadImg(s.src);
+    ICONS[name] = [];
+    for (let idx = 0; idx < (s.count ?? 6); idx++) {
+      const sk = s.k ?? 1, n = Math.round(s.size * sk), cv = document.createElement('canvas'); cv.width = cv.height = n;
+      const cx = cv.getContext('2d');
+      cx.drawImage(img, Math.round(s.cols[idx % 3] * sk), Math.round(s.rows[Math.floor(idx / 3)] * sk), n, n, 0, 0, n, n);
+      const d = cx.getImageData(0, 0, n, n), px = d.data;
+      const ref = [px[0], px[1], px[2]], seen = new Uint8Array(n * n), stack = [];
+      const near = p => Math.abs(px[p * 4] - ref[0]) + Math.abs(px[p * 4 + 1] - ref[1]) + Math.abs(px[p * 4 + 2] - ref[2]) < 70;
+      for (let k = 0; k < n; k++) stack.push(k, (n - 1) * n + k, k * n, k * n + n - 1);
+      while (stack.length) {
+        const p = stack.pop(); if (seen[p] || !near(p)) continue;
+        seen[p] = 1; px[p * 4 + 3] = 0;
+        const x = p % n, y = (p / n) | 0;
+        if (x > 0) stack.push(p - 1); if (x < n - 1) stack.push(p + 1);
+        if (y > 0) stack.push(p - n); if (y < n - 1) stack.push(p + n);
+      }
+      if (s.deglow?.includes(idx)) for (let p = 0; p < n * n; p++) {
+        const r = px[p * 4], g = px[p * 4 + 1], b = px[p * 4 + 2], lo = Math.min(r, g, b), hi = Math.max(r, g, b);
+        if ((g - r > 12 && b - r > 12) || (hi - lo < 28 && lo > 200)) px[p * 4 + 3] = 0;   // teal halo, white sparkles
+      }
+      cx.putImageData(d, 0, 0);
+      ICONS[name][idx] = cv.toDataURL();
+      // horizontal extent of the opaque pixels, as a fraction of the icon width (used to butt the key halves together)
+      // (skip a thin border: the crop can catch the edge of the tile frame)
+      let minX = n, maxX = 0; const m = Math.round(n * .06);
+      for (let y = m; y < n - m; y++) for (let x = m; x < n - m; x++) if (px[(y * n + x) * 4 + 3] > 40) { if (x < minX) minX = x; if (x > maxX) maxX = x; }
+      // vertical centre of the shape in its leftmost and rightmost 12% (where a broken key half meets the other)
+      const edgeY = (x0, x1) => { let s = 0, c = 0; for (let y = m; y < n - m; y++) for (let x = x0; x <= x1; x++) if (px[(y * n + x) * 4 + 3] > 40) { s += y; c++; } return c ? s / c / n : .5; };
+      const span = Math.round((maxX - minX) * .12);
+      (BOUNDS[name] ||= [])[idx] = { minX: minX / n, maxX: maxX / n, leftY: edgeY(minX, minX + span), rightY: edgeY(maxX - span, maxX) };
+    }
+  }
+}
+function sprite(el, sheet, idx) {
+  el.style.backgroundImage = `url(${ICONS[sheet][idx]})`;
+  el.style.backgroundSize = 'contain';
+  el.style.backgroundPosition = 'center';
+}
+function look(it) {
+  if (it.t === 'clk' || it.t === 'mbox') return [it.t, it.lv - 1];
+  if (it.t === 'tool') return ['tool', it.lv + 1];   // rag=2, brush=3, oil=4
+  if (it.t === 'gen') return it.g === 'chest' ? ['key', 0] : ['tool', 0];
+  if (it.t === 'box') return ['tool', 5];
+}
+
+// ---- sound: AI-generated clips in ./audio (ElevenLabs via fal), played through WebAudio ----
+const sfx = (() => {
+  const NAMES = ['pick', 'drop', 'merge1', 'merge2', 'merge6', 'spawn', 'cloth', 'deny', 'tick', 'lid', 'sting', 'bell', 'key', 'creak', 'coin', 'tap', 'lose', 'rain', 'music'];
+  // fetch the bytes straight away; decoding needs an AudioContext, which needs a user gesture
+  const raw = Object.fromEntries(NAMES.map(n => [n, fetch(`audio/${n}.mp3`).then(r => r.arrayBuffer()).catch(() => null)]));
+  const buf = {}, norm = {};
+  let ac, master, muted = false;
+  // The generated clips range from near-silent (tick) to full scale (cloth, merge6), and full-scale
+  // clips stacked on the music clipped into a buzz. Normalise every clip to one peak, then limit the mix.
+  const TARGET_PEAK = .5;
+  function play(name, vol = 1, rate = 1, loop = false) {
+    if (!ac || !buf[name]) return;
+    const s = ac.createBufferSource(), g = ac.createGain();
+    s.buffer = buf[name]; s.playbackRate.value = rate; s.loop = loop; g.gain.value = vol * norm[name];
+    if (loop) { s.loopStart = .3; s.loopEnd = Math.max(1, s.buffer.duration - 1.2); }   // skip the fade-out tail at the seam
+    s.connect(g); g.connect(master); s.start(); return s;
+  }
+  return {
+    async unlock() {
+      if (ac) return; ac = new (window.AudioContext || window.webkitAudioContext)();
+      const limiter = ac.createDynamicsCompressor();
+      limiter.threshold.value = -10; limiter.knee.value = 6; limiter.ratio.value = 12; limiter.attack.value = .003; limiter.release.value = .2;
+      master = ac.createGain(); master.gain.value = muted ? 0 : .9; master.connect(limiter); limiter.connect(ac.destination);
+      await Promise.all(NAMES.map(async n => {
+        const b = await raw[n]; if (!b) return;
+        try {
+          buf[n] = await ac.decodeAudioData(b);
+          let pk = 0; for (let c = 0; c < buf[n].numberOfChannels; c++) for (const v of buf[n].getChannelData(c)) pk = Math.max(pk, Math.abs(v));
+          norm[n] = pk > .001 ? Math.min(8, TARGET_PEAK / pk) : 1;
+        } catch {}
+      }));
+      play('rain', .35, 1, true); play('music', .45, 1, true);
+    },
+    toggle() { muted = !muted; if (master) master.gain.value = muted ? 0 : .9; return muted; },
+    pick: () => play('pick', .8),
+    drop: () => play('drop', .8),
+    deny: () => play('deny', .8),
+    spawn: () => play('spawn', .8),
+    whoosh: () => play('cloth', .8),
+    // pitch climbs a little with each level so the chain feels like it is building up
+    merge: lv => lv >= 6 ? play('merge6', .9) : play(lv >= 4 ? 'merge2' : 'merge1', .8, 1 + (lv - 2) * .05),
+    tick: () => play('tick', .9),
+    lid: () => play('lid', .9),
+    sting: () => play('sting', .9),
+    bell: () => play('bell', .8),
+    key: () => play('key', .9),
+    creak: () => play('creak', .9),
+    coin: () => play('coin', .8),
+    tap: () => play('tap', .7),
+    lose: () => play('lose', .9),
+  };
+})();
+
+// ---- particle FX on a canvas over the stage (stage units: 360×640) ----
+const fx = (() => {
+  const cv = $('fxc'), cx = cv.getContext('2d'), DPR = Math.min(2, devicePixelRatio || 1);
+  cv.width = 360 * DPR; cv.height = 640 * DPR; cx.scale(DPR, DPR);
+  const P = [], amb = { motes: false, rain: false };
+  const R = (a, b) => a + Math.random() * (b - a);
+  const add = p => P.push({ t: 0, ...p });
+  function sparks(x, y, n, colors, speed = 3.2, size = 3) {
+    for (let i = 0; i < n; i++) {
+      const a = R(0, Math.PI * 2), v = speed * R(.4, 1.2);
+      add({ k: 'spark', x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1, g: .09, max: R(28, 48), s: R(size * .6, size * 1.4), c: colors[i % colors.length] });
+    }
+  }
+  function stars(x, y, n, spread = 30, c = '#fff6c8') {
+    for (let i = 0; i < n; i++) add({ k: 'star', x: x + R(-spread, spread), y: y + R(-spread, spread), vx: 0, vy: R(-.4, -.1), max: R(30, 50), s: R(5, 9), c });
+  }
+  function ring(x, y, c = '#3fd6c4', r = 46, w = 4) { add({ k: 'ring', x, y, max: 24, r, w, c }); }
+  function dust(x, y, n = 14) {
+    for (let i = 0; i < n; i++) { const a = R(Math.PI * 1.1, Math.PI * 1.9); add({ k: 'dust', x: x + R(-18, 18), y: y + R(-10, 10), vx: Math.cos(a) * R(.4, 1.6), vy: Math.sin(a) * R(.4, 1.6), g: -.01, max: R(35, 60), s: R(4, 9), c: '#e8ddc8' }); }
+  }
+  function trail(x, y) { add({ k: 'spark', x: x + R(-4, 4), y: y + R(-4, 4), vx: R(-.3, .3), vy: R(-.3, .3), g: 0, max: R(18, 28), s: R(2, 4), c: '#ffe7a0' }); }
+  function frame() {
+    cx.clearRect(0, 0, 360, 640);
+    if (amb.motes && Math.random() < .35) add({ k: 'mote', x: R(20, 340), y: R(80, 600), vx: R(-.15, .15), vy: R(-.35, -.1), max: R(90, 160), s: R(1.5, 3.2), c: '#ffe7b0' });
+    if (amb.rain) for (let i = 0; i < 3; i++) add({ k: 'rain', x: R(-40, 360), y: R(-20, 0), vx: 1.4, vy: R(9, 13), max: 70, s: R(8, 14), c: '#bcd3ff' });
+    for (let i = P.length - 1; i >= 0; i--) {
+      const p = P[i]; p.t++;
+      if (p.t > p.max || p.y > 660) { P.splice(i, 1); continue; }
+      const u = p.t / p.max;
+      p.x += p.vx || 0; p.y += p.vy || 0; if (p.g) p.vy += p.g;
+      cx.globalCompositeOperation = p.k === 'dust' || p.k === 'rain' ? 'source-over' : 'lighter';
+      if (p.k === 'spark' || p.k === 'mote') {
+        const a = p.k === 'mote' ? Math.sin(u * Math.PI) * .7 : 1 - u;
+        const gr = cx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.s * 2.2);
+        gr.addColorStop(0, p.c); gr.addColorStop(1, 'rgba(0,0,0,0)');
+        cx.globalAlpha = a; cx.fillStyle = gr; cx.beginPath(); cx.arc(p.x, p.y, p.s * 2.2, 0, 7); cx.fill();
+      } else if (p.k === 'star') {
+        const s = p.s * Math.sin(u * Math.PI); cx.globalAlpha = 1; cx.fillStyle = p.c;
+        cx.beginPath(); cx.moveTo(p.x, p.y - s); cx.lineTo(p.x + s * .22, p.y - s * .22); cx.lineTo(p.x + s, p.y); cx.lineTo(p.x + s * .22, p.y + s * .22);
+        cx.lineTo(p.x, p.y + s); cx.lineTo(p.x - s * .22, p.y + s * .22); cx.lineTo(p.x - s, p.y); cx.lineTo(p.x - s * .22, p.y - s * .22); cx.fill();
+      } else if (p.k === 'ring') {
+        cx.globalAlpha = 1 - u; cx.strokeStyle = p.c; cx.lineWidth = p.w * (1 - u) + .5;
+        cx.beginPath(); cx.arc(p.x, p.y, p.r * (.2 + u), 0, 7); cx.stroke();
+      } else if (p.k === 'dust') {
+        cx.globalAlpha = .55 * (1 - u); cx.fillStyle = p.c; cx.beginPath(); cx.arc(p.x, p.y, p.s * (1 + u), 0, 7); cx.fill();
+      } else if (p.k === 'rain') {
+        cx.globalAlpha = .35; cx.strokeStyle = p.c; cx.lineWidth = 1; cx.beginPath(); cx.moveTo(p.x, p.y); cx.lineTo(p.x - p.vx * 1.5, p.y - p.s); cx.stroke();
+      }
+    }
+    cx.globalAlpha = 1; cx.globalCompositeOperation = 'source-over';
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  return { sparks, stars, ring, dust, trail, amb, clear: () => P.length = 0 };
+})();
+const GOLD = ['#ffd27a', '#fff1b8', '#ffb347'], TEAL = ['#3fd6c4', '#b8fff4', '#ffffff'];
+
+// ---- analytics hooks (console + window.__events) ----
+window.__events = [];
+function track(name, data) { const e = { name, t: +(performance.now() / 1000).toFixed(2), ...data }; __events.push(e); console.log('[event]', e); }
+
+// ---- params: ?end=2 -> E2 end card ----
+const params = new URLSearchParams(location.search);
+$('endQ').textContent = params.get('end') === '2' ? 'Who wanted Grandma gone?' : 'What did Grandma hide?';
+
+// ---- scale stage to fit ----
+const stage = $('stage');
+function fit() { const k = Math.min(innerWidth / 360, innerHeight / 640); stage.style.transform = `translate(-50%,-50%) scale(${k})`; stage._k = k; }
+addEventListener('resize', fit); fit();
+function toStage(r) { const s = stage.getBoundingClientRect(); return { x: (r.left - s.left) / stage._k, y: (r.top - s.top) / stage._k, w: r.width / stage._k, h: r.height / stage._k }; }
+function centerOf(el) { const b = toStage(el.getBoundingClientRect()); return { x: b.x + b.w / 2, y: b.y + b.h / 2 }; }
+
+// ---- board state ----
+const COLS = 5, ROWS = 4, CELL = 62;
+let grid, energy, done, merges, firstTouch, idleTimer, handTimer, lvl;
+const C = (t, lv) => ({ t, lv });
+// Two boards in a row; each restores one heirloom and yields one half of Grandma's key.
+const LEVELS = [
+  { chain: 'clk', gen: 'tin', face: 'henry', l1: '"Can you fix it?"', l2: "Restore Edith's watch", mirror: false },
+  { chain: 'mbox', gen: 'chest', face: 'clara', l1: '"Grandma\'s music box..."', l2: 'Find the other half', mirror: true },
+];
+const L = () => LEVELS[lvl];
+function seed() {
+  const { chain, gen, mirror } = L();
+  const g = Array(COLS * ROWS).fill(null);
+  const put = (r, c, v) => g[r * COLS + (mirror ? COLS - 1 - c : c)] = v;
+  put(0, 0, { t: 'cloth', under: C('tool', 1) }); put(0, 1, C(chain, 2)); put(0, 3, C('tool', 2)); put(0, 4, { t: 'cloth', under: C('tool', 1) });
+  put(1, 0, { t: 'gen', g: gen }); put(1, 1, { t: 'cloth', under: C('tool', 1) }); put(1, 2, C(chain, 3)); put(1, 4, { t: 'box' });
+  put(2, 2, { t: 'cloth', under: C('tool', 2) });   // next to the chain merges, so the uncover is seen early
+  put(2, 0, C('tool', 1)); put(2, 1, C(chain, 2)); put(2, 3, C(chain, 5));
+  put(3, 0, { t: 'cloth', under: C('tool', 2) }); put(3, 2, C(chain, 4)); put(3, 3, C('tool', 3)); put(3, 4, { t: 'cloth', under: C('tool', 1) });
+  return g;
+}
+function setupLevel() {
+  const lv = L();
+  grid = seed(); done = false;
+  $('orderFace').style.backgroundImage = `url(assets/ch-${lv.face}.png)`;
+  $('orderL1').textContent = lv.l1; $('orderL2').textContent = lv.l2;
+  sprite($('want'), lv.chain, 5);
+  document.querySelector('#bar i').style.width = '0';
+  document.querySelector('#bar span').textContent = 'RESTORING 0%';
+  render();
+}
+const boardEl = $('board');
+const cellEl = i => boardEl.children[i];
+function render(popIdx, popClass = 'pop') {
+  boardEl.innerHTML = '';
+  grid.forEach((it, i) => {
+    const cell = document.createElement('div'); cell.className = 'cell'; cell.dataset.i = i;
+    if (it) {
+      if (it.t === 'cloth') {
+        // locked: the item under the dust sheet shows through, greyed out, so it reads as "something is here"
+        cell.classList.add('locked');
+        const ghost = document.createElement('div'); ghost.className = 'ghost';
+        const [sh, idx] = look(it.under); sprite(ghost, sh, idx);
+        const c = document.createElement('div'); c.className = 'cloth';
+        cell.append(ghost, c);
+      } else {
+        const el = document.createElement('div'); el.className = 'item'; el.dataset.i = i;
+        const [sh, idx] = look(it); sprite(el, sh, idx);
+        if (it.lv === 6) el.classList.add('special');
+        if (i === popIdx) el.classList.add(popClass);
+        if (it.lv) { const lv = document.createElement('div'); lv.className = 'lv'; lv.textContent = 'Lv' + it.lv; el.appendChild(lv); }
+        cell.appendChild(el);
+      }
+    }
+    boardEl.appendChild(cell);
+  });
+}
+const maxLv = { clk: 6, mbox: 6, tool: 3 };
+function canMerge(a, b) { return a && b && a.t === b.t && a.lv && a.lv === b.lv && a.lv < maxLv[a.t]; }
+
+// ---- drag & drop ----
+const dragEl = $('drag');
+let drag = null, hoverCell = null;
+function local(e) { const r = stage.getBoundingClientRect(); return { x: (e.clientX - r.left) / stage._k, y: (e.clientY - r.top) / stage._k }; }
+function setHover(cell) {
+  if (hoverCell === cell) return;
+  hoverCell?.classList.remove('ok', 'no'); hoverCell = cell;
+  if (!cell || +cell.dataset.i === drag.i) return;
+  const b = grid[+cell.dataset.i];
+  if (b?.t === 'cloth') cell.classList.add('no');
+  else if (canMerge(grid[drag.i], b)) cell.classList.add('ok');
+}
+boardEl.addEventListener('pointerdown', e => {
+  if (done) return;
+  const item = e.target.closest('.item'); if (!item) return;
+  touched();
+  const i = +item.dataset.i, it = grid[i];
+  if (it.t === 'gen') return spawn(i);
+  if (it.t === 'box') return openBox(i);
+  drag = { i, el: item }; sfx.pick();
+  const [sh, idx] = look(it); sprite(dragEl, sh, idx);
+  item.style.opacity = .3; item.parentElement.classList.add('origin');
+  dragEl.style.display = 'block'; moveDrag(e);
+  boardEl.setPointerCapture(e.pointerId);
+});
+boardEl.addEventListener('pointermove', e => {
+  if (!drag) return; moveDrag(e);
+  setHover(document.elementFromPoint(e.clientX, e.clientY)?.closest('.cell'));
+});
+function moveDrag(e) { const p = local(e); dragEl.style.left = p.x - CELL / 2 + 'px'; dragEl.style.top = p.y - CELL / 2 + 'px'; }
+boardEl.addEventListener('pointerup', e => {
+  if (!drag) return;
+  dragEl.style.display = 'none';
+  const target = document.elementFromPoint(e.clientX, e.clientY)?.closest('.cell');
+  const from = drag.i; drag.el.style.opacity = 1; drag.el.parentElement.classList.remove('origin');
+  hoverCell?.classList.remove('ok', 'no'); hoverCell = null; drag = null;
+  if (!target) return;
+  const to = +target.dataset.i; if (to === from) return;
+  const a = grid[from], b = grid[to];
+  if (b && (b.t === 'cloth')) {
+    target.classList.add('shake'); setTimeout(() => target.classList.remove('shake'), 400);
+    sfx.deny(); if (!lockTip) { lockTip = true; toast('Merge next to it to uncover!'); }
+    return;
+  }
+  if (canMerge(a, b)) return merge(from, to);
+  sfx.drop(); grid[to] = a; grid[from] = b; render(); scheduleHint();
+});
+
+function merge(from, to) {
+  const a = grid[from], lv = a.lv + 1;
+  grid[from] = null; grid[to] = C(a.t, lv);
+  merges++; track('merge_' + merges, { item: a.t + lv });
+  // lift neighbouring dust cloths
+  const r = Math.floor(to / COLS), c = to % COLS;
+  const lifted = [];
+  [[r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]].forEach(([rr, cc]) => {
+    if (rr < 0 || cc < 0 || rr >= ROWS || cc >= COLS) return;
+    const k = rr * COLS + cc; if (grid[k]?.t === 'cloth') { lifted.push(k); grid[k] = grid[k].under; }
+  });
+  render(to); sfx.merge(lv);
+  const main = a.t === L().chain, p = centerOf(cellEl(to)), big = main && lv >= 5;
+  flash(p); fx.ring(p.x, p.y, big ? '#ffd27a' : '#3fd6c4', big ? 70 : 46);
+  fx.sparks(p.x, p.y, big ? 22 : 12, big ? GOLD : TEAL.concat(GOLD), big ? 4 : 3.2);
+  fx.stars(p.x, p.y, big ? 5 : 2, 28);
+  if (main && lv === 6) {
+    stage.classList.remove('quake'); void stage.offsetWidth; stage.classList.add('quake');
+    fx.ring(p.x, p.y, '#fff1b8', 120, 6); fx.sparks(p.x, p.y, 30, GOLD, 5.5, 4);
+  }
+  if (lifted.length) setTimeout(sfx.whoosh, 120);
+  lifted.forEach(k => {
+    // the lifting sheet is only an animation: it must not sit on top of the item afterwards
+    const cell = cellEl(k), cl = document.createElement('div'); cl.className = 'cloth off'; cell.appendChild(cl);
+    setTimeout(() => cl.remove(), 650);
+    const q = centerOf(cell); setTimeout(() => fx.dust(q.x, q.y, 16), 120);
+  });
+  if (main) progress(lv);
+  if (main && lv === 6) { done = true; clearTimeout(idleTimer); setTimeout(startReveal, 1100); }
+  else scheduleHint();
+}
+function flash(p) {
+  const f = document.createElement('div'); f.className = 'flashfx';
+  f.style.left = p.x - 45 + 'px'; f.style.top = p.y - 45 + 'px';
+  stage.appendChild(f); setTimeout(() => f.remove(), 450);
+}
+function progress(lv) {
+  const pct = { 3: 25, 4: 50, 5: 75, 6: 100 }[lv]; if (!pct) return;
+  document.querySelector('#bar i').style.width = pct + '%';
+  document.querySelector('#bar span').textContent = (pct === 100 ? 'RESTORED ' : 'RESTORING ') + pct + '%';
+  const bar = $('bar'); bar.classList.remove('shine'); void bar.offsetWidth; bar.classList.add('shine');
+  setTimeout(() => { fx.stars(65 + 230 * pct / 100, 57, 3, 8); fx.sparks(65 + 230 * pct / 100, 57, 8, TEAL, 2.2, 2.5); }, 450);
+}
+function emptyNear(i) {
+  const r0 = Math.floor(i / COLS), c0 = i % COLS; let best = -1, bd = 99;
+  grid.forEach((v, k) => { if (v) return; const d = Math.abs(Math.floor(k / COLS) - r0) + Math.abs(k % COLS - c0); if (d < bd) { bd = d; best = k; } });
+  return best;
+}
+function spawn(i) {
+  const k = emptyNear(i); if (k < 0) return toast('Board is full!');
+  energy--;
+  const from = centerOf(cellEl(i)), to = centerOf(cellEl(k));
+  grid[k] = C(L().chain, 1); track('spawn'); sfx.spawn(); render(k, 'flyin');
+  const el = cellEl(k).querySelector('.item'); el.style.setProperty('--dx', from.x - to.x + 'px'); el.style.setProperty('--dy', from.y - to.y + 'px');
+  cellEl(i).querySelector('.item')?.classList.add('jiggle');
+  fx.sparks(from.x, from.y, 6, GOLD, 2);
+  setTimeout(() => { fx.sparks(to.x, to.y + 12, 8, GOLD, 2, 2.5); fx.dust(to.x, to.y + 18, 5); }, 420);
+  scheduleHint();
+}
+function openBox(i) {
+  grid[i] = C('tool', 1); sfx.whoosh(); render(i);
+  const p = centerOf(cellEl(i)); fx.dust(p.x, p.y, 14); fx.sparks(p.x, p.y, 8, GOLD, 2.5);
+  scheduleHint();
+}
+
+// ---- hints ----
+function pairs() {
+  const list = [];
+  for (let a = 0; a < grid.length; a++) for (let b = a + 1; b < grid.length; b++) if (canMerge(grid[a], grid[b])) list.push([a, b]);
+  list.sort((p, q) => (grid[q[0]].t === L().chain) - (grid[p[0]].t === L().chain)); // prefer the level's own chain
+  return list;
+}
+function scheduleHint() {
+  clearTimeout(idleTimer); document.querySelectorAll('.hint').forEach(e => e.classList.remove('hint'));
+  idleTimer = setTimeout(() => {
+    const p = pairs()[0];
+    if (!p) { const gen = grid.findIndex(v => v?.t === 'gen'); cellEl(gen)?.querySelector('.item')?.classList.add('hint'); return; }
+    p.forEach(k => cellEl(k).querySelector('.item').classList.add('hint'));
+    if (merges === 0) showHand(p[0], p[1]);
+  }, merges === 0 ? 2000 : lvlStartMerges === merges ? 1200 : 3000);   // first hint waits, so the board is seen before the hand
+}
+const hand = $('hand');
+// the fingertip sits about 22% in and 12% down the 52px hand image
+const TIP = { x: 11, y: 6 };
+function showHand(a, b) {
+  const pos = k => { const q = centerOf(cellEl(k)); return { x: q.x - TIP.x, y: q.y - TIP.y }; };
+  const A = pos(a), B = pos(b); let t = 0;
+  hand.classList.remove('tapping'); clearInterval(handTimer);
+  // fade in resting on the item to pick up, hold a moment, then start the drag loop
+  hand.style.left = A.x + 'px'; hand.style.top = A.y + 'px';
+  hand.style.transition = 'none'; hand.style.opacity = 0; hand.style.display = 'block';
+  requestAnimationFrame(() => { hand.style.transition = 'opacity .45s'; hand.style.opacity = 1; });
+  handTimer = setTimeout(() => {
+    hand.style.transition = '';
+    handTimer = setInterval(() => { t = (t + 0.02) % 1.3; const u = Math.min(t, 1); hand.style.left = A.x + (B.x - A.x) * u + 'px'; hand.style.top = A.y + (B.y - A.y) * u + 'px'; }, 16);
+  }, 900);
+}
+// a tapping hand resting on one element (used to point at KEEP)
+function pointAt(el) {
+  const p = centerOf(el); clearInterval(handTimer); clearTimeout(handTimer); hand.style.opacity = 1;
+  hand.style.left = p.x - TIP.x + 'px'; hand.style.top = p.y - TIP.y + 'px';
+  hand.classList.add('tapping'); hand.style.display = 'block';
+}
+function hideHand() { clearInterval(handTimer); clearTimeout(handTimer); hand.style.display = 'none'; hand.classList.remove('tapping'); }
+function touched() {
+  hideHand();
+  if (!firstTouch) { firstTouch = true; track('first_interaction'); }
+}
+
+// ---- scenes ----
+const show = id => $(id).classList.remove('hidden'), hide = id => $(id).classList.add('hidden');
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1200); }
+// follow a moving element with a sparkle trail for `ms`
+function trailOf(el, ms) { const id = setInterval(() => { const p = centerOf(el); fx.trail(p.x, p.y); fx.trail(p.x, p.y); }, 30); setTimeout(() => clearInterval(id), ms); }
+
+// first gesture: browsers only allow audio after one
+// the board stays hidden behind the opening dialogue and appears on the first tap
+$('hook').addEventListener('pointerdown', () => { sfx.unlock(); sfx.tap(); hide('hook'); show('game'); scheduleHint(); });
+$('mute').addEventListener('pointerdown', e => { e.stopPropagation(); sfx.unlock(); $('mute').textContent = sfx.toggle() ? '🔇' : '🔊'; });
+
+// key halves: left half from the watch (level 1), right half from the music box (level 2)
+const SLOT = [{ x: 95, y: 315 }, { x: 185, y: 315 }];
+function placeK(el, x, y, extra = '') { el.style.left = x + 'px'; el.style.top = y + 'px'; el.style.transform = extra; }
+function startReveal() {
+  const first = lvl === 0, half = first ? $('halfL') : $('halfR');
+  track(first ? 'reveal1_seen' : 'reveal2_seen');
+  sprite($('bigItem'), L().chain, 5);
+  hide('game'); show('reveal'); fx.amb.motes = true; first ? sfx.tick() : sfx.bell();
+  $('note').classList.remove('show'); $('revealLine').classList.add('hidden');
+  setTimeout(() => { $('bigItem').classList.add('in'); $('halo').classList.add('on'); $('raysWatch').classList.add('on'); $('tray').classList.add('on'); }, 150);
+  // the half key pops out of the restored item and drops into its slot
+  setTimeout(() => {
+    sfx.lid(); fx.ring(180, 205, '#ffd27a', 130, 6); fx.sparks(180, 205, 26, GOLD, 4.5, 3.5); fx.stars(180, 205, 6, 90);
+    half.style.transition = 'none'; placeK(half, 140, 165, 'scale(.3)'); half.style.opacity = 1;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      half.style.transition = ''; const s = SLOT[first ? 0 : 1]; placeK(half, s.x, s.y); trailOf(half, 800);
+    }));
+  }, 650);
+  setTimeout(() => { sfx.key(); $(first ? 'hk0' : 'hk1').classList.add('got'); }, 1450);
+  if (first) {
+    setTimeout(() => { $('note').textContent = '"Find the other half." — E.'; $('note').classList.add('show'); sfx.sting(); fx.dust(180, 430, 10); }, 1800);
+    setTimeout(() => { claraSays("Half a key...? Grandma's music box!"); }, 2400);
+    setTimeout(nextLevel, 4600);
+  } else {
+    // both halves slide together, flash, and become the whole key
+    // slide the halves until their broken ends touch at the centre line (x = 180), no overlap
+    setTimeout(() => {
+      // ...and line the shafts up vertically: the right half shifts so its broken end sits level with the left half's
+      const W = 80, l = BOUNDS.key[2], r = BOUNDS.key[3];
+      placeK($('halfL'), 180 - l.maxX * W, 315); placeK($('halfR'), 180 - r.minX * W, 315 + (l.rightY - r.leftY) * W);
+    }, 1800);
+    setTimeout(() => {
+      $('halfL').style.opacity = 0; $('halfR').style.opacity = 0; $('tray').classList.remove('on');
+      const k = $('fullKey'); k.style.transition = 'none'; placeK(k, 140, 315, 'scale(.6)'); k.style.opacity = 1;
+      requestAnimationFrame(() => requestAnimationFrame(() => { k.style.transition = ''; placeK(k, 140, 312, 'scale(1.5)'); }));
+      sfx.merge(6); flash({ x: 180, y: 352 }); fx.ring(180, 352, '#fff1b8', 110, 6); fx.sparks(180, 352, 34, GOLD, 5, 3.5); fx.stars(180, 352, 8, 60);
+    }, 2550);
+    setTimeout(() => { $('note').textContent = '"It was no accident." — E.'; $('note').classList.add('show'); sfx.sting(); fx.dust(180, 430, 10); }, 3300);
+    setTimeout(() => claraSays('Grandma...?'), 3900);
+    setTimeout(startChoice, 5900);
+  }
+}
+function claraSays(text) {
+  const c = $('claraR'); c.style.opacity = 1; c.style.transform = 'none';
+  const b = $('revealLine'); b.textContent = text; b.classList.remove('hidden');
+}
+let lvlStartMerges = 0;
+function nextLevel() {
+  lvl = 1; lvlStartMerges = merges; track('level2_start');
+  hide('reveal'); fx.amb.motes = false;
+  $('bigItem').classList.remove('in'); $('halo').classList.remove('on'); $('raysWatch').classList.remove('on');
+  $('claraR').style.opacity = 0; $('claraR').style.transform = 'translateX(-40px)';
+  setupLevel(); show('game'); scheduleHint();
+}
+let choiceTimer, chosen;
+function startChoice() {
+  hide('reveal'); $('raysWatch').classList.remove('on'); $('halo').classList.remove('on'); fx.amb.motes = false;
+  show('choice'); sfx.bell();
+  choiceTimer = setTimeout(() => choose('auto'), 5000);
+}
+function choose(kind) {
+  if (chosen) return; clearTimeout(choiceTimer);
+  track('choice_' + kind);
+  if (kind === 'sell') {
+    // selling is a soft fail: sad sting, Grandma's warning, then the player is steered to KEEP
+    sfx.lose(); $('sell').classList.add('off');
+    setTimeout(() => $('willNote').classList.add('show'), 250);
+    setTimeout(() => { $('willNote').classList.remove('show'); pointAt($('keepBtn')); }, 2000);
+    choiceTimer = setTimeout(() => choose('auto'), 6000);
+    return;
+  }
+  chosen = true; hideHand(); $('btns').style.display = 'none';
+  // cut to the attic landing; the key flies up the stairs into the lock (keyhole ≈ 187,223 on the 360×640 stage)
+  sfx.tap(); fx.sparks(250, 590, 16, TEAL, 3.5);
+  hide('choice'); show('attic'); fx.amb.motes = true;
+  // the key's bit (right end of the icon) heads for the keyhole; it fades as it arrives,
+  // since a flat 2D key cannot visibly go "into" the painted lock
+  const k = $('key2'); k.style.opacity = 1;
+  setTimeout(() => { placeK(k, 127, 183, 'scale(.8)'); trailOf(k, 700); }, 500);
+  setTimeout(() => { k.style.transition = 'opacity .25s'; k.style.opacity = 0; }, 1150);
+  setTimeout(() => { sfx.key(); flash({ x: 187, y: 223 }); fx.ring(187, 223, '#ffd27a', 44, 4); fx.sparks(187, 223, 16, GOLD, 2.5, 2.5); }, 1250);
+  setTimeout(() => {
+    $('atticOpen').style.opacity = 1; $('flash').style.opacity = 1; $('raysDoor').classList.add('on'); sfx.creak();
+    fx.sparks(180, 300, 30, GOLD, 4, 3.5); fx.stars(180, 300, 8, 80);
+  }, 1550);
+  setTimeout(() => $('flash').style.opacity = 0, 2200);
+  setTimeout(endCard, 3300);
+}
+$('sell').addEventListener('click', () => choose('sell'));
+$('keepBtn').addEventListener('click', () => choose('keep'));
+let logoTimer;
+function endCard() {
+  hideHand();
+  hide('choice'); hide('attic'); $('raysDoor').classList.remove('on'); fx.amb.motes = false;
+  show('end'); fx.amb.rain = true;
+  clearInterval(logoTimer); logoTimer = setInterval(() => fx.stars(180 + (Math.random() - .5) * 220, 80 + (Math.random() - .5) * 40, 1, 4), 500);
+  track('endcard_seen', { variant: params.get('end') === '2' ? 'E2' : 'E1' });
+}
+$('end').addEventListener('click', e => { if (e.target.id === 'again') return; sfx.coin(); fx.sparks(180, 556, 18, TEAL.concat(GOLD), 3.5); track('cta_click'); toast('→ App Store / Google Play'); });
+$('again').addEventListener('click', start);
+
+function start() {
+  lvl = 0; energy = 100; merges = 0; lvlStartMerges = 0; chosen = false;
+  $('sell').classList.remove('off'); hideHand(); clearTimeout(choiceTimer);
+  ['game', 'reveal', 'choice', 'attic', 'end'].forEach(hide); show('hook');
+  fx.amb.motes = fx.amb.rain = false; fx.clear(); clearInterval(logoTimer);
+  $('atticOpen').style.opacity = 0; $('flash').style.opacity = 0; $('bigItem').classList.remove('in');
+  ['raysWatch', 'raysDoor', 'halo', 'tray'].forEach(id => $(id).classList.remove('on'));
+  $('note').classList.remove('show'); $('willNote').classList.remove('show'); $('btns').style.display = 'flex';
+  ['halfL', 'halfR', 'fullKey'].forEach(id => $(id).style.opacity = 0);
+  $('hk0').classList.remove('got'); $('hk1').classList.remove('got');
+  $('key2').style.transition = ''; placeK($('key2'), 140, 540); $('key2').style.opacity = 0;
+  $('claraR').style.opacity = 0; $('claraR').style.transform = 'translateX(-40px)'; $('revealLine').classList.add('hidden');
+  setupLevel();
+}
+let lockTip = false;
+track('load');
+// preload every image (backgrounds, portraits, sheets) behind the loading screen, then cut the icons
+const PRELOAD = ['bg-shop.jpg', 'bg-shopfront.jpg', 'bg-attic.jpg', 'bg-attic-open.jpg', 'ch-henry.png', 'ch-clara.png', 'ch-victor.png']
+  .map(f => 'assets/' + f).concat(Object.values(SHEETS).map(s => s.src));
+let loaded = 0;
+Promise.all(PRELOAD.map(src => loadImg(src).catch(() => null).then(() => {
+  loaded++; const pct = Math.round(loaded / PRELOAD.length * 100);
+  $('loadBar').style.width = pct + '%'; $('loadPct').textContent = 'Loading ' + pct + '%';
+}))).then(buildIcons).then(() => {
+  sprite($('hk0'), 'key', 2); sprite($('hk1'), 'key', 3);
+  sprite($('halfL'), 'key', 2); sprite($('halfR'), 'key', 3); sprite($('fullKey'), 'key', 1); sprite($('key2'), 'key', 1);
+  sprite(hand, 'hand', 0);
+  start();
+  const l = $('loader'); l.style.opacity = 0; setTimeout(() => l.remove(), 400);
+  track('ready');
+});
+</script>
+</body>
+</html>
