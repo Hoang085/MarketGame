@@ -20,6 +20,7 @@ Cách dùng:
 | Keepsake Lane vintage bí ẩn (bản cũ, giữ để so sánh) | `docs/concepts/keepsake-lane/concept-art/`, brief v1 ở `docs/concepts/tiem-do-co/` | 2D vintage | `tools/concept-gen/prompts-keepsake-lane.json` |
 | Hành Trình Sắc Màu (puzzle khay cát + đồ thủy tinh) | `docs/concepts/hanh-trinh-sac-mau/` | Theo Sand Blocks | `tools/concept-gen/prompts-hanh-trinh-sac-mau.json` |
 | Về Quê Làm Giàu (farm + kinh doanh làng quê) | `docs/concepts/que-len-pho/` | 2D isometric cozy | `tools/concept-gen/prompts-lang-*.json`, `prompts-que-len-pho.json` |
+| Demo clone ads A Travel Town (nội bộ, demo kỹ thuật/FX/art, chủ đề bãi biển) | `docs/concepts/keepsake-lane/concept-store/ads-clone-travel-town/` (ảnh ở `art/`) | Theo Travel Town (`concept-store/style-guide-travel-town.md`) | `danh-sach-gen.md`; `tools/concept-gen/prompts-tt-clone-demo.json` |
 
 Game mới chưa có trong bảng thì tạo `docs/concepts/<slug>/` và thêm một dòng vào bảng này.
 
@@ -49,6 +50,7 @@ Cái gì đã rõ từ lời người dùng, hội thoại hoặc file dự án 
 
 - **Nhân vật:** cắt cận nhân vật trong ảnh store bằng `scripts/crop.ps1`, lưu vào `docs/market/style-refs/<slug>/crops/` để lần sau dùng lại. Nếu đưa cả màn hình làm mẫu, model sẽ bắt layout và ra kiểu "minh họa AI chung chung".
 - **Item:** dùng ảnh store có board merge rõ, item to và nổi bật.
+- **Item kiểu "3D, như thật" (Travel Town):** chữ "3D", "render", "glossy", "specular" làm model ra icon CG sạch, bóng gắt, màu cơ bản tươi, khác hẳn Travel Town (lỗi chuỗi phao bơi 30/10). Prompt phải ghi rõ: hand-painted 3D (không phải CG product render), ánh sáng ấm, vệt bóng rộng và mềm, màu ấm hài hòa với màu bàn chơi, dáng gọn gần vuông vừa ô. Gen trên nền trơn **cùng màu bàn chơi** của game để model tự chỉnh tông cho hợp.
 - **Đồng bộ một bộ asset:** khi đã có một ảnh được chọn, đưa ảnh đó làm **ảnh 1** cho các asset sau ("match EXACTLY the same rendering, lighting, camera angle, scale"). Nhờ vậy các chuỗi item và các nhân vật trông như cùng một người vẽ.
 - Mỗi lần gen dùng 2–4 ảnh mẫu, ảnh quan trọng nhất đặt đầu. Upload bản `web/*.jpg`; bản này nhẹ và đủ cho model.
 
@@ -76,6 +78,6 @@ Ghi prompt vào file của đợt đang làm (cột "file prompt" ở mục 0). 
 
 1. Tải ảnh về thư mục của game (mục 0), đặt tên theo asset (`CH-clara-a.png`, `FLW-chain.png`...). Không ghi đè bản cũ; bản làm lại để trong `v2/`, `v3/`.
 2. Chạy `scripts/toweb.ps1 -Dir <thư mục>` để tạo `web/*.jpg` (cạnh dài 1100 px).
-3. **Tự xem từng ảnh** (Read bản `web/`) đặt cạnh ảnh mẫu. Ghi thẳng chỗ chưa đạt: lệch style, chữ lỗi, tay hỏng, bố cục, không đồng bộ với bộ đã chọn. Bản lỗi rõ thì gen lại một lần với prompt đã sửa, không đưa cho người dùng như bản đạt.
+3. **Tự xem từng ảnh** (Read bản `web/`) đặt cạnh ảnh mẫu, **ghép thành 1 ảnh so sánh** (ảnh game gốc bên trái, bản mới bên phải) rồi mới đánh giá; đừng chỉ nhìn bản mới riêng lẻ. Với item, so cả độ bóng, tông màu so với màu bàn chơi và dáng có vừa ô vuông không. Ghi thẳng chỗ chưa đạt: lệch style, chữ lỗi, tay hỏng, bố cục, không đồng bộ với bộ đã chọn. Bản lỗi rõ thì gen lại một lần với prompt đã sửa, không đưa cho người dùng như bản đạt.
 4. Viết hoặc cập nhật `README.md` trong thư mục: model, ảnh mẫu, chi phí. Trạng thái từng ảnh ghi tách bạch: **"Claude đánh giá đạt"** khác với **"người dùng đã chọn"**. Chỉ ghi "đã chọn" khi người dùng nói vậy.
 5. Báo người dùng: bản nên chọn, điểm còn yếu, chi phí đã dùng, đường dẫn file. Nếu có nhiều bản hoặc cần so với ảnh store, đề nghị làm trang HTML so sánh 3 cột (bản cũ / bản mới / ảnh store).

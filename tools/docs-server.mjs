@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 // Phục vụ thư mục docs/ (ảnh tương đối không hiện khi mở file:// trong Browser pane)
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../docs');
-const types = { '.html': 'text/html; charset=utf-8', '.jpg': 'image/jpeg', '.png': 'image/png', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json' };
+const types = { '.html': 'text/html; charset=utf-8', '.jpg': 'image/jpeg', '.png': 'image/png', '.css': 'text/css', '.js': 'text/javascript', '.json': 'application/json', '.mp3': 'audio/mpeg' };
 createServer(async (req, res) => {
   const p = path.join(root, decodeURIComponent(new URL(req.url, 'http://x').pathname));
   if (!p.startsWith(path.normalize(root))) { res.writeHead(403).end(); return; }
