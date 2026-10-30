@@ -1,0 +1,544 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Beach Merge demo</title>
+<style>
+html, body { margin: 0; height: 100%; overflow: hidden; background: #6fc3ea; touch-action: none; user-select: none; -webkit-user-select: none; }
+body { font-family: "Arial Rounded MT Bold", "Trebuchet MS", system-ui, sans-serif; }
+#stage { position: absolute; left: 50%; top: 50%; width: 360px; height: 640px; transform-origin: 50% 50%; overflow: hidden; background: #8fd3f0 center / cover no-repeat; }
+img { -webkit-user-drag: none; }
+
+/* resource bar */
+.pill { position: absolute; top: 14px; width: 96px; height: 24px; box-sizing: border-box; padding-right: 10px; border-radius: 14px;
+  background: linear-gradient(#fff8e8, #f1dcb4); box-shadow: 0 2px 0 #c49a5e, inset 0 1px 0 #fff;
+  color: #6b3f1d; font-size: 15px; font-weight: bold; line-height: 24px; text-align: right; }
+.pill img { position: absolute; left: -12px; top: 50%; width: 38px; transform: translateY(-50%); filter: drop-shadow(0 2px 1px rgba(0,0,0,.2)); }
+.bump { animation: bump .22s ease-out; }
+@keyframes bump { 50% { transform: scale(1.16); } }
+
+/* customers + order cards */
+.slot { position: absolute; top: 46px; width: 112px; height: 160px; transition: left .5s cubic-bezier(.3,1.25,.5,1), opacity .35s; }
+.slot .who { position: absolute; bottom: 50px; left: 50%; height: 114px; transform: translateX(-50%); transform-origin: 50% 100%; filter: drop-shadow(0 3px 3px rgba(0,0,0,.18)); }
+.slot.happy .who { animation: happy .5s ease-out 2; }
+@keyframes happy { 40% { transform: translateX(-50%) translateY(-6px) scale(1.04); } }
+.card { position: absolute; left: 3px; right: 3px; bottom: 0; height: 58px; border-radius: 12px; background: #fffdf6;
+  box-shadow: 0 3px 0 #dcc7a2, 0 5px 10px rgba(0,0,0,.18); display: flex; align-items: center; justify-content: center; gap: 5px; }
+.need { position: relative; width: 42px; height: 42px; border-radius: 9px; background: #f3e7cf; }
+.need img { width: 100%; height: 100%; object-fit: contain; }
+.need.have::after { content: '✓'; position: absolute; right: -4px; bottom: -4px; width: 17px; height: 17px; border-radius: 50%;
+  background: #4fc23c; color: #fff; font-size: 12px; line-height: 17px; text-align: center; box-shadow: 0 1px 2px rgba(0,0,0,.3); }
+.rw { position: absolute; top: -11px; right: -3px; height: 18px; padding: 0 6px 0 19px; border-radius: 10px; background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,.25); color: #6b3f1d; font-size: 12px; line-height: 18px; }
+.rw img { position: absolute; left: 1px; top: 1px; width: 16px; }
+.go { position: absolute; left: 50%; top: 4px; width: 54px; height: 30px; margin-left: -27px; border-radius: 16px; display: none;
+  background: linear-gradient(#8ef06a, #3fb52c); box-shadow: 0 3px 0 #2a8a1d, 0 4px 8px rgba(0,0,0,.25), inset 0 2px 0 rgba(255,255,255,.5);
+  color: #fff; font-size: 19px; line-height: 30px; text-align: center; text-shadow: 0 2px 0 #2a8a1d; cursor: pointer; z-index: 2; }
+.go.on { display: block; animation: goIn .35s cubic-bezier(.3,1.6,.5,1), bob 1s ease-in-out .35s infinite; }
+@keyframes goIn { from { transform: scale(0); } }
+@keyframes bob { 50% { transform: translateY(-4px) scale(1.05); } }
+
+/* board */
+#board { position: absolute; left: 17px; top: 216px; width: 326px; height: 326px; border-radius: 15px;
+  background: linear-gradient(#3fb3d6, #2a92b8); box-shadow: 0 5px 0 #1d6f8e, 0 8px 16px rgba(0,0,0,.25), inset 0 2px 0 rgba(255,255,255,.35); }
+#grid { position: absolute; left: 9px; top: 9px; width: 308px; height: 308px; border-radius: 9px; overflow: hidden; }
+.cell { position: absolute; width: 44px; height: 44px; transition: background-color .15s, box-shadow .15s; }
+.cell.ok { background-color: #93e26a !important; box-shadow: inset 0 0 0 2px #e6ffd2, inset 0 0 12px #fff; }
+.cell.over { box-shadow: inset 0 0 0 2px rgba(255,255,255,.8); }
+.cell.flash { animation: flash .55s ease-out; }
+@keyframes flash { 0%, 40% { background-color: #9ef070; box-shadow: inset 0 0 14px #fff; } }
+#items { position: absolute; left: 26px; top: 225px; width: 308px; height: 308px; pointer-events: none; }
+.it { position: absolute; width: 44px; height: 44px; box-sizing: border-box; padding: 3px; object-fit: contain; }
+.it.lift { opacity: .3; }
+.it.pop { animation: pop .45s cubic-bezier(.3,1.7,.5,1); }
+@keyframes pop { from { transform: scale(.2); } 60% { transform: scale(1.3); } }
+.it.nope { animation: nope .3s; }
+@keyframes nope { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+#tip { position: absolute; left: 0; right: 0; top: 560px; text-align: center; color: #fff; font-size: 20px;
+  text-shadow: 0 2px 0 #1d6f8e, 0 0 6px rgba(0,0,0,.35); transition: opacity .3s; }
+#layer { position: absolute; inset: 0; pointer-events: none; }
+#layer > * { position: absolute; left: 0; top: 0; }
+#fxc { position: absolute; left: 0; top: 0; width: 360px; height: 640px; pointer-events: none; }
+#drag { position: absolute; width: 56px; height: 56px; display: none; pointer-events: none; filter: drop-shadow(0 6px 4px rgba(0,0,0,.3)); }
+#hand { position: absolute; left: 0; top: 0; width: 64px; display: none; pointer-events: none; z-index: 5; }
+.praise { position: absolute; width: 200px; margin-left: -100px; text-align: center; font-size: 32px; color: #fff3a6; pointer-events: none;
+  text-shadow: 0 0 0 #000, -2px -2px 0 #c2510c, 2px -2px 0 #c2510c, -2px 2px 0 #c2510c, 2px 2px 0 #c2510c, 0 4px 0 #9a3c05, 0 6px 8px rgba(0,0,0,.3);
+  animation: praise 1s ease-out forwards; }
+@keyframes praise { 0% { transform: scale(.3); opacity: 0; } 18% { transform: scale(1.25); opacity: 1; } 32% { transform: scale(1); }
+  75% { transform: translateY(-14px); opacity: 1; } 100% { transform: translateY(-26px); opacity: 0; } }
+#mute { position: absolute; right: 10px; bottom: 10px; width: 34px; height: 34px; border-radius: 50%; background: rgba(0,0,0,.25); color: #fff;
+  font-size: 17px; line-height: 34px; text-align: center; cursor: pointer; z-index: 6; }
+
+/* end card */
+#end { position: absolute; inset: 0; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 14px;
+  background: radial-gradient(rgba(10,60,90,.55), rgba(5,30,50,.85)); z-index: 8; color: #fff; text-align: center; }
+#end.on { display: flex; animation: fade .4s; }
+@keyframes fade { from { opacity: 0; } }
+#end h1 { margin: 0; font-size: 30px; line-height: 1.15; color: #fff3a6; text-shadow: 0 3px 0 #c2510c, 0 6px 10px rgba(0,0,0,.4); }
+#end .row { display: flex; gap: 6px; }
+#end .row img { width: 58px; animation: pop .5s cubic-bezier(.3,1.7,.5,1) backwards; }
+#cta { padding: 12px 34px; border-radius: 26px; font-size: 24px; background: linear-gradient(#8ef06a, #3fb52c);
+  box-shadow: 0 4px 0 #2a8a1d, 0 6px 12px rgba(0,0,0,.3); text-shadow: 0 2px 0 #2a8a1d; cursor: pointer; animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 50% { transform: scale(1.07); } }
+#again { font-size: 14px; opacity: .8; text-decoration: underline; cursor: pointer; }
+#toast { position: absolute; left: 50%; top: 300px; transform: translateX(-50%); padding: 8px 14px; border-radius: 10px; background: rgba(0,0,0,.75);
+  color: #fff; font-size: 14px; display: none; z-index: 9; white-space: nowrap; }
+#loading { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: #6fc3ea; color: #fff; font-size: 18px; z-index: 10; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="pill" style="left:22px"><img id="icEnergy" alt=""><span>600</span></div>
+  <div class="pill" style="left:134px"><img id="icCoin" alt=""><span id="coins">3,900</span></div>
+  <div class="pill" style="left:246px"><img id="icPearl" alt=""><span>55</span></div>
+  <div id="custs"></div>
+  <div id="board"><div id="grid"></div></div>
+  <div id="items"></div>
+  <div id="tip">Merge items to fill orders!</div>
+  <canvas id="fxc"></canvas>
+  <div id="layer"></div>
+  <img id="drag" alt="">
+  <img id="hand" alt="">
+  <div id="mute">🔊</div>
+  <div id="end">
+    <h1>Your beach shop<br>is waiting!</h1>
+    <div class="row" id="endRow"></div>
+    <div id="cta">PLAY NOW</div>
+    <div id="again">Play again</div>
+  </div>
+  <div id="toast"></div>
+  <div id="loading">Loading…</div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+// ---- assets: every path is a plain string literal so build.mjs can inline it as a data URI ----
+const A = {
+  bg: 'assets/bg.jpg', hand: 'assets/hand.png', energy: 'assets/energy.png', coin: 'assets/coin.png', pearl: 'assets/pearl.png',
+  float1: 'assets/float1.png', float2: 'assets/float2.png', float3: 'assets/float3.png', float4: 'assets/float4.png', float5: 'assets/float5.png',
+  fruit1: 'assets/fruit1.png', fruit2: 'assets/fruit2.png', fruit3: 'assets/fruit3.png', fruit4: 'assets/fruit4.png', fruit5: 'assets/fruit5.png',
+  umbrella: 'assets/umbrella.png', flipflops: 'assets/flipflops.png', towel: 'assets/towel.png',
+  crab: 'assets/crab.png', sunscreen: 'assets/sunscreen.png', sunglasses: 'assets/sunglasses.png',
+  cust1: 'assets/cust1.png', cust2: 'assets/cust2.png', cust3: 'assets/cust3.png', cust4: 'assets/cust4.png',
+};
+const AUDIO = {
+  pick: 'audio/pick.mp3', drop: 'audio/drop.mp3', merge1: 'audio/merge1.mp3', merge2: 'audio/merge2.mp3', merge6: 'audio/merge6.mp3',
+  deny: 'audio/deny.mp3', coin: 'audio/coin.mp3', bell: 'audio/bell.mp3', tap: 'audio/tap.mp3', sparkle: 'audio/sparkle.mp3',
+  spawn: 'audio/spawn.mp3', music: 'audio/music.mp3',
+};
+
+// ---- sound (same mixer as the Bloom Corner playable: decode after the first touch, normalise peaks, limit the mix) ----
+const sfx = (() => {
+  const raw = Object.fromEntries(Object.entries(AUDIO).map(([n, u]) => [n, fetch(u).then(r => r.arrayBuffer()).catch(() => null)]));
+  const buf = {}, norm = {};
+  let ac, master, muted = false;
+  function play(name, vol = 1, rate = 1, loop = false) {
+    if (!ac || !buf[name]) return;
+    const s = ac.createBufferSource(), g = ac.createGain();
+    s.buffer = buf[name]; s.playbackRate.value = rate; s.loop = loop; g.gain.value = vol * norm[name];
+    if (loop) { s.loopStart = .3; s.loopEnd = Math.max(1, s.buffer.duration - 1.2); }
+    s.connect(g); g.connect(master); s.start(); return s;
+  }
+  return {
+    async unlock() {
+      if (ac) return; ac = new (window.AudioContext || window.webkitAudioContext)();
+      const lim = ac.createDynamicsCompressor();
+      lim.threshold.value = -10; lim.knee.value = 6; lim.ratio.value = 12; lim.attack.value = .003; lim.release.value = .2;
+      master = ac.createGain(); master.gain.value = muted ? 0 : .9; master.connect(lim); lim.connect(ac.destination);
+      await Promise.all(Object.keys(AUDIO).map(async n => {
+        const b = await raw[n]; if (!b) return;
+        try {
+          buf[n] = await ac.decodeAudioData(b);
+          let pk = 0; for (let c = 0; c < buf[n].numberOfChannels; c++) for (const v of buf[n].getChannelData(c)) pk = Math.max(pk, Math.abs(v));
+          norm[n] = pk > .001 ? Math.min(8, .5 / pk) : 1;
+        } catch {}
+      }));
+      play('music', .4, 1, true);
+    },
+    toggle() { muted = !muted; if (master) master.gain.value = muted ? 0 : .9; return muted; },
+    pick: () => play('pick', .8), drop: () => play('drop', .7), deny: () => play('deny', .7), tap: () => play('tap', .7),
+    merge: lv => lv >= 5 ? play('merge6', .9) : play(lv >= 4 ? 'merge2' : 'merge1', .8, 1 + (lv - 2) * .06),
+    bell: () => play('bell', .8), spawn: () => play('spawn', .7), sparkle: () => play('sparkle', .8),
+    coin: k => play('coin', .55, 1 + k * .04),
+  };
+})();
+
+// ---- particle FX on a canvas over the stage (stage units: 360×640) ----
+const fx = (() => {
+  const cv = $('fxc'), cx = cv.getContext('2d'), DPR = Math.min(2, devicePixelRatio || 1);
+  cv.width = 360 * DPR; cv.height = 640 * DPR; cx.scale(DPR, DPR);
+  const P = [], R = (a, b) => a + Math.random() * (b - a), add = p => P.push({ t: 0, ...p });
+  function sparks(x, y, n, colors, speed = 3.2, size = 3) {
+    for (let i = 0; i < n; i++) {
+      const a = R(0, Math.PI * 2), v = speed * R(.4, 1.2);
+      add({ k: 'spark', x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1, g: .09, max: R(28, 48), s: R(size * .6, size * 1.4), c: colors[i % colors.length] });
+    }
+  }
+  function stars(x, y, n, spread = 30, c = '#fff6c8') {
+    for (let i = 0; i < n; i++) add({ k: 'star', x: x + R(-spread, spread), y: y + R(-spread, spread), vx: 0, vy: R(-.4, -.1), max: R(30, 50), s: R(5, 9), c });
+  }
+  function ring(x, y, c = '#fff', r = 40, w = 4) { add({ k: 'ring', x, y, max: 22, r, w, c }); }
+  function trail(x, y, c = '#ffe7a0') { add({ k: 'spark', x: x + R(-4, 4), y: y + R(-4, 4), vx: R(-.3, .3), vy: R(-.3, .3), g: 0, max: R(16, 26), s: R(2, 4), c }); }
+  function frame() {
+    requestAnimationFrame(frame);   // schedule first, so one bad particle can never stop the loop
+    cx.clearRect(0, 0, 360, 640);
+    for (let i = P.length - 1; i >= 0; i--) {
+      const p = P[i]; p.t++;
+      if (p.t > p.max || p.y > 660 || !isFinite(p.x) || !isFinite(p.y)) { P.splice(i, 1); continue; }
+      const u = p.t / p.max;
+      p.x += p.vx || 0; p.y += p.vy || 0; if (p.g) p.vy += p.g;
+      cx.globalCompositeOperation = 'lighter';
+      if (p.k === 'spark') {
+        const gr = cx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.s * 2.2);
+        gr.addColorStop(0, p.c); gr.addColorStop(1, 'rgba(0,0,0,0)');
+        cx.globalAlpha = 1 - u; cx.fillStyle = gr; cx.beginPath(); cx.arc(p.x, p.y, p.s * 2.2, 0, 7); cx.fill();
+      } else if (p.k === 'star') {
+        const s = p.s * Math.sin(u * Math.PI); cx.globalAlpha = 1; cx.fillStyle = p.c;
+        cx.beginPath(); cx.moveTo(p.x, p.y - s); cx.lineTo(p.x + s * .22, p.y - s * .22); cx.lineTo(p.x + s, p.y); cx.lineTo(p.x + s * .22, p.y + s * .22);
+        cx.lineTo(p.x, p.y + s); cx.lineTo(p.x - s * .22, p.y + s * .22); cx.lineTo(p.x - s, p.y); cx.lineTo(p.x - s * .22, p.y - s * .22); cx.fill();
+      } else if (p.k === 'ring') {
+        cx.globalAlpha = 1 - u; cx.strokeStyle = p.c; cx.lineWidth = p.w * (1 - u) + .5;
+        cx.beginPath(); cx.arc(p.x, p.y, p.r * (.2 + u), 0, 7); cx.stroke();
+      }
+    }
+    cx.globalAlpha = 1; cx.globalCompositeOperation = 'source-over';
+  }
+  requestAnimationFrame(frame);
+  return { sparks, stars, ring, trail };
+})();
+const GOLD = ['#ffd27a', '#fff1b8', '#ffb347'];
+const TINT = { float: ['#7fe6e0', '#ffc2d6', '#fff6c8'], fruit: ['#ff8a80', '#b7f08a', '#fff6c8'] };
+
+// ---- analytics hooks (console + window.__events) ----
+window.__events = [];
+function track(name, data) { const e = { name, t: +(performance.now() / 1000).toFixed(2), ...data }; __events.push(e); console.log('[event]', e); }
+
+// ---- stage scaling and coordinates ----
+const stage = $('stage');
+function fit() { const k = Math.min(innerWidth / 360, innerHeight / 640); stage.style.transform = `translate(-50%,-50%) scale(${k})`; stage._k = k; }
+addEventListener('resize', fit); fit();
+function local(e) { const r = stage.getBoundingClientRect(); return { x: (e.clientX - r.left) / stage._k, y: (e.clientY - r.top) / stage._k }; }
+function centerOf(el) { const s = stage.getBoundingClientRect(), r = el.getBoundingClientRect(); return { x: (r.left - s.left + r.width / 2) / stage._k, y: (r.top - s.top + r.height / 2) / stage._k }; }
+const wait = ms => new Promise(ok => setTimeout(ok, ms));
+
+// ---- board: 7×7, cell 44 (stage units), items layer origin (26,225) ----
+const N = 7, CELL = 44, OX = 26, OY = 225, MAXLV = 5;
+const MISC = { um: 'umbrella', ff: 'flipflops', tw: 'towel', cr: 'crab', ss: 'sunscreen', sg: 'sunglasses' };
+// opening board: each chain has a level 1-1-2-3-4 ladder, so merging from level 1 cascades up to the level-5 order
+// (Nice! → Great! → Amazing! → Awesome!), plus a spare level-1 pair. Beach props fill the rest; a pair of them pays coins.
+const SEED = [
+  'um F4 ff .  tw R4 cr',
+  'ss F1 sg um R1 ff tw',
+  'cr F2 F1 .  R2 R1 sg',
+  'um ss F3 ff R3 cr ss',
+  'tw cr F1 sg um tw ff',
+  'ff um F1 cr R1 ss R1',
+  'sg tw ss .  cr um . ',
+];
+const B = [], cells = [], imgs = [];
+const key = it => it.t === 'm' ? it.k : it.t + it.lv;
+const cellXY = i => ({ x: OX + (i % N) * CELL + CELL / 2, y: OY + ((i / N) | 0) * CELL + CELL / 2 });
+function buildBoard() {
+  for (let i = 0; i < N * N; i++) {
+    const c = document.createElement('div'); c.className = 'cell';
+    c.style.left = (i % N) * CELL + 'px'; c.style.top = ((i / N) | 0) * CELL + 'px';
+    c.style.backgroundColor = ((i % N) + ((i / N) | 0)) % 2 ? '#e2b97f' : '#edcd97';
+    $('grid').appendChild(c); cells.push(c);
+    const m = document.createElement('img'); m.className = 'it'; m.alt = '';
+    m.style.left = (i % N) * CELL + 'px'; m.style.top = ((i / N) | 0) * CELL + 'px';
+    $('items').appendChild(m); imgs.push(m);
+  }
+}
+function seed() {
+  SEED.forEach((row, r) => row.trim().split(/\s+/).forEach((code, c) => {
+    const i = r * N + c;
+    B[i] = code === '.' ? null : MISC[code] ? { t: 'm', k: MISC[code] } : { t: code[0] === 'F' ? 'float' : 'fruit', lv: +code[1] };
+  }));
+  for (let i = 0; i < N * N; i++) draw(i);
+}
+function draw(i, anim) {
+  const m = imgs[i], it = B[i];
+  m.classList.remove('pop', 'lift', 'nope');
+  if (!it) { m.style.visibility = 'hidden'; return; }
+  m.src = A[key(it)]; m.style.visibility = 'visible';
+  if (anim) { void m.offsetWidth; m.classList.add(anim); }
+}
+// chain items merge up a level; two identical beach props turn into coins
+const canMerge = (a, b) => a && b && a.t === b.t && (a.t === 'm' ? a.k === b.k : a.lv === b.lv && a.lv < MAXLV);
+const PROP_COINS = 5;
+function cellAt(p) {
+  const c = Math.floor((p.x - OX) / CELL), r = Math.floor((p.y - OY) / CELL);
+  return c >= 0 && c < N && r >= 0 && r < N ? r * N + c : -1;
+}
+
+// ---- customers and orders ----
+// two customers, each wants the top item of one chain: the surfer girl the banana boat, the ice-cream lady the cart
+const CUSTS = [
+  { img: 'cust1', need: ['float5'], reward: 60 },
+  { img: 'cust4', need: ['fruit5'], reward: 60 },
+];
+const SLOT_X = [62, 186], ORDERS_TO_WIN = CUSTS.length;
+let slots = [], nextCust = 0, coins = 3900, delivered = 0, busy = false;
+function makeSlot(ci, x) {
+  const c = CUSTS[ci], el = document.createElement('div');
+  el.className = 'slot'; el.style.left = x + 'px';
+  el.innerHTML = `<img class="who" alt=""><div class="card"><div class="rw"><img alt="">+${c.reward}</div></div><div class="go">GO</div>`;
+  el.querySelector('.who').src = A[c.img]; el.querySelector('.rw img').src = A.coin;
+  for (const k of c.need) { const n = document.createElement('div'); n.className = 'need'; n.innerHTML = '<img alt="">'; n.firstChild.src = A[k]; el.querySelector('.card').appendChild(n); }
+  const s = { ci, el, ready: false };
+  el.querySelector('.go').addEventListener('pointerdown', e => { e.stopPropagation(); deliver(s); });
+  $('custs').appendChild(el); return s;
+}
+// which board cells would fill this order (each need takes a different cell); null if something is missing
+function findItems(s) {
+  const used = [];
+  for (const k of CUSTS[s.ci].need) {
+    const i = B.findIndex((it, j) => it && key(it) === k && !used.includes(j));
+    if (i < 0) return null; used.push(i);
+  }
+  return used;
+}
+function checkOrders() {
+  for (const s of slots) {
+    if (s.leaving) continue;
+    const need = CUSTS[s.ci].need, used = [];
+    s.el.querySelectorAll('.need').forEach((n, j) => {
+      const i = B.findIndex((it, x) => it && key(it) === need[j] && !used.includes(x));
+      if (i >= 0) used.push(i); n.classList.toggle('have', i >= 0);
+    });
+    const ready = !!findItems(s), go = s.el.querySelector('.go');
+    if (ready && !s.ready) { go.classList.add('on'); s.el.classList.remove('happy'); void s.el.offsetWidth; s.el.classList.add('happy'); sfx.spawn(); track('go_shown', { cust: s.ci + 1 }); }
+    if (!ready) go.classList.remove('on');
+    s.ready = ready;
+  }
+}
+
+// ---- flying sprites (WAAPI along a sampled curve) ----
+function flyer(src, size) { const m = document.createElement('img'); m.src = src; m.alt = ''; m.style.width = m.style.height = size + 'px'; $('layer').appendChild(m); return m; }
+function arc(el, a, b, lift, ms, s0 = 1, s1 = 1, trail) {
+  const size = parseFloat(el.style.width), frames = [];
+  for (let k = 0; k <= 12; k++) {
+    const u = k / 12, x = a.x + (b.x - a.x) * u, y = a.y + (b.y - a.y) * u - lift * 4 * u * (1 - u);
+    frames.push({ transform: `translate(${x - size / 2}px,${y - size / 2}px) scale(${s0 + (s1 - s0) * u})` });
+  }
+  const an = el.animate(frames, { duration: ms, easing: 'cubic-bezier(.45,0,.4,1)', fill: 'forwards' });
+  if (trail) { const id = setInterval(() => { const p = centerOf(el); fx.trail(p.x, p.y, trail); }, 25); an.finished.then(() => clearInterval(id)); }
+  return an.finished;
+}
+function bump(el) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+function praise(lv, p) {
+  const el = document.createElement('div'); el.className = 'praise';
+  el.textContent = { 2: 'Nice!', 3: 'Great!', 4: 'Amazing!', 5: 'Awesome!' }[lv] || 'Nice!';
+  el.style.left = Math.min(260, Math.max(100, p.x)) + 'px'; el.style.top = p.y - 62 + 'px';
+  stage.appendChild(el); setTimeout(() => el.remove(), 1000);
+}
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1400); }
+const fmt = n => n.toLocaleString('en-US');
+
+// coins burst out of the card, hang for a beat, then stream into the coin pill one by one
+function coinBurst(from, total) {
+  const n = Math.min(10, Math.max(5, total)), pill = $('icCoin'), to = centerOf(pill), R = (a, b) => a + Math.random() * (b - a);
+  let given = 0;   // each coin adds its share as it lands, so bursts that overlap still sum exactly
+  fx.sparks(from.x, from.y, 18, GOLD, 3.6); fx.ring(from.x, from.y, '#ffe27a', 46);
+  for (let k = 0; k < n; k++) {
+    const m = flyer(A.coin, 24), a = R(0, Math.PI * 2), d = R(28, 62);
+    const mid = { x: from.x + Math.cos(a) * d, y: from.y + Math.sin(a) * d - 18 };
+    const tr = p => `translate(${p.x - 12}px,${p.y - 12}px)`;
+    const an = m.animate([
+      { transform: tr(from) + ' scale(.4)', easing: 'cubic-bezier(.2,.9,.3,1)' },
+      { transform: tr(mid) + ' scale(1.1)', offset: .32 },
+      { transform: tr(mid) + ' scale(1)', offset: .32 + k * .025, easing: 'cubic-bezier(.6,0,.85,.6)' },
+      { transform: tr(to) + ' scale(.7)' },
+    ], { duration: 950 + k * 45, fill: 'forwards' });
+    an.finished.then(() => {
+      const share = Math.round(total * (k + 1) / n) - Math.round(total * k / n);
+      m.remove(); given++; bump(pill.parentNode); sfx.coin(given); fx.sparks(to.x, to.y, 4, GOLD, 2, 2);
+      coins += share; $('coins').textContent = fmt(coins);
+    });
+  }
+}
+
+// ---- deliver an order: items fly to the card, coins burst, customer leaves, queue shifts, next customer walks in ----
+async function deliver(s) {
+  const idx = findItems(s);
+  if (busy || !idx) return;
+  busy = true; s.leaving = true; hideHand(); touched(); sfx.tap(); track('deliver', { cust: s.ci + 1 });
+  s.el.querySelector('.go').classList.remove('on'); s.ready = false;
+  const needs = [...s.el.querySelectorAll('.need')];
+  await Promise.all(idx.map((i, j) => {
+    const it = B[i], m = flyer(A[key(it)], 40), to = centerOf(needs[j]);
+    B[i] = null; draw(i);
+    return arc(m, cellXY(i), to, 70 + j * 20, 560 + j * 80, 1, .9, TINT[it.t][0]).then(() => { m.remove(); fx.stars(to.x, to.y, 4, 14); bump(needs[j]); });
+  }));
+  sfx.bell();
+  const card = centerOf(s.el.querySelector('.card'));
+  coinBurst(card, CUSTS[s.ci].reward);
+  s.el.classList.remove('happy'); void s.el.offsetWidth; s.el.classList.add('happy');
+  await wait(650);
+  // leave to the left, the others slide over, a new customer comes in from the right
+  s.el.style.left = '-130px'; s.el.style.opacity = 0; setTimeout(() => s.el.remove(), 600);
+  slots = slots.filter(x => x !== s);
+  await wait(180);
+  slots.forEach((x, k) => x.el.style.left = SLOT_X[k] + 'px');
+  if (nextCust < CUSTS.length) {
+    const n = makeSlot(nextCust++, 400); slots.push(n);
+    requestAnimationFrame(() => requestAnimationFrame(() => n.el.style.left = SLOT_X[slots.length - 1] + 'px'));
+  }
+  delivered++;
+  await wait(500);
+  busy = false; checkOrders();
+  if (delivered >= ORDERS_TO_WIN) setTimeout(endCard, 900); else scheduleHint();
+}
+
+// ---- drag and merge ----
+let drag = null, hover = -1;
+stage.addEventListener('pointerdown', e => {
+  sfx.unlock(); touched();
+  if ($('end').classList.contains('on')) return;   // dragging stays open while an order is being delivered
+  const p = local(e), i = cellAt(p);
+  if (i < 0 || !B[i]) return;
+  hideHand();
+  drag = { from: i, x0: p.x, y0: p.y, moved: false };
+  const d = $('drag'); d.src = imgs[i].src; d.style.display = 'block'; moveDrag(p);
+  imgs[i].classList.add('lift'); sfx.pick();
+  stage.setPointerCapture(e.pointerId);
+});
+stage.addEventListener('pointermove', e => {
+  if (!drag) return;
+  const p = local(e); moveDrag(p);
+  if (Math.hypot(p.x - drag.x0, p.y - drag.y0) > 6) drag.moved = true;
+  setHover(cellAt(p));
+});
+stage.addEventListener('pointerup', e => { if (drag) drop(local(e)); });
+stage.addEventListener('pointercancel', () => { if (drag) drop({ x: -1, y: -1 }); });
+function moveDrag(p) { const d = $('drag'); d.style.left = p.x - 28 + 'px'; d.style.top = p.y - 34 + 'px'; }
+function setHover(i) {
+  if (i === hover) return;
+  if (hover >= 0) cells[hover].classList.remove('ok', 'over');
+  hover = i;
+  if (i >= 0 && i !== drag.from) cells[i].classList.add(canMerge(B[drag.from], B[i]) ? 'ok' : 'over');
+}
+function drop(p) {
+  const { from } = drag, to = cellAt(p);
+  setHover(-1); drag = null; $('drag').style.display = 'none';
+  if (to >= 0 && to !== from && canMerge(B[from], B[to])) merge(from, to);
+  else if (to >= 0 && to !== from) {
+    [B[from], B[to]] = [B[to], B[from]]; draw(from); draw(to, 'pop'); sfx.drop(); checkOrders();
+  } else { draw(from, 'pop'); }
+  scheduleHint();
+}
+function merge(from, to) {
+  const it = B[from], p = cellXY(to);
+  if (it.t === 'm') {
+    B[from] = B[to] = null; draw(from); draw(to);
+    cells[to].classList.remove('flash'); void cells[to].offsetWidth; cells[to].classList.add('flash');
+    fx.ring(p.x, p.y, '#ffe27a', 40); fx.stars(p.x, p.y, 5, 18, '#fff1b8');
+    sfx.merge(2); praise(2, p); coinBurst(p, PROP_COINS); track('merge', { item: it.k });
+    checkOrders(); return;
+  }
+  const lv = it.lv + 1;
+  B[from] = null; B[to] = { t: it.t, lv }; draw(from); draw(to, 'pop');
+  cells[to].classList.remove('flash'); void cells[to].offsetWidth; cells[to].classList.add('flash');
+  fx.ring(p.x, p.y, '#fff', 44); fx.sparks(p.x, p.y, 16, TINT[it.t]); fx.stars(p.x, p.y, lv >= 4 ? 7 : 4, 22);
+  sfx.merge(lv); if (lv >= 4) sfx.sparkle();
+  praise(lv, p); track('merge', { item: it.t + lv });
+  checkOrders();
+}
+
+// ---- hint hand: after a few idle seconds, point at a GO button, else drag between the most useful pair ----
+let hintTimer = 0, handAnim = null, ghost = null, pressTimer = 0;
+// fingertip inside the 64px-wide hand sprite; also the scale origin, so pressing never shifts the tip
+const TIP_X = 12, TIP_Y = 4;
+function touched() { clearTimeout(hintTimer); }
+function scheduleHint(ms = 2600) { clearTimeout(hintTimer); hintTimer = setTimeout(showHint, ms); }
+function hideHand() {
+  if (handAnim) handAnim.cancel(); handAnim = null; $('hand').style.display = 'none';
+  if (ghost) ghost.remove(); ghost = null; clearTimeout(pressTimer); clearInterval(pressTimer);
+}
+function bestPair() {
+  const wanted = slots.flatMap(s => CUSTS[s.ci].need);
+  let best = null;
+  for (let a = 0; a < N * N; a++) for (let b = a + 1; b < N * N; b++) {
+    if (!canMerge(B[a], B[b])) continue;
+    // chains an order is waiting on come first, lowest level first (that is the order the ladder cascades in); props last
+    const it = B[a], useful = it.t === 'm' ? 200 : wanted.some(k => k.startsWith(it.t)) ? it.lv * 10 : 100;
+    const d = useful + Math.hypot(a % N - b % N, ((a / N) | 0) - ((b / N) | 0));
+    if (!best || d < best.d) best = { a, b, d };
+  }
+  return best;
+}
+function showHint() {
+  if (busy || drag || $('end').classList.contains('on')) return;
+  hideHand();
+  const h = $('hand'); h.src = A.hand; h.style.display = 'block'; h.style.transformOrigin = `${TIP_X}px ${TIP_Y}px`;
+  const tip = (p, dx = 0, dy = 0) => `translate(${p.x - TIP_X + dx}px,${p.y - TIP_Y + dy}px)`;
+  const ready = slots.find(s => s.ready);
+  if (ready) {
+    // click: the hand comes in from the lower right, presses GO (button squashes, ring), lifts off, repeats
+    const go = ready.el.querySelector('.go'), g = centerOf(go), PERIOD = 1300;
+    handAnim = h.animate([
+      { transform: tip(g, 26, 30), opacity: 0 },
+      { transform: tip(g, 4, 6), opacity: 1, offset: .3 },
+      { transform: tip(g) + ' scale(.82)', offset: .4 },
+      { transform: tip(g, 4, 6), offset: .52 },
+      { transform: tip(g, 4, 6), opacity: 1, offset: .75 },
+      { transform: tip(g, 26, 30), opacity: 0 },
+    ], { duration: PERIOD, iterations: Infinity, easing: 'ease-out' });
+    const press = () => {
+      go.animate([{ transform: 'scale(1)' }, { transform: 'scale(.86) translateY(2px)' }, { transform: 'scale(1.06)' }, { transform: 'scale(1)' }], { duration: 260 });
+      fx.ring(g.x, g.y, '#e9ffd6', 30, 3);
+    };
+    pressTimer = setTimeout(() => { press(); pressTimer = setInterval(press, PERIOD); }, PERIOD * .4);
+    return;
+  }
+  // drag: the hand picks the item up at its centre and carries a faded copy onto its partner
+  const pr = bestPair(); if (!pr) return hideHand();
+  const a = cellXY(pr.a), b = cellXY(pr.b), DUR = 1800;
+  const path = [{ p: a, o: 0, s: 1 }, { p: a, o: .15, s: .88 }, { p: b, o: .7, s: .88 }, { p: b, o: .85, s: 1 }];
+  handAnim = h.animate([
+    { transform: tip(a), opacity: 0 },
+    ...path.slice(1, 3).map(k => ({ transform: tip(k.p) + ` scale(${k.s})`, opacity: 1, offset: k.o })),
+    { transform: tip(b), opacity: 0, offset: .85 }, { transform: tip(b), opacity: 0 },
+  ], { duration: DUR, iterations: Infinity, easing: 'ease-in-out' });
+  ghost = flyer(A[key(B[pr.a])], 44);
+  const gt = p => `translate(${p.x - 22}px,${p.y - 22}px)`;
+  ghost.animate([
+    { transform: gt(a), opacity: 0 }, { transform: gt(a) + ' scale(1.1)', opacity: .75, offset: .15 },
+    { transform: gt(b) + ' scale(1.1)', opacity: .75, offset: .7 }, { transform: gt(b), opacity: 0, offset: .85 }, { transform: gt(b), opacity: 0 },
+  ], { duration: DUR, iterations: Infinity, easing: 'ease-in-out' });
+}
+
+// ---- end card ----
+function endCard() {
+  hideHand(); track('endcard_seen', { coins });
+  const row = $('endRow'); row.innerHTML = '';
+  ['float5', 'fruit5', 'coin'].forEach((k, j) => { const m = document.createElement('img'); m.src = A[k]; m.alt = ''; m.style.animationDelay = j * .12 + 's'; row.appendChild(m); });
+  $('end').classList.add('on'); sfx.sparkle();
+}
+$('cta').addEventListener('pointerdown', e => {
+  e.stopPropagation(); track('cta_click');
+  if (window.mraid && mraid.open) mraid.open('https://example.com/store'); else toast('Store link goes here (internal demo)');
+});
+$('again').addEventListener('pointerdown', e => { e.stopPropagation(); location.reload(); });
+$('mute').addEventListener('pointerdown', e => { e.stopPropagation(); $('mute').textContent = sfx.toggle() ? '🔇' : '🔊'; });
+
+// ---- boot ----
+function loadImg(src) { return new Promise(ok => { const i = new Image(); i.onload = i.onerror = () => ok(i); i.src = src; }); }
+async function start() {
+  track('load');
+  await Promise.all(Object.values(A).map(loadImg));
+  stage.style.backgroundImage = `url(${A.bg})`;
+  $('icEnergy').src = A.energy; $('icCoin').src = A.coin; $('icPearl').src = A.pearl;
+  buildBoard(); seed();
+  for (let k = 0; k < SLOT_X.length; k++) slots.push(makeSlot(nextCust++, SLOT_X[k]));
+  checkOrders();
+  $('loading').remove(); track('ready');
+  scheduleHint(900);
+}
+start();
+</script>
+</body>
+</html>

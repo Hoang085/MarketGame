@@ -1,0 +1,109 @@
+{
+  "_note": "Demo clone ads A của Travel Town (nội bộ). Danh sách asset: docs/concepts/keepsake-lane/concept-store/ads-clone-travel-town/danh-sach-gen.md",
+  "model": "fal-ai/nano-banana-pro/edit",
+  "resolution": "2K",
+  "out_dir": "docs/concepts/keepsake-lane/concept-store/ads-clone-travel-town/art/",
+  "items": [
+    {
+      "id": "ITEM-float",
+      "date": "2026-10-30",
+      "aspect_ratio": "3:2",
+      "num_versions": 2,
+      "refs": [
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-items-beach.png",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-items-jungle.png"
+      ],
+      "prompt": "The attached images are ART STYLE references only (board items from a merge-2 mobile game). Match the RENDERING of their items exactly, but do NOT copy their items, layout, logos or text. Do NOT draw snorkels, flippers, diving masks, shells, sand castles or seaweed.\n\nRENDER: merge-2 item icons that look like small 3D toy models under soft studio light. Chunky, rounded, slightly squashed proportions. NO outlines, edges only slightly darker in the same hue. One soft light from the top-left, soft ambient occlusion, a small soft contact shadow under each item. Real material feel: glossy inflatable PVC vinyl with bright specular highlights, subtle seam lines and a small valve, gentle air-filled bulges. Saturated, clean colors, not pastel. Few large shapes, no tiny details; sparkles only on the top level. Each icon reads clearly at 100 px.\n\nCONTENT: an item sheet of 5 separate icons for a beach-themed merge chain \"Pool Floats\", level 1 to 5, each level bigger and more valuable, same camera angle (slight top-down 3/4 view) and same scale per cell, each icon filling about 85% of its cell:\n1) a pair of orange arm floaties\n2) a red-and-white striped swim ring\n3) a big yellow rubber-duck float\n4) a white unicorn float with a rainbow mane and gold horn\n5) a yellow banana boat float with handles, golden glow and a few sparkles\nLayout: 3 icons on the top row, 2 centered on the bottom row, on a plain flat very light background with NO cells, tiles or frames. No text, no numbers, no labels, no watermark."
+    },
+    {
+      "id": "ITEM-float-v2",
+      "date": "2026-10-30",
+      "aspect_ratio": "3:2",
+      "num_versions": 2,
+      "out": "art/v2/",
+      "why": "Bản đầu ra kiểu render CG: bóng gắt, màu cơ bản, ánh sáng lạnh, item dài tràn ô",
+      "refs": [
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-items-beach.png",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-items-jungle.png"
+      ],
+      "prompt": "The attached images are ART STYLE references only (board items from a merge-2 mobile game). Match the RENDERING of their items as closely as possible, but do NOT copy their items, layout, logos or text. Do NOT draw snorkels, flippers, diving masks, shells, sand castles, coins, palm trees or seaweed.\n\nRENDER: HAND-PAINTED 3D look exactly like the reference items, NOT a clean CG product render and NOT a photo. Soft painterly volume, slightly soft edges. Warm golden daylight from the top-left. Highlights are BROAD and SOFT, no small sharp specular hotspots, low contrast between light and shadow. Colors are warm and harmonious with a sandy tan game board: warm coral-red instead of pure red, creamy ivory instead of pure white, warm sunflower/golden yellow instead of lemon yellow, warm orange. NO outlines, edges only slightly darker in the same hue. Chunky, rounded, squashed toy proportions. Subtle inflatable vinyl feel (soft sheen, a seam, a tiny valve). Few large shapes, no tiny details; sparkles only on the top level. Each icon reads clearly at 100 px.\n\nSHAPE: every icon has a COMPACT, roughly SQUARE silhouette that fills a square cell (about 85%). Long objects must be shortened, curled or seen diagonally, never a long horizontal shape.\n\nCONTENT: an item sheet of 5 separate icons for a beach-themed merge chain \"Pool Floats\", level 1 to 5, each level bigger and more valuable, same camera angle (slight top-down 3/4 view), same scale per cell, soft warm contact shadow under each:\n1) a pair of orange arm floaties, standing side by side\n2) a coral-and-cream striped swim ring\n3) a chubby golden-yellow rubber-duck ring float, head close to the ring\n4) a compact cream-white unicorn ring float with a pastel-rainbow mane and gold horn, head turned toward the viewer\n5) a short, chunky, curved banana boat float seen diagonally, with handles, warm golden glow and a few sparkles\nLayout: 3 icons on the top row, 2 centered on the bottom row, on a plain flat warm sandy tan background (like the board in the references) with NO cells, tiles or frames. No text, no numbers, no labels, no watermark."
+    },
+    {
+      "id": "ITEM-float-v3",
+      "date": "2026-10-30",
+      "aspect_ratio": "3:2",
+      "num_versions": 2,
+      "out": "art/v3/",
+      "why": "v2 đúng cách dựng nhưng màu đục, cùng tông bàn cát nên chìm; phao tay dính một khối",
+      "refs": [
+        "docs/concepts/keepsake-lane/concept-store/ads-clone-travel-town/art/v2/web/ITEM-float-b.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-items-beach.png",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-items-jungle.png"
+      ],
+      "prompt": "Image 1 is our approved item sheet. Redraw the SAME 5 pool-float icons in EXACTLY the same hand-painted 3D rendering, soft broad highlights, warm top-left light, camera angle, scale and 3+2 layout as Image 1. Images 2 and 3 are ART STYLE references from a merge-2 game: match how their items POP from the sandy board with clear, vivid colors. Do NOT copy their items (no shells, coins, palm trees, sand piles, bags).\n\nCHANGE ONLY THESE THINGS:\n1) COLORS: more vivid and saturated so every icon stands out clearly against a sandy tan board, like the reference items do. Keep them warm and painterly, not neon and not pure primaries. Use contrasting hues that are NOT sand/orange: \n- level 1 arm floaties: bright turquoise / aqua\n- level 2 swim ring: vivid coral-pink and creamy white stripes\n- level 3 duck ring float: rich sunny golden yellow with a bright orange beak\n- level 4 unicorn ring float: creamy white with a vivid pink-lilac-aqua mane and tail and a gold horn, a touch of pink on the ring\n- level 5 banana boat: bright glossy banana yellow with a strong warm golden glow and sparkles\n2) Level 1 must clearly read as TWO separate arm floaties (a pair), standing side by side with a small gap between them, each a rounded double-chamber band with a visible arm hole.\n3) Slightly stronger value contrast (lighter lights, clearer form shadows) than Image 1, but still soft, no sharp specular hotspots, no outlines.\n\nKeep compact, roughly square silhouettes. Plain flat sandy tan background with NO cells, tiles or frames. No text, no numbers, no labels, no watermark."
+    },
+    {
+      "id": "ITEM-fruit",
+      "date": "2026-10-30",
+      "aspect_ratio": "3:2",
+      "num_versions": 1,
+      "out": "art/",
+      "refs": [
+        "docs/concepts/keepsake-lane/concept-store/ads-clone-travel-town/art/v3/web/ITEM-float-a.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-items-beach.png",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-items-jungle.png"
+      ],
+      "prompt": "Image 1 is our APPROVED item sheet (pool floats chain). Create a NEW item sheet for a second merge chain in EXACTLY the same hand-painted 3D rendering, soft broad highlights, warm top-left golden light, color vividness, camera angle (slight top-down 3/4 view), icon scale, soft warm contact shadows and 3+2 layout as Image 1. Images 2 and 3 are ART STYLE references from a merge-2 game only: match how their items look and pop from the sandy board. Do NOT copy their items (no shells, coins, palm trees, sand piles, bags) and do NOT repeat any pool float from Image 1.\n\nRENDER: hand-painted 3D look, NOT a clean CG product render and NOT a photo. Soft painterly volume, broad soft highlights, no sharp specular hotspots, NO outlines (edges only slightly darker in the same hue). Chunky, rounded, squashed toy proportions, few large shapes, no tiny details. Vivid but warm colors that stand out clearly on a sandy tan board; avoid sand/beige/orange as the main color of any icon. Real material feel: juicy glossy fruit flesh, matte fibrous coconut husk, woven wicker, painted wood and metal. Sparkles and golden glow only on level 5. Each icon reads clearly at 100 px.\n\nSHAPE: every icon has a COMPACT, roughly SQUARE silhouette filling about 85% of a square cell; never a long horizontal shape.\n\nCONTENT: beach-themed merge chain \"Tropical Fruit\", level 1 to 5, each level bigger and more valuable:\n1) one chunky triangular slice of watermelon (vivid red flesh, black seeds, green rind)\n2) a big half watermelon, cut face up, juicy red\n3) a green young coconut with the top cut open and a pink striped straw\n4) a small wicker basket heaped with tropical fruits (watermelon wedge, pineapple, mango, bananas)\n5) a compact, cute fruit ice-cream cart: short and boxy, mint-green and pink, a small striped canopy, fruit popsicles on top, two small wheels, seen from a 3/4 angle so it fits a square cell; warm golden glow and a few sparkles\nLayout: 3 icons on the top row, 2 centered on the bottom row, on a plain flat warm sandy tan background with NO cells, tiles or frames. No text, no numbers, no labels, no watermark."
+    },
+    {
+      "id": "ITEM-misc",
+      "date": "2026-10-30",
+      "aspect_ratio": "3:2",
+      "num_versions": 1,
+      "out": "art/",
+      "refs": [
+        "docs/concepts/keepsake-lane/concept-store/ads-clone-travel-town/art/v3/web/ITEM-float-a.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-items-beach.png",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-items-jungle.png"
+      ],
+      "prompt": "Image 1 is our APPROVED item sheet. Create a NEW sheet of 6 beach board items in EXACTLY the same hand-painted 3D rendering, soft broad highlights, warm top-left golden light, color vividness, camera angle (slight top-down 3/4 view), icon scale and soft warm contact shadows as Image 1. Images 2 and 3 are ART STYLE references from a merge-2 game only: match how their items look and pop from the sandy board. Do NOT copy their items (no shells, coins, palm trees, sand piles, bags) and do NOT repeat any pool float or fruit.\n\nRENDER: hand-painted 3D look, NOT a clean CG product render and NOT a photo. Soft painterly volume, broad soft highlights, no sharp specular hotspots, NO outlines (edges only slightly darker in the same hue). Chunky, rounded, squashed toy proportions, few large shapes, no tiny details, no text or logos on any object. Vivid but warm colors that stand out clearly on a sandy tan board; avoid sand/beige/orange as the main color of any icon. Real material feel: canvas fabric, rubber, terry cloth, crab shell, plastic bottle, tinted lenses. No sparkles, no glow (these are ordinary board items).\n\nSHAPE: every icon has a COMPACT, roughly SQUARE silhouette filling about 85% of a square cell; never a long or tall thin shape.\n\nCONTENT: 6 separate everyday beach items, all the same importance:\n1) a small open beach umbrella, turquoise-and-white stripes, short and wide, its pole stuck in a tiny sand mound\n2) a pair of chunky pink flip-flops, one slightly overlapping the other\n3) a rolled-up beach towel, yellow and blue stripes, standing on its end\n4) a cute chubby bright red crab with raised claws, friendly face\n5) a squat white-and-sky-blue sunscreen bottle with a big flip cap, no label text\n6) a pair of chunky purple heart-shaped sunglasses, folded\nLayout: a clean 3 x 2 grid, on a plain flat warm sandy tan background with NO cells, tiles or frames. No text, no numbers, no labels, no watermark."
+    },
+    {
+      "id": "CH-customers",
+      "date": "2026-10-30",
+      "aspect_ratio": "16:9",
+      "num_versions": 2,
+      "out": "art/",
+      "refs": [
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-characters.png",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt1-faces.png",
+        "docs/concepts/keepsake-lane/concept-store/ads-clone-travel-town/art/v3/web/ITEM-float-a.jpg"
+      ],
+      "prompt": "Images 1 and 2 are ART STYLE references for CHARACTERS from a merge-2 mobile game: match their character rendering as closely as possible, but do NOT copy their characters, faces, outfits, UI, numbers, icons or text. Image 3 is our approved beach item sheet: match its warm golden light and color vividness so the characters belong to the same game.\n\nRENDER: stylized semi-realistic cartoon, like the references: realistic human proportions with a slightly large head, NOT chibi, NOT anime big eyes. Defined facial structure (cheekbones, jaw, nose with volume), big expressive smiles showing teeth, eyes with catchlights. Hand-painted 3D look: smooth soft skin shading, hair painted in chunky clumps with soft sheen, fabric folds and real fabric texture, NO outlines. Warm sunny daylight from the top-left, soft broad highlights. Vivid warm colors.\n\nCONTENT: a character sheet of 4 separate beach-town customers, each a HALF-BODY portrait (head to waist), facing the viewer at a slight 3/4 angle, each with a lively gesture, evenly spaced in one row, same scale, all different ages, body types and skin tones:\n1) a girl about 10 years old, light brown skin, curly dark hair in two puffs, hugging a small turquoise surfboard, mint swimsuit top with a ruffle, huge grin\n2) a young lifeguard man in his 20s, East Asian, short spiky black hair, red tank top, a whistle on a cord, zinc sunscreen stripe on his nose, giving a thumbs-up\n3) a chubby cheerful grandpa in his 70s, fair sunburned skin, white bushy mustache, bucket fishing hat with lures, open Hawaiian shirt in blue with white flowers, holding a small fishing rod over his shoulder\n4) a plump middle-aged ice-cream seller woman, dark brown skin, hair in a colorful headscarf, pink-and-white striped apron, holding up a fruit popsicle, warm motherly smile\nBACKGROUND: plain flat pale sky-blue background, no scenery, no frames, no cards, no UI. No text, no numbers, no labels, no watermark."
+    },
+    {
+      "id": "ICON-res",
+      "date": "2026-10-30",
+      "aspect_ratio": "16:9",
+      "num_versions": 1,
+      "out": "art/",
+      "refs": [
+        "docs/concepts/keepsake-lane/concept-store/ads-clone-travel-town/art/v3/web/ITEM-float-a.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-characters.png"
+      ],
+      "prompt": "Image 1 is our APPROVED item sheet: match EXACTLY its hand-painted 3D rendering, soft broad highlights, warm top-left golden light and color vividness. Image 2 is a STYLE reference from a merge-2 game: look only at the chunky resource icons in its top bar (energy, coin, gem) for how big, bold and readable resource icons are. Do NOT copy its icons, numbers, bars, characters or text; our designs must be different.\n\nRENDER: hand-painted 3D look, NOT a clean CG product render. Chunky, rounded, bold silhouettes that read clearly at 48 px. Soft painterly volume, broad soft highlights, no sharp specular hotspots, NO outlines (edges only slightly darker in the same hue). No sparkles, no glow.\n\nCONTENT: 3 separate game resource icons, same size, evenly spaced in one row, slight front 3/4 view:\n1) ENERGY: a chunky rounded lightning bolt, warm sunny yellow with an orange underside, slightly tilted, puffy like a soft toy\n2) COIN: a thick shiny gold coin seen at a slight angle, with an embossed smiling sun emblem in the center and a raised rim (no palm tree, no letters, no numbers)\n3) PEARL: a big glossy turquoise-aqua pearl with a soft iridescent pink sheen, sitting in a small open pink scallop half-shell\nBACKGROUND: plain flat warm cream background, no bars, no frames, no UI. No text, no numbers, no labels, no watermark."
+    },
+    {
+      "id": "BG-beach",
+      "date": "2026-10-30",
+      "aspect_ratio": "9:16",
+      "num_versions": 2,
+      "out": "art/",
+      "refs": [
+        "docs/market/style-refs/merge-glossy-cartoon/travel-town-2.jpg",
+        "docs/concepts/keepsake-lane/concept-store/ads-clone-travel-town/art/v3/web/ITEM-float-a.jpg"
+      ],
+      "prompt": "Image 1 is a STYLE reference from a merge-2 mobile game: look ONLY at its background painting behind the board (soft painted sky, palm leaves at the edges, warm beach light). Do NOT copy its board, items, UI bars, icons, numbers or text, and do NOT draw any game board. Image 2 is our approved item sheet: match its warm golden light and color vividness.\n\nCreate a vertical 9:16 mobile game BACKGROUND painting of a sunny tropical beach, hand-painted, soft and slightly blurred like a shallow depth of field, with LESS detail and lower contrast than the game items so it never competes with them. No outlines.\n\nCOMPOSITION from top to bottom:\n- top 30%: bright clear sky-blue sky with a few soft fluffy white clouds (this area sits behind the resource bar and the customer portraits, so keep it calm and open)\n- around 30-40% height: a calm turquoise sea horizon with gentle light sparkles, a distant small green island\n- left and right edges: a few leaning coconut palm trees framing the scene, their fronds partly cut off by the image edges\n- bottom 60%: warm soft golden sand beach, almost plain, with very subtle ripples (a game board will cover most of this area)\n- tiny lush green tropical leaves only at the very bottom corners\nNo people, no characters, no objects in the middle, no board, no frames, no UI. No text, no numbers, no labels, no watermark."
+    }
+  ]
+}
