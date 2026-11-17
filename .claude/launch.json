@@ -40,6 +40,14 @@
         "tools/docs-server.mjs"
       ],
       "port": 8770
+    },
+    {
+      "name": "khach-san-dem-playable",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "C:/Users/PC/AppData/Local/Temp/claude/686a3eeba1f1de64/14227169-2a7f-4b5e-9dc9-1eff6fe7d395/scratchpad/playable-server.mjs"
+      ],
+      "port": 8771
     }
   ]
 }

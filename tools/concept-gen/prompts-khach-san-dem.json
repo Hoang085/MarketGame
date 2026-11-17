@@ -1,0 +1,403 @@
+{
+  "_note": "Khách sạn đêm (merge-2: bị lừa mua khách sạn bỏ hoang, khách đêm là quái vật lịch lãm). Danh sách asset: docs/concepts/khach-san-dem/danh-sach-gen.md. Style: merge-glossy-cartoon theo Travel Town (chốt 07/11/2026).",
+  "model": "fal-ai/nano-banana-pro/edit",
+  "resolution": "2K",
+  "out_dir": "docs/concepts/khach-san-dem/art/",
+  "items": [
+    {
+      "id": "CH-nora",
+      "date": "2026-11-07",
+      "aspect_ratio": "3:4",
+      "num_versions": 2,
+      "out": "art/",
+      "refs": [
+        "docs/concepts/keepsake-lane/concept-store/ads-clone-travel-town/art/web/CH-customers-a.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-characters.png",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt2-heroine.png",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-hl-heroine.png"
+      ],
+      "prompt": "Image 1 is our APPROVED character sheet for a sister project: match its character rendering exactly so the new heroine looks drawn by the same artist. Images 2, 3 and 4 are ART STYLE references for CHARACTERS from merge-2 mobile games: match their rendering and face design language as closely as possible, but do NOT copy their characters, faces, hair, outfits, props, UI, numbers, icons or text.\n\nRENDER: stylized semi-realistic cartoon, like the references: realistic adult proportions with a slightly large head, NOT chibi, NOT anime big eyes. Defined facial structure (cheekbones, jaw, nose with volume), eyes with catchlights. Hand-painted 3D look: smooth soft skin shading, hair painted in chunky clumps with soft sheen, fabric folds and real knit texture, NO outlines. One soft warm light from the top-left, soft broad highlights, gentle rim light. Vivid but warm colors.\n\nCHARACTER: Nora, about 30 years old, the heroine of a cozy-mystery merge game about an abandoned Victorian hotel. She was a small bakery owner who was scammed into buying the ruined hotel and lost everything, so she arrives tired but stubborn. Warm light skin with a few freckles, expressive hazel-green eyes, chestnut-brown hair in a messy low bun with loose strands framing her face. Oversized chunky cream knit sweater with a mustard-yellow scarf loosely wrapped, dark green high-waisted trousers. She holds the handle of a worn vintage brown leather suitcase with travel stickers in one hand, and grips a big old brass hotel key with a tag in the other hand, raised slightly toward her chest. Expression: a determined half-smile with slightly raised eyebrows, 'I can do this', tired but hopeful. Attractive, relatable adult woman, NOT a teenager, NOT a child. HALF-BODY portrait (head to hips, the suitcase can be partly cropped at the bottom), three-quarter view facing the viewer, centered.\n\nBACKGROUND: solid plain pale warm cream color, nothing else, for easy cutout. No scenery, no frames, no cards, no UI. No text, no numbers, no labels, no watermark."
+    },
+    {
+      "id": "CH-nora-v2",
+      "date": "2026-11-07",
+      "aspect_ratio": "3:4",
+      "num_versions": 2,
+      "out": "art/v2/",
+      "why": "v1 lệch style: màu xỉn, tranh vẽ phẳng, mắt nhỏ, gần painterly storybook hơn Travel Town",
+      "refs": [
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt2-heroine.png",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-hl-heroine.png",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-characters.png",
+        "docs/concepts/khach-san-dem/art/web/CH-nora-a.jpg"
+      ],
+      "prompt": "Images 1, 2 and 3 are ART STYLE references for CHARACTERS from top-grossing merge-2 mobile games. Match their character RENDERING as closely as possible: the same glossy, bright, polished mobile-game look. Do NOT copy their characters, faces, hair, outfits, jewelry, props, UI, items, numbers or text. Image 4 is our CHARACTER DESIGN reference for the heroine Nora: keep her design (chestnut hair in a messy low bun, freckles, hazel-green eyes, cream chunky knit sweater, mustard scarf, dark green trousers, vintage brown suitcase, old brass key with a tag), but do NOT copy its rendering: Image 4 is too muted, too flat and too painterly.\n\nRENDER (most important): polished semi-3D mobile game character exactly like Images 1-3. Smooth airbrushed volumetric shading, soft glowing skin with warm subsurface tones and rosy cheeks, glossy specular highlights on hair, lips and eyes, hair in big smooth glossy clumps, NO outlines, NO visible brush strokes, NO muted or desaturated colors. Bright, clean, high-saturation warm colors with high-key lighting: warm key light from the top-left plus a soft rim light. FACE like the references: large glossy almond eyes with big colored irises and bright catchlights, defined upper lashes, expressive arched brows, small nose with volume, full glossy lips, a big confident smile showing a little teeth. Adult woman about 30, attractive and friendly, NOT a child, NOT chibi. App Store screenshot quality.\n\nPOSE: half-body (head to hips), three-quarter view facing the viewer, centered. One hand holds the suitcase handle (suitcase partly cropped at the bottom), the other hand raises the big brass hotel key with its tag near her face, as if saying 'This hotel is mine now!'. Determined, upbeat, a little mischievous.\n\nCOLORS: sweater warm creamy ivory with clear knit texture, scarf vivid mustard-golden yellow, trousers rich forest green, suitcase warm caramel brown leather with colorful travel stickers, key shiny warm brass.\n\nBACKGROUND: solid plain pale warm cream color, nothing else, for easy cutout. No scenery, no frames, no cards, no UI. No text, no numbers, no labels, no watermark."
+    },
+    {
+      "id": "CH-aldric",
+      "date": "2026-11-09",
+      "aspect_ratio": "3:4",
+      "num_versions": 2,
+      "out": "art/",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/v2/web/CH-nora-a.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-characters.png",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt1-faces.png"
+      ],
+      "prompt": "Image 1 is our APPROVED main character Nora: match her rendering, proportions and face style exactly so both characters look drawn by the same artist (same glossy polished semi-3D look, same lighting, same color vividness). Images 2 and 3 are ART STYLE references for CHARACTERS from a top-grossing merge-2 mobile game: match their rendering, but do NOT copy their characters, faces, outfits, UI, numbers or text. Do NOT copy Nora's face or outfit either: this is a different character.\n\nRENDER: polished semi-3D mobile game character like Image 1. Smooth airbrushed volumetric shading, glowing skin with subtle subsurface tones, glossy specular highlights on hair, eyes and fabric, hair in big smooth glossy clumps, NO outlines, NO visible brush strokes. Bright, clean, saturated colors; warm candle-gold key light from the top-left plus a soft cool violet rim light from behind to hint at night. Adult male face with defined structure: strong jaw, high cheekbones, straight nose with volume, large glossy almond eyes with catchlights, expressive brows. NOT chibi, NOT a child, NOT a cartoon monster. App Store screenshot quality.\n\nCHARACTER: Lord Aldric, an elegant, charming vampire gentleman, the first night guest of an old Victorian hotel in a cozy-mystery merge game. He looks about 45, handsome and refined, like the romantic lead of a period drama. Silver-white hair swept back with one loose strand, neat short silver beard along the jaw, warm amber-gold eyes, fair skin with a slight cool pallor but healthy and attractive. Outfit: a long black velvet frock coat with deep wine-red lining and subtle gold embroidery on the lapels, a dark burgundy waistcoat with a gold pocket-watch chain, a high white collar with a black silk cravat and a garnet pin, black leather gloves. He holds a black walking cane with a silver top in one hand, and with the other gloved hand he makes a courteous half-bow gesture over his chest. Expression: a warm, amused, slightly mysterious closed-mouth smile, one eyebrow lightly raised. NO visible fangs, NO blood, NO bat wings, NO cape with a tall stiff collar, NO slicked widow's peak, NOT scary, NOT goofy. He must NOT resemble any famous cartoon or movie Dracula. HALF-BODY portrait (head to hips), three-quarter view facing the viewer, centered, same scale as Image 1.\n\nBACKGROUND: solid plain pale warm cream color, nothing else, for easy cutout. No scenery, no frames, no cards, no UI. No text, no numbers, no labels, no watermark."
+    },
+    {
+      "id": "CH-aldric-v2",
+      "date": "2026-11-09",
+      "aspect_ratio": "3:4",
+      "num_versions": 2,
+      "out": "art/v2/",
+      "why": "Người dùng chọn bản b nhưng nhìn không nhận ra là ma cà rồng; thêm dấu hiệu: mắt đỏ, da nhợt, tai nhọn, chóp răng nanh, áo choàng lót đỏ, ghim dơi, viền sáng tím, sương",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/web/CH-aldric-b.jpg",
+        "docs/concepts/khach-san-dem/art/v2/web/CH-nora-a.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-characters.png",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt1-faces.png"
+      ],
+      "prompt_note": "Prompt đầy đủ: xem recipe job fal 01a1c072-6c9a-7133-aede-c1d6b0d5cb1f; tóm tắt: giữ nguyên nhân vật Image 1, chỉ đổi 7 điểm (mắt đỏ hồng ngọc phát sáng, da sứ nhợt có quầng tím nhạt, tai hơi nhọn, cười hé 2 chóp răng nanh không máu, áo choàng đen lót lụa đỏ cổ THẤP, ghim cravat hình dơi bạc đá đỏ, viền sáng tím xanh + sương bạc); tránh tóc chữ V, cổ áo dựng cao, cánh dơi, máu, vẻ đáng sợ, giống Dracula phim"
+    },
+    {
+      "id": "BG-exterior-dusk",
+      "date": "2026-11-09",
+      "aspect_ratio": "9:16",
+      "num_versions": 1,
+      "out": "art/",
+      "refs": [
+        "docs/market/style-refs/merge-glossy-cartoon/hotel-legacy-2.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/travel-town-2.jpg",
+        "docs/concepts/khach-san-dem/art/v2/web/CH-nora-a.jpg"
+      ],
+      "prompt_note": "Prompt đầy đủ trong recipe job fal 01a1c085-2e3f-7973-80a8-cd5aad8192f3: mặt tiền khách sạn Victorian 3 tầng bỏ hoang lúc hoàng hôn, sơn xanh lam bong tróc, 2 tháp nhọn, hiên bao quanh, cửa sổ vỡ/đóng ván, biển đèn lồng không chữ, dây leo, cổng sắt gỉ mở hé, biển bất động sản có băng đỏ chéo (không chữ), trời cam đào sang tím; không đáng sợ; chừa vùng dưới giữa cho nhân vật và UI"
+    },
+    {
+      "id": "BG-lobby-ruined",
+      "date": "2026-11-09",
+      "aspect_ratio": "9:16",
+      "num_versions": 1,
+      "out": "art/",
+      "refs": [
+        "docs/market/style-refs/merge-glossy-cartoon/hotel-legacy-2.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/travel-town-2.jpg",
+        "docs/concepts/khach-san-dem/art/v2/web/CH-nora-a.jpg"
+      ],
+      "prompt_note": "Prompt đầy đủ trong recipe job fal 01a1c085-2eb4-7960-9878-9026ac5a62b1: sảnh khách sạn Victorian bỏ hoang, cầu thang gỗ cong, giấy dán tường đỏ rượu bong, cửa sổ vòm có nắng chiều và bụi bay, quầy lễ tân có chuông đồng, tủ móc chìa khóa, lò sưởi đá tắt, đèn chùm pha lê rơi nghiêng, đồng hồ quả lắc, đồ phủ vải trắng, mạng nhện; chi tiết ở 55% trên, 45% dưới là sàn gỗ đơn giản cho bàn ghép"
+    },
+    {
+      "date": "2026-11-09",
+      "aspect_ratio": "9:16",
+      "num_versions": 1,
+      "id": "BG-exterior-dusk-v2",
+      "out": "art/v2/",
+      "why": "v1 trông như nhà ở gia đình, không ra khách sạn",
+      "refs": [
+        "docs/concepts/khach-san-dem/sketch/BG-exterior-dusk-layout.png",
+        "docs/concepts/khach-san-dem/refs/hotel-legacy-exterior-renovate.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/hotel-legacy-2.jpg"
+      ],
+      "prompt_note": "Prompt đầy đủ trong recipe job fal 01a1c0c1-96cd-79c0-a47f-52b3fd254008: theo phác thảo bố cục (ảnh 1), khách sạn Victorian 5 tầng đối xứng, 2 tháp tròn, hàng cửa sổ có ban công, biển H TEL trên nóc, mái che đỏ rách, bậc thềm, 2 đèn cột, cổng sắt, biển SOLD"
+    },
+    {
+      "date": "2026-11-09",
+      "aspect_ratio": "9:16",
+      "num_versions": 1,
+      "id": "BG-lobby-ruined-v2",
+      "out": "art/v2/",
+      "why": "v1 giống sảnh biệt thự; vẽ lại theo phác thảo v4",
+      "refs": [
+        "docs/concepts/khach-san-dem/sketch/BG-lobby-ruined-layout.png",
+        "docs/concepts/khach-san-dem/refs/hotel-legacy-lobby.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/hotel-legacy-2.jpg"
+      ],
+      "prompt_note": "Prompt đầy đủ trong recipe job fal 01a1c0c1-959f-7823-9f7a-e360dc2f7719"
+    },
+    {
+      "date": "2026-11-09",
+      "aspect_ratio": "9:16",
+      "num_versions": 1,
+      "id": "BG-exterior-dusk-v3",
+      "out": "art/v3/",
+      "why": "v2 đúng bố cục nhưng nét phẳng kiểu vector; tô lại theo style Hotel Legacy, thu hẹp mặt đường",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/v2/web/BG-exterior-dusk.jpg",
+        "docs/concepts/khach-san-dem/refs/hotel-legacy-exterior-renovate.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/hotel-legacy-2.jpg"
+      ],
+      "prompt_note": "Recipe job fal 01a1c0c3-0a90-7e23-8e5b-a903e3d5c369"
+    },
+    {
+      "date": "2026-11-09",
+      "aspect_ratio": "9:16",
+      "num_versions": 1,
+      "id": "BG-lobby-ruined-v3",
+      "out": "art/v3/",
+      "why": "v2 trùng số phòng 13; tô lại theo style Hotel Legacy",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/v2/web/BG-lobby-ruined.jpg",
+        "docs/concepts/khach-san-dem/refs/hotel-legacy-lobby.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/hotel-legacy-2.jpg"
+      ],
+      "prompt_note": "Recipe job fal 01a1c0c3-0a9b-78f2-9ff8-8ef6110d6925"
+    },
+    {
+      "date": "2026-11-10",
+      "aspect_ratio": "9:16",
+      "num_versions": 1,
+      "id": "BG-lobby-restored",
+      "out": "art/",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/v3/web/BG-lobby-ruined.jpg",
+        "docs/concepts/khach-san-dem/art/v2/web/CH-nora-a.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/hotel-legacy-2.jpg",
+        "docs/concepts/khach-san-dem/refs/hotel-legacy-lobby.jpg"
+      ],
+      "prompt_note": "Recipe job fal 01a1c4c3-4c90-7d22-8a0c-7a48a3b9123d: cùng sảnh đã chốt, sửa xong, ban đêm, nhấn mạnh style merge-glossy-cartoon (Nora làm ảnh 2 để giữ độ bóng/tươi)"
+    },
+    {
+      "date": "2026-11-10",
+      "aspect_ratio": "9:16",
+      "num_versions": 1,
+      "id": "BG-lobby-restored-v2",
+      "out": "art/v2/",
+      "why": "v1 còn vết nứt sàn, sofa phủ vải, ghế trắng, biển RECEPTION bị đèn chùm che, xe đẩy trống",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/web/BG-lobby-restored.jpg",
+        "docs/concepts/khach-san-dem/art/v2/web/CH-nora-a.jpg"
+      ],
+      "prompt_note": "Recipe job fal 01a1c4c4-a913-77b1-8599-f5e98f58ed1b: giữ nguyên, chỉ sửa 5 điểm"
+    },
+    {
+      "date": "2026-11-10",
+      "aspect_ratio": "9:16",
+      "num_versions": 1,
+      "id": "BG-exterior-night",
+      "out": "art/",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/v3/web/BG-exterior-dusk.jpg",
+        "docs/concepts/khach-san-dem/art/v2/web/CH-nora-a.jpg",
+        "docs/concepts/khach-san-dem/refs/hotel-legacy-exterior-renovate.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/hotel-legacy-2.jpg"
+      ],
+      "prompt_note": "Recipe job fal 01a1c4c3-4bfb-7440-9262-dffe98e9e906: cùng mặt tiền đã chốt, sửa xong, ban đêm, end card; biển HOTEL sáng, mọi cửa sổ sáng, bóng khách sau rèm"
+    },
+    {
+      "id": "BG-exterior-dusk-v4",
+      "date": "2026-11-11",
+      "aspect_ratio": "9:16",
+      "num_versions": 2,
+      "out": "art/v4/",
+      "why": "Người dùng thấy mặt tiền nhìn thẳng (v3) và 3 phác thảo isometric chưa ổn; chọn bố cục theo mẫu Mansion Tale",
+      "refs": [
+        "docs/concepts/khach-san-dem/refs/mansion-tale-crop.jpg",
+        "docs/concepts/khach-san-dem/refs/hotel-legacy-exterior-renovate.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/hotel-legacy-2.jpg",
+        "docs/concepts/khach-san-dem/art/v2/web/CH-nora-a.jpg"
+      ],
+      "prompt_note": "Recipe job fal 01a1c97b-6246-7b22-9582-dd9e709154ac: ảnh 1 chỉ lấy góc máy isometric gần + bố cục (góc lối vào trên phải, cầu thang đá cong đôi, vườn bậc thang phía dưới); nội dung là khách sạn đổ nát của mình (biển H TEL rơi chữ O, mái che đỏ rách, đài phun nước tượng dơi, cổng + SOLD), chiều tà"
+    },
+    {
+      "id": "BG-exterior-dusk-v4-b2",
+      "date": "2026-11-11",
+      "aspect_ratio": "9:16",
+      "num_versions": 1,
+      "out": "art/v4/",
+      "why": "Người dùng chọn v4 b nhưng muốn ô cửa sổ đang sáng đèn tắt đi (khách sạn bỏ hoang)",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/v4/BG-exterior-dusk-b.png"
+      ],
+      "prompt_note": "Recipe job fal 01a1c982-e1d0-7ea1-a178-62443bdbca3b: giữ nguyên, chỉ đổi ô cửa sổ sáng thành tối"
+    },
+    {
+      "id": "BG-exterior-night-v4",
+      "date": "2026-11-11",
+      "aspect_ratio": "9:16",
+      "num_versions": 1,
+      "out": "art/v4/",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/v4/BG-exterior-dusk-b2.png",
+        "docs/concepts/khach-san-dem/art/v2/web/CH-nora-a.jpg"
+      ],
+      "prompt_note": "Recipe job fal 01a1c985-4bb3-75d1-8726-5544b331b24e: cùng bố cục mặt tiền đã chọn, đã sửa xong, ban đêm, end card"
+    },
+    {
+      "id": "ITEM-LGT",
+      "date": "2026-11-11",
+      "aspect_ratio": "3:2",
+      "num_versions": 2,
+      "out": "art/",
+      "refs": [
+        "docs/concepts/keepsake-lane/concept-store/ads-clone-travel-town/art/v3/web/ITEM-float-a.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-items-beach.png",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-items-jungle.png",
+        "docs/market/style-refs/merge-glossy-cartoon/hotel-legacy-1.jpg"
+      ],
+      "prompt_note": "Recipe job fal 01a1c992-8622-73d0-964f-583e4f2712d9: chuỗi Hotel Lights 6 cấp, màu chủ đạo xanh teal (màu khách sạn) + đồng thau + lửa vàng, nền kem như ô bàn chơi"
+    },
+    {
+      "id": "ITEM-SRV",
+      "date": "2026-11-11",
+      "aspect_ratio": "3:2",
+      "num_versions": 2,
+      "out": "art/",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/web/ITEM-LGT-a.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-items-beach.png",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-items-jungle.png",
+        "docs/market/style-refs/merge-glossy-cartoon/hotel-legacy-1.jpg"
+      ],
+      "prompt_note": "Recipe job fal 01a1c9a6-4c82-7c71-a897-8cc19f760d98: chuỗi Room Service 6 cấp, bạc + sứ trắng + đỏ rượu, theo ITEM-LGT-a"
+    },
+    {
+      "id": "PROPS",
+      "date": "2026-11-11",
+      "aspect_ratio": "3:2",
+      "num_versions": 1,
+      "out": "art/",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/web/ITEM-LGT-a.jpg",
+        "docs/concepts/khach-san-dem/art/web/ITEM-SRV-a.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-items-jungle.png",
+        "docs/market/style-refs/merge-glossy-cartoon/hotel-legacy-1.jpg"
+      ],
+      "prompt_note": "Recipe job fal 01a1cb25-9e7b-71c0-b1ab-88e6a9d3e6f8: hộp đồ cũ, xe đẩy bạc nhỏ (2 máy sinh đồ), ô khóa vải phủ, danh thiếp VICTOR CRANE mới/1923, đồng vàng hình dơi, đồng hồ 12 giờ"
+    },
+    {
+      "id": "ITEM-FILLER",
+      "date": "2026-11-11",
+      "aspect_ratio": "3:2",
+      "num_versions": 1,
+      "out": "art/",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/web/ITEM-LGT-a.jpg",
+        "docs/concepts/khach-san-dem/art/web/ITEM-SRV-a.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-items-beach.png",
+        "docs/market/style-refs/merge-glossy-cartoon/hotel-legacy-1.jpg"
+      ],
+      "prompt_note": "Recipe job fal 01a1cb25-9efd-7603-adff-d14f9cfb6d25: hàng trên ghế cấp 1-3 (nhung tím mận), hàng dưới chìa khóa cấp 1-3 (đồng đỏ + cam san hô); cấm teal, đồng thau, sứ trắng, đỏ rượu làm màu chính"
+    },
+    {
+      "id": "CH-nora-expr",
+      "date": "2026-11-11",
+      "aspect_ratio": "4:3",
+      "num_versions": 1,
+      "out": "art/",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/v2/web/CH-nora-a.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt1-faces.png",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt-characters.png"
+      ],
+      "prompt_note": "Recipe job fal 01a1cb25-9ee1-70f1-b8c0-8ad3baac5268: lưới 2x2 chân dung đầu-ngực: thất thần, quyết tâm, bất ngờ, sững người"
+    },
+    {
+      "id": "CH-aldric-expr",
+      "date": "2026-11-11",
+      "aspect_ratio": "3:2",
+      "num_versions": 1,
+      "out": "art/",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/v2/web/CH-aldric-b.jpg",
+        "docs/concepts/khach-san-dem/art/v2/web/CH-nora-a.jpg",
+        "docs/market/style-refs/merge-glossy-cartoon/crops/ref-tt1-faces.png"
+      ],
+      "prompt_note": "Recipe job fal 01a1cb25-9efa-7611-ac13-fe7b57524c09: 3 chân dung ngang hông: cúi chào, nâng ly vang, cười bí ẩn (ngón tay lên môi)"
+    },
+    {
+      "id": "PROPS-fix",
+      "date": "2026-11-11",
+      "aspect_ratio": "3:2",
+      "num_versions": 1,
+      "out": "art/v2/",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/PROPS-a.png"
+      ],
+      "prompt_note": "Recipe job fal 01a1cb2c-1465-7482-8415-4587a2f539b3: edit PROPS-a, 2 kim đồng hồ chỉ thẳng XII, xóa làn khói trên ô khóa"
+    },
+    {
+      "id": "CH-aldric-expr-fix",
+      "date": "2026-11-11",
+      "aspect_ratio": "3:2",
+      "num_versions": 2,
+      "out": "art/v2/",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/CH-aldric-expr-a.png",
+        "docs/concepts/khach-san-dem/art/v2/web/CH-aldric-b.jpg"
+      ],
+      "prompt_note": "Recipe job fal 01a1cb2c-1408-7271-992d-51e6ed2c5c36: edit CH-aldric-expr-a, bản trái thành cúi chào nghiêng 30 độ, hạ cổ áo choàng cả 3 bản"
+    },
+    {
+      "id": "CH-nora-sad",
+      "date": "2026-11-11",
+      "aspect_ratio": "3:4",
+      "num_versions": 2,
+      "out": "art/",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/CH-nora-expr-a.png",
+        "docs/concepts/khach-san-dem/art/v2/web/CH-nora-a.jpg"
+      ],
+      "prompt_note": "Recipe job fal 01a1cb44-76f6-7653-a854-119c189c8097 (a: buồn, rơi nước mắt, cầm điện thoại) và 01a1cb44-76f0-7c72-9dca-e3b7ddc03fe0 (b: cười gượng, nắm khăn)"
+    },
+    {
+      "id": "PROPS-clock-nohands",
+      "date": "2026-11-11",
+      "aspect_ratio": "3:2",
+      "num_versions": 1,
+      "out": "art/v2/",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/v2/PROPS-a2.png"
+      ],
+      "prompt_note": "Recipe job fal 01a1cb4d-e15b-7fd1-921b-c8809ad730ee: bỏ 2 kim đồng hồ, giữ chốt giữa"
+    },
+    {
+      "id": "SFX-playable",
+      "date": "2026-11-11",
+      "model": "elevenlabs/sound-effects/v3",
+      "out": "playable/audio/",
+      "prompt_note": "knock.mp3 (01a1cb4d-e19b-7b91-a96e-10cccb1c6e3e, 1,2 s), clockspin.mp3 (01a1cb4d-e199-70d3-86a8-62a223557dc5, 3 s), clockbell.mp3 (01a1cb4d-e19a-7371-80a8-3ce20559a5b6, 3,5 s)"
+    },
+    {
+      "id": "MUSIC-night",
+      "date": "2026-11-11",
+      "model": "elevenlabs/music/v2.5",
+      "out": "playable/audio/nightmusic.mp3 (a), playable/audio-alt/nightmusic-b.mp3 (b)",
+      "prompt_note": "40 s, instrumental. a 01a1cb5f-28c1-7a40-9663-71118550c5c8: waltz celesta/hộp nhạc giọng thứ, pizzicato, cello trầm. b 01a1cb5f-2856-7bc0-ad66-6c06c1afb8ef: piano giọng thứ, dây trầm, hợp xướng xa, gothic tình cảm"
+    },
+    {
+      "id": "PROPS-lockbox",
+      "date": "2026-11-11",
+      "aspect_ratio": "3:2",
+      "num_versions": 1,
+      "out": "art/v2/",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/v2/PROPS-a2.png"
+      ],
+      "prompt_note": "Recipe job fal 01a1cb68-2c8a-7f11-931f-0ce4193e5b56: thay ghế phủ vải bằng hộp giấy cũ dán băng keo, phủ mạng nhện"
+    },
+    {
+      "id": "PROPS-cards-sterling",
+      "date": "2026-11-12",
+      "aspect_ratio": "3:2",
+      "num_versions": 1,
+      "out": "art/v2/src/cards-sterling-a.png",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/v2/src/cards-crop-from-PROPS-a2.png"
+      ],
+      "prompt_note": "Đổi tên kẻ lừa Victor Crane thành Victor Sterling (xem check-trung-2026-11-12.md). Ảnh mẫu là phần danh thiếp cắt từ v2/PROPS-a2.png (x 50, y 965, 840x560). Recipe job fal 01a1cf23-9d66-7703-9ff3-585f49af9671: chỉ đổi chữ VICTOR CRANE thành VICTOR STERLING trên cả 2 thẻ, giữ Real Estate, 1923, giấy, vết ố, góc cong, nền"
+    },
+    {
+      "id": "BG-lobby-nomark",
+      "date": "2026-11-12",
+      "aspect_ratio": "3:2",
+      "num_versions": 2,
+      "out": "art/v3/src/medallion-noletters-ruined-a.png, art/v2/src/medallion-noletters-restored-a.png; ghép lại thành art/v3/BG-lobby-ruined-nomark.png, art/v2/BG-lobby-restored-nomark.png",
+      "refs": [
+        "docs/concepts/khach-san-dem/art/v3/src/medallion-crop-from-BG-lobby-ruined.png",
+        "docs/concepts/khach-san-dem/art/v2/src/medallion-crop-from-BG-lobby-restored.png"
+      ],
+      "prompt_note": "Bỏ chữ lồng HL trên huy hiệu thảm (trùng chữ đầu Hotel Legacy). Cắt vùng x 288, y 1505, 960x640 từ ảnh sảnh gốc; recipe job fal 01a1cf4e-514b-76d3-b1d5-27fb29f58033 (đổ nát) và 01a1cf4e-54f8-7bd3-84e0-c2b87405b6cd (đã sửa): chỉ xóa 2 chữ, giữ nguyên mọi thứ khác. Thu bản sửa về 960x640, chỉ ghép elip giữa huy hiệu (tâm 482,330 trong vùng cắt; đặc 120x45, mờ dần tới 200x80) vào ảnh gốc, phần còn lại của ảnh giữ nguyên pixel"
+    }
+  ]
+}

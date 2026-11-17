@@ -21,6 +21,7 @@ Cách dùng:
 | Hành Trình Sắc Màu (puzzle khay cát + đồ thủy tinh) | `docs/concepts/hanh-trinh-sac-mau/` | Theo Sand Blocks | `tools/concept-gen/prompts-hanh-trinh-sac-mau.json` |
 | Về Quê Làm Giàu (farm + kinh doanh làng quê) | `docs/concepts/que-len-pho/` | 2D isometric cozy | `tools/concept-gen/prompts-lang-*.json`, `prompts-que-len-pho.json` |
 | Demo clone ads A Travel Town (nội bộ, demo kỹ thuật/FX/art, chủ đề bãi biển) | `docs/concepts/keepsake-lane/concept-store/ads-clone-travel-town/` (ảnh ở `art/`) | Theo Travel Town (`concept-store/style-guide-travel-town.md`) | `danh-sach-gen.md`; `tools/concept-gen/prompts-tt-clone-demo.json` |
+| Khách sạn đêm (merge-2: bị lừa mua khách sạn bỏ hoang, khách đêm là quái vật lịch lãm) | `docs/concepts/khach-san-dem/` (ảnh ở `art/`) | `merge-glossy-cartoon` theo Travel Town (người dùng chốt 07/11/2026), bảng màu đêm, gương mặt người lớn | `danh-sach-gen.md`; `tools/concept-gen/prompts-khach-san-dem.json` (chưa tạo) |
 
 Game mới chưa có trong bảng thì tạo `docs/concepts/<slug>/` và thêm một dòng vào bảng này.
 

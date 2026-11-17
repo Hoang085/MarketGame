@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>The Midnight Deed playable</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root { --ink:#3b2a3f; --gold:#f2c66d; --plum:#7b4a8c; --wine:#7a2b3b; --cream:#fbf3e2; }
+* { box-sizing:border-box; -webkit-user-select:none; user-select:none; -webkit-tap-highlight-color:transparent; }
+html, body { margin:0; height:100%; overflow:hidden; background:#1a1422; touch-action:none; font-family:Nunito, 'Trebuchet MS', sans-serif; }
+#stage { position:absolute; left:50%; top:50%; width:360px; height:640px; transform-origin:50% 50%; overflow:hidden; background:#2a2030; }
+img { -webkit-user-drag:none; }
+.layer { position:absolute; inset:0; transition:opacity .45s; }
+.hidden { opacity:0; pointer-events:none; }
+
+/* backgrounds: base + a second image cross-faded on top, plus a night tint */
+.bg { position:absolute; inset:0; background:center/cover no-repeat; transition:opacity 1.2s; }
+#bgB { opacity:0; }
+/* night: a dark violet vignette, heavier at the edges, so the room reads as lamp-lit rather than tinted */
+#tint { position:absolute; inset:0; background:radial-gradient(130% 95% at 50% 30%, #140a2e66 0%, #140a2eaa 45%, #08041af2 100%); opacity:0; transition:opacity 1.2s; pointer-events:none; }
+.glow { position:absolute; border-radius:50%; pointer-events:none; mix-blend-mode:screen; opacity:0; transition:opacity .9s, transform .9s; }
+#fireGlow { left:300px; top:290px; width:110px; height:110px; background:radial-gradient(circle,#ffb35acc 0,#ff8a3a66 35%,#ff8a3a00 70%); animation:fire 1.4s ease-in-out infinite; }
+#lampGlow { left:20px; top:120px; width:70px; height:70px; background:radial-gradient(circle,#ffe0a0cc 0,#ffd27a55 40%,#ffd27a00 70%); }
+#moonGlow { left:305px; top:42px; width:70px; height:110px; border-radius:40%; background:radial-gradient(circle,#cfd8ffaa 0,#9fb0ff44 45%,#9fb0ff00 72%); }
+.glow.on { opacity:1; }
+@keyframes glowPulse { 50% { transform:scale(1.06); } }
+@keyframes fire { 50% { transform:scale(1.08) translateY(-2px); } }
+#clockWrap { position:absolute; left:70px; top:138px; width:220px; height:229px; opacity:0; transform:scale(.6); transition:opacity .5s, transform .6s cubic-bezier(.3,1.4,.5,1); z-index:5; }
+#clockWrap.in { opacity:1; transform:none; }
+#clockWrap.strike { animation:strike .35s; }
+#clockWrap img { width:100%; height:100%; filter:drop-shadow(0 0 22px #b99cff) drop-shadow(0 10px 14px #0009); }
+.hand { position:absolute; left:109px; top:110px; border-radius:4px; transform-origin:50% 100%; background:linear-gradient(#5a4028,#2a1a10); box-shadow:0 1px 2px #0007; }
+.hand::after { content:''; position:absolute; left:50%; top:-5px; width:8px; height:8px; margin-left:-4px; background:#2a1a10; transform:rotate(45deg); }
+#hourHand { width:7px; height:40px; margin:-40px 0 0 -3.5px; }
+#minHand { width:4px; height:60px; margin:-60px 0 0 -2px; }
+.pin { position:absolute; left:102px; top:103px; width:14px; height:14px; border-radius:50%; background:radial-gradient(circle at 35% 35%,#ffe9a8,#b8862e 60%,#6b4a16); box-shadow:0 1px 2px #0008; }
+#stage.flicker { animation:flicker .9s; }
+@keyframes flicker { 10% { filter:brightness(.45); } 22% { filter:brightness(1.1); } 34% { filter:brightness(.5); } 60% { filter:brightness(.8); } }
+#stage.quake { animation:quake .45s; }
+@keyframes quake { 20%{margin-left:-5px} 40%{margin-left:5px;margin-top:-3px} 60%{margin-left:-3px;margin-top:3px} 80%{margin-left:2px} }
+
+/* HUD */
+#hud { position:absolute; inset:0; pointer-events:none; transition:opacity .45s; }
+#bar { position:absolute; top:12px; left:62px; right:62px; height:22px; border-radius:11px; background:#2b1d33cc; border:2px solid var(--gold); overflow:hidden; }
+#bar i { position:absolute; left:0; top:0; bottom:0; width:0; background:linear-gradient(90deg,#f7d98a,#f2a65a); box-shadow:0 0 10px #f2c66d; transition:width .5s; }
+#bar span { position:relative; display:block; text-align:center; font-size:11px; line-height:18px; font-weight:900; color:#fff; letter-spacing:1px; text-shadow:0 1px 2px #000; }
+#bar::after { content:''; position:absolute; top:0; bottom:0; left:-60px; width:44px; background:linear-gradient(90deg,#fff0,#fffa,#fff0); transform:skewX(-20deg); }
+#bar.shine::after { animation:sweep .8s; }
+@keyframes sweep { to { left:260px; } }
+#order { position:absolute; top:44px; left:10px; width:266px; height:70px; border-radius:14px; background:var(--cream); border:3px solid #b98a4a;
+  box-shadow:0 4px 12px #0006; display:flex; align-items:center; gap:7px; padding:5px 7px; }
+#order .face { width:56px; height:56px; border-radius:10px; flex:none; background:#e9d9bd no-repeat; }
+#order .txt { flex:1; color:var(--ink); font-size:12px; font-weight:900; line-height:1.2; }
+#order .txt small { display:block; font-weight:700; font-size:10.5px; opacity:.7; }
+#order .want { width:52px; height:52px; flex:none; border-radius:10px; background:#f3e3c3; padding:3px; animation:wantGlow 2s infinite; }
+#order .want img { width:100%; height:100%; object-fit:contain; }
+@keyframes wantGlow { 0%,100% { box-shadow:inset 0 0 0 2px #e0a84a; } 50% { box-shadow:inset 0 0 0 2px #e0a84a, 0 0 14px #f2c66d; } }
+
+/* board: a 7x7 overlay that slides up over the lower 58% of the scene */
+#board { position:absolute; left:6px; top:270px; width:348px; height:348px; border-radius:16px;
+  background:linear-gradient(#6b4630,#4a2f20); box-shadow:0 6px 0 #2f1d14, 0 10px 24px #000a, inset 0 2px 0 #ffffff33;
+  transition:transform .55s cubic-bezier(.3,1.15,.5,1); }
+#board.down { transform:translateY(380px); }
+#grid, #items { position:absolute; left:6px; top:6px; width:336px; height:336px; }
+#grid { border-radius:10px; overflow:hidden; }
+.cell { position:absolute; width:48px; height:48px; transition:background-color .15s, box-shadow .15s; }
+.cell.ok { background-color:#ffe08a !important; box-shadow:inset 0 0 0 2px #fff6d0, inset 0 0 14px #fff; }
+.cell.over { box-shadow:inset 0 0 0 2px #ffffffaa; }
+.cell.no { box-shadow:inset 0 0 0 2px #c9584a, inset 0 0 10px #c9584a88; }
+.cell.flash { animation:flash .55s ease-out; }
+@keyframes flash { 0%, 40% { background-color:#fff0b0; box-shadow:inset 0 0 16px #fff; } }
+#items { pointer-events:none; }
+.it { position:absolute; width:48px; height:48px; padding:3px; object-fit:contain; }
+.it.lock { padding:1px; filter:drop-shadow(0 1px 1px #0005); }
+.it.gen { filter:drop-shadow(0 0 4px #fff3b0) drop-shadow(0 0 2px #fff3b0); }
+.it.lift { opacity:.3; }
+.it.pop { animation:pop .45s cubic-bezier(.3,1.7,.5,1); }
+@keyframes pop { from { transform:scale(.2); } 60% { transform:scale(1.3); } }
+.it.flyin { animation:flyin .45s cubic-bezier(.3,.7,.4,1); }
+@keyframes flyin { 0% { transform:translate(var(--dx),var(--dy)) scale(.3); } 55% { transform:translate(calc(var(--dx)*.35),calc(var(--dy)*.35 - 30px)) scale(1.1); } 100% { transform:none; } }
+.it.jiggle { animation:jiggle .3s; }
+@keyframes jiggle { 25% { transform:rotate(-8deg) scale(1.08); } 75% { transform:rotate(8deg) scale(1.08); } }
+.it.hint { animation:breathe 1s infinite; }
+@keyframes breathe { 50% { transform:scale(1.12); filter:drop-shadow(0 0 6px #fff3b0) drop-shadow(0 0 3px #f2c66d); } }
+.it.top { filter:drop-shadow(0 0 5px #ffd76a) drop-shadow(0 0 2px #ffd76a); }
+.it.nope { animation:nope .3s; }
+@keyframes nope { 25% { transform:translateX(-4px); } 75% { transform:translateX(4px); } }
+/* night board: same board, candle-lit violet cells, items glow softly */
+#board.night { background:linear-gradient(#3e2c52,#281b38); box-shadow:0 6px 0 #170f22, 0 10px 24px #000a, 0 0 22px #8a6ad055, inset 0 2px 0 #ffffff22; }
+#board.night .it:not(.lock) { filter:drop-shadow(0 0 4px #c9b6ff99); }
+#board.night .it.top { filter:drop-shadow(0 0 6px #ffd76a) drop-shadow(0 0 3px #ffd76a); }
+
+#fxc { position:absolute; left:0; top:0; width:360px; height:640px; pointer-events:none; z-index:40; }
+#layer { position:absolute; inset:0; pointer-events:none; z-index:41; }
+#layer > * { position:absolute; left:0; top:0; }
+#drag { position:absolute; width:60px; height:60px; display:none; pointer-events:none; z-index:45; object-fit:contain; filter:drop-shadow(0 8px 6px #0008); }
+#hand { position:absolute; left:0; top:0; width:58px; display:none; pointer-events:none; z-index:46; }
+.praise { position:absolute; width:200px; margin-left:-100px; text-align:center; font:900 30px Nunito, sans-serif; color:#fff3a6; pointer-events:none; z-index:44;
+  text-shadow:-2px -2px 0 #8a4a12, 2px -2px 0 #8a4a12, -2px 2px 0 #8a4a12, 2px 2px 0 #8a4a12, 0 4px 0 #5e300a, 0 6px 8px #0006; animation:praise 1s ease-out forwards; }
+@keyframes praise { 0% { transform:scale(.3); opacity:0; } 18% { transform:scale(1.25); opacity:1; } 32% { transform:scale(1); } 75% { transform:translateY(-14px); opacity:1; } 100% { transform:translateY(-26px); opacity:0; } }
+#mute { position:absolute; right:10px; top:10px; width:30px; height:30px; border-radius:50%; background:#0006; color:#fff; font-size:15px; line-height:30px; text-align:center; cursor:pointer; z-index:70; }
+#toast { position:absolute; left:50%; top:46%; transform:translateX(-50%); background:#000c; color:#fff; padding:9px 15px; border-radius:10px; font-weight:900; font-size:14px; display:none; z-index:99; white-space:nowrap; }
+
+/* dialogue */
+.dim { position:absolute; inset:0; background:#140c1e88; transition:opacity .45s; }
+.char { position:absolute; bottom:0; filter:drop-shadow(0 6px 10px #0007); transition:transform .5s cubic-bezier(.3,1.2,.5,1), opacity .4s; }
+.char.out-l { transform:translateX(-120%); opacity:0; }
+.char.out-r { transform:translateX(120%); opacity:0; }
+.bubble { position:absolute; background:#fff; color:var(--ink); border:3px solid #b98a4a; border-radius:14px; padding:9px 13px; font-weight:900; font-size:16px; line-height:1.25;
+  box-shadow:0 4px 12px #0006; animation:bubbleIn .35s cubic-bezier(.3,1.5,.5,1); z-index:20; }
+.bubble b { display:block; font-size:10.5px; letter-spacing:1.5px; color:var(--plum); }
+.bubble.night { border-color:#8a6ad0; }
+.bubble.night b { color:var(--wine); }
+@keyframes bubbleIn { from { transform:scale(.6); opacity:0; } }
+.tap { position:absolute; bottom:16px; left:0; right:0; text-align:center; color:#fff; font-size:13px; font-weight:900; animation:blink 1.2s infinite; text-shadow:0 1px 3px #000; z-index:21; }
+@keyframes blink { 50% { opacity:.25; } }
+.tap.hidden { display:none; }
+
+/* hook: Victor's text message drops in like a phone notification */
+.phone { position:absolute; left:16px; right:16px; top:-130px; padding:10px 12px 12px; border-radius:16px; background:#f7f4f0f2; box-shadow:0 10px 26px #0008;
+  transition:top .5s cubic-bezier(.3,1.4,.5,1); z-index:22; }
+.phone.in { top:50px; animation:buzz .5s .5s; }
+@keyframes buzz { 20% { margin-left:-4px; } 40% { margin-left:4px; } 60% { margin-left:-3px; } 80% { margin-left:2px; } }
+.phone .from { display:flex; align-items:center; gap:8px; font-size:12px; color:#555; font-weight:700; }
+.phone .from i { width:26px; height:26px; border-radius:50%; background:#2e4a6b; color:#fff; font-style:normal; font-weight:900; font-size:13px; line-height:26px; text-align:center; }
+.phone .from em { margin-left:auto; font-style:normal; font-size:11px; opacity:.6; }
+.phone .msg { margin-top:6px; font:900 19px/1.2 Nunito, sans-serif; color:#1d1d1d; white-space:nowrap; }
+.phone .msg span { font-size:24px; }
+.phone .msg span { color:#c0392b; }
+
+/* scenes */
+.halo { position:absolute; left:50%; width:300px; height:300px; margin-left:-150px; border-radius:50%; pointer-events:none; opacity:0; transform:scale(.4); transition:opacity .5s, transform .6s;
+  background:radial-gradient(circle,#fff6e0cc 0,#ffd98a88 24%,#f2a65a33 48%,#f2a65a00 70%); }
+.halo.on { opacity:1; transform:none; animation:haloPulse 2.4s ease-in-out infinite; }
+.halo.violet { background:radial-gradient(circle,#efe6ffcc 0,#b99cff77 26%,#7b4a8c33 50%,#7b4a8c00 70%); }
+@keyframes haloPulse { 50% { transform:scale(1.08); } }
+.rays { position:absolute; left:30px; width:300px; height:300px; border-radius:50%; pointer-events:none; opacity:0; transition:opacity .6s;
+  background:repeating-conic-gradient(from 0deg,#fff1c455 0 8deg,#fff1c400 8deg 22deg);
+  -webkit-mask:radial-gradient(circle,#000 0,#000 30%,#0000 70%); mask:radial-gradient(circle,#000 0,#000 30%,#0000 70%); animation:spin 14s linear infinite; }
+.rays.on { opacity:1; }
+@keyframes spin { to { transform:rotate(360deg); } }
+.big { position:absolute; left:50%; width:190px; height:190px; margin-left:-95px; object-fit:contain; transform:scale(.2); opacity:0;
+  filter:drop-shadow(0 0 14px #fff0c8) drop-shadow(0 0 28px #f2c66d88); transition:transform .55s cubic-bezier(.3,1.6,.5,1), opacity .4s, top .9s cubic-bezier(.4,0,.3,1); }
+.big.in { transform:none; opacity:1; }
+.knock { position:absolute; left:0; right:0; top:120px; text-align:center; font:900 44px/1.05 'Playfair Display', Georgia, serif; color:#fff; letter-spacing:2px;
+  text-shadow:0 0 14px #b99cff, 0 4px 10px #000; z-index:22; }
+.knock span { display:block; opacity:0; }
+.knock span.on { opacity:1; animation:thud .5s ease-out; }
+@keyframes thud { 0% { transform:scale(1.25); opacity:0; } 35% { transform:scale(.97); opacity:1; } 55% { transform:translateX(-2px); } 75% { transform:translateX(2px); } }
+#stage.nudge { animation:nudge .25s; }
+@keyframes nudge { 40% { margin-top:2px; } }
+.choices { position:absolute; left:44px; right:44px; bottom:44px; display:flex; gap:12px; z-index:23; }
+.choice { flex:1; height:58px; border-radius:16px; border:3px solid #fff; color:#fff; font:900 22px Nunito, sans-serif; letter-spacing:2px; text-align:center; cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; box-shadow:0 6px 0 #0006, 0 0 18px #b99cff88; animation:cardGlow 1.2s infinite; }
+#btnOpen { background:linear-gradient(#b0874f,#7a5428); }
+#btnHide { background:linear-gradient(#6b4f8c,#45305e); }
+.choice.picked { transform:scale(1.08); box-shadow:0 0 0 4px var(--gold), 0 0 26px var(--gold); animation:none; }
+.choice.off { opacity:.35; animation:none; }
+@keyframes cardGlow { 50% { box-shadow:0 6px 0 #0006, 0 0 28px #d6c4ff; } }
+.caption { position:absolute; left:0; right:0; text-align:center; color:#e9e0ff; font:italic 700 16px 'Playfair Display', Georgia, serif; text-shadow:0 2px 6px #000; z-index:21; opacity:0; transition:opacity .6s; }
+.caption.on { opacity:1; }
+@keyframes strike { 40% { transform:scale(1.06); } }
+.prop { position:absolute; left:50%; object-fit:contain; transition:all .7s cubic-bezier(.3,1.3,.5,1); opacity:0; filter:drop-shadow(0 8px 14px #000a); }
+
+/* end card */
+#end { background:#160f22 center/cover no-repeat; z-index:80; }
+#end .shade { position:absolute; inset:0; background:linear-gradient(#0e0820aa, #0e082000 32%, #0e082000 52%, #0e0820ee 82%); }
+#end .logo { position:absolute; top:26px; left:0; right:0; text-align:center; color:#fff3d6; font:900 38px/1 'Playfair Display', Georgia, serif;
+  text-shadow:0 0 18px #f2c66d, 0 3px 10px #000; }
+#end .logo small { display:block; margin-bottom:6px; font:900 11px Nunito, sans-serif; letter-spacing:3px; color:#d6c4ff; text-shadow:0 1px 4px #000; }
+#end .snap { position:absolute; right:8px; top:318px; width:118px; transform:rotate(9deg); filter:drop-shadow(0 6px 10px #000c); }
+#end .q { position:absolute; bottom:142px; left:18px; right:18px; text-align:center; color:#fff; font:italic 900 27px/1.15 'Playfair Display', Georgia, serif; text-shadow:0 2px 10px #000, 0 0 4px #000; }
+#end .cta { position:absolute; bottom:60px; left:50%; transform:translateX(-50%); background:linear-gradient(#f7c25a,#e08a2e); color:#fff; font:900 22px Nunito, sans-serif; overflow:hidden;
+  padding:14px 44px; border-radius:30px; border:3px solid #fff; animation:pulse 1s infinite; cursor:pointer; white-space:nowrap; box-shadow:0 0 22px #f2c66daa; text-shadow:0 2px 0 #a85a12; }
+#end .cta::after { content:''; position:absolute; top:0; bottom:0; left:-70px; width:50px; background:linear-gradient(90deg,#fff0,#fffc,#fff0); transform:skewX(-20deg); animation:sweep2 2.2s infinite; }
+@keyframes sweep2 { 0%,55% { left:-70px; } 100% { left:260px; } }
+@keyframes pulse { 50% { transform:translateX(-50%) scale(1.07); } }
+#end .again { position:absolute; bottom:20px; left:0; right:0; text-align:center; color:#fff; opacity:.8; font-size:12px; text-decoration:underline; cursor:pointer; text-shadow:0 1px 3px #000; }
+#loader { position:absolute; inset:0; z-index:100; background:#1d1428; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; transition:opacity .4s; }
+#loader .t { color:#f2c66d; font:900 28px 'Playfair Display', Georgia, serif; }
+#loader .lb { width:200px; height:10px; border-radius:5px; background:#3a2c48; overflow:hidden; }
+#loader .lb i { display:block; height:100%; width:0; background:linear-gradient(90deg,#f7d98a,#f2a65a); transition:width .2s; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bg" id="bgA"></div>
+  <div class="bg" id="bgB"></div>
+  <div id="tint"></div>
+  <!-- room lights that stay on in the dark: drawn under the board, which covers them when it is up -->
+  <div class="glow" id="lampGlow"></div><div class="glow" id="fireGlow"></div><div class="glow" id="moonGlow"></div>
+
+  <!-- game HUD + board -->
+  <div id="hud" class="hidden">
+    <div id="bar"><i></i><span>RESTORING 0%</span></div>
+    <div id="order"><div class="face" id="orderFace"></div><div class="txt"><span id="orderL1"></span><small id="orderL2"></small></div><div class="want"><img id="want" alt=""></div></div>
+  </div>
+  <div id="board" class="down"><div id="grid"></div><div id="items"></div></div>
+
+  <!-- scenes -->
+  <div id="scene" class="layer" style="z-index:30">
+    <div class="dim" id="dim" style="opacity:0"></div>
+    <div class="rays" id="rays" style="top:60px"></div>
+    <div class="halo" id="halo" style="top:60px"></div>
+    <img class="big" id="big" alt="" style="top:115px">
+    <div id="clockWrap"><img id="clockImg" alt=""><div class="hand" id="hourHand"></div><div class="hand" id="minHand"></div><div class="pin"></div></div>
+    <img class="prop" id="propCoin" alt="" style="width:70px;height:70px;margin-left:-35px">
+    <img class="prop" id="propCards" alt="" style="width:240px;height:170px;margin-left:-120px">
+    <div class="knock" id="knock"><span>KNOCK.</span><span>KNOCK.</span><span>KNOCK.</span></div>
+    <img class="char out-l" id="nora" alt="" style="left:-14px;height:300px">
+    <img class="char out-r" id="aldric" alt="" style="right:-26px;height:340px">
+    <div class="caption" id="caption" style="top:96px"></div>
+    <div class="choices hidden" id="choices">
+      <div class="choice" id="btnOpen">OPEN</div>
+      <div class="choice" id="btnHide">HIDE</div>
+    </div>
+    <div class="phone" id="phone">
+      <div class="from"><i>V</i>Victor Sterling · Real Estate<em>now</em></div>
+      <div class="msg"><span>No refunds.</span><br>Good luck with your&nbsp;"hotel".</div>
+    </div>
+    <div id="bubbles"></div>
+    <div class="tap hidden" id="tapHint">Tap to start</div>
+  </div>
+
+  <div id="end" class="layer hidden">
+    <div class="shade"></div>
+    <div class="logo"><small>A HAUNTINGLY COZY MERGE</small>The Midnight<br>Deed</div>
+    <img class="snap" id="endCard" alt="">
+    <div class="q" id="endQ"></div>
+    <div class="cta" id="cta">PLAY NOW</div>
+    <div class="again" id="again">Play again</div>
+  </div>
+
+  <canvas id="fxc"></canvas>
+  <div id="layer"></div>
+  <img id="drag" alt="">
+  <img id="hand" alt="">
+  <div id="mute">🔊</div>
+  <div id="toast"></div>
+  <div id="loader"><div class="t">The Midnight Deed</div><div class="lb"><i id="loadBar"></i></div></div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+// ---- assets: every path is a plain string literal so build.mjs can inline it as a data URI ----
+const A = {
+  bgDusk: 'assets/bg-dusk.jpg', bgRuined: 'assets/bg-ruined.jpg', bgRestored: 'assets/bg-restored.jpg', bgNight: 'assets/bg-night.jpg',
+  lgt1: 'assets/lgt1.png', lgt2: 'assets/lgt2.png', lgt3: 'assets/lgt3.png', lgt4: 'assets/lgt4.png', lgt5: 'assets/lgt5.png', lgt6: 'assets/lgt6.png',
+  srv1: 'assets/srv1.png', srv2: 'assets/srv2.png', srv3: 'assets/srv3.png', srv4: 'assets/srv4.png', srv5: 'assets/srv5.png', srv6: 'assets/srv6.png',
+  chr1: 'assets/chr1.png', chr2: 'assets/chr2.png', chr3: 'assets/chr3.png', key1: 'assets/key1.png', key2: 'assets/key2.png', key3: 'assets/key3.png',
+  genbox: 'assets/genbox.png', gencart: 'assets/gencart.png', lockbox: 'assets/lockbox.png', cards: 'assets/cards.png', coin: 'assets/coin.png', clockFace: 'assets/clock-face.png',
+  noraDazed: 'assets/nora-dazed.png', noraSad: 'assets/nora-sad.png', noraMain: 'assets/nora-main.png', noraDetermined: 'assets/nora-determined.png', noraSurprised: 'assets/nora-surprised.png', noraFrozen: 'assets/nora-frozen.png',
+  aldricBow: 'assets/aldric-bow.png', aldricToast: 'assets/aldric-toast.png', aldricSecret: 'assets/aldric-secret.png',
+  hand: 'assets/hand.png',
+};
+const AUDIO = {
+  pick: 'audio/pick.mp3', drop: 'audio/drop.mp3', merge1: 'audio/merge1.mp3', merge2: 'audio/merge2.mp3', merge6: 'audio/merge6.mp3',
+  deny: 'audio/deny.mp3', coin: 'audio/coin.mp3', bell: 'audio/bell.mp3', tap: 'audio/tap.mp3', sparkle: 'audio/sparkle.mp3',
+  spawn: 'audio/spawn.mp3', paper: 'audio/paper.mp3', sting: 'audio/sting.mp3', music: 'audio/music.mp3',
+  knock: 'audio/knock.mp3', clockspin: 'audio/clockspin.mp3', clockbell: 'audio/clockbell.mp3', nightmusic: 'audio/nightmusic.mp3',
+};
+
+// ---- sound: clips through WebAudio (decoded after the first touch, peaks normalised, mix limited);
+//      knock, clock and bell are ElevenLabs clips (via fal); only the door gust is synthesised ----
+const sfx = (() => {
+  const raw = Object.fromEntries(Object.entries(AUDIO).map(([n, u]) => [n, fetch(u).then(r => r.arrayBuffer()).catch(() => null)]));
+  const buf = {}, norm = {};
+  let ac, master, muted = false, music;
+  function play(name, vol = 1, rate = 1, loop = false) {
+    if (!ac || !buf[name]) return;
+    const s = ac.createBufferSource(), g = ac.createGain();
+    s.buffer = buf[name]; s.playbackRate.value = rate; s.loop = loop; g.gain.value = vol * norm[name];
+    if (loop) { s.loopStart = .3; s.loopEnd = Math.max(1, s.buffer.duration - 1.2); }
+    s.connect(g); g.connect(master); s.start(); s._g = g; return s;
+  }
+  function noise(sec) {
+    const b = ac.createBuffer(1, ac.sampleRate * sec, ac.sampleRate), d = b.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    const s = ac.createBufferSource(); s.buffer = b; return s;
+  }
+  function env(node, t, peak, dur) { const g = ac.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(peak, t + .005); g.gain.exponentialRampToValueAtTime(.0001, t + dur); node.connect(g); g.connect(master); return g; }
+  return {
+    async unlock() {
+      if (ac) return; ac = new (window.AudioContext || window.webkitAudioContext)();
+      const lim = ac.createDynamicsCompressor();
+      lim.threshold.value = -10; lim.knee.value = 6; lim.ratio.value = 12; lim.attack.value = .003; lim.release.value = .2;
+      master = ac.createGain(); master.gain.value = muted ? 0 : .9; master.connect(lim); lim.connect(ac.destination);
+      await Promise.all(Object.keys(AUDIO).map(async n => {
+        const b = await raw[n]; if (!b) return;
+        try {
+          buf[n] = await ac.decodeAudioData(b);
+          let pk = 0; for (let c = 0; c < buf[n].numberOfChannels; c++) for (const v of buf[n].getChannelData(c)) pk = Math.max(pk, Math.abs(v));
+          norm[n] = pk > .001 ? Math.min(8, .5 / pk) : 1;
+        } catch {}
+      }));
+      music = play('music', .32, 1, true);
+    },
+    toggle() { muted = !muted; if (master) master.gain.value = muted ? 0 : .9; return muted; },
+    // night: the same tune, slowed and lowered, reads as mysterious rather than cheerful
+    // end of board 1: the cheerful day tune fades out; the clock scene plays with no music at all
+    stopMusic(sec = 1.2) { if (!music) return; const t = ac.currentTime; music._g.gain.setTargetAtTime(0, t, sec / 4); music.stop(t + sec + .3); music = null; },
+    // the night guest arrives: a mysterious waltz fades in and stays to the end card
+    nightMusic() {
+      if (!ac || music) return; music = play('nightmusic', .4, 1, true); if (!music) return;
+      music.loopStart = 1; music.loopEnd = 35.5;   // the clip fades out over its last 4 s: loop before the fade
+      const g = music._g.gain, v = g.value, t = ac.currentTime; g.setValueAtTime(0, t); g.linearRampToValueAtTime(v, t + 1.5);
+    },
+    pick: () => play('pick', .8), drop: () => play('drop', .7), deny: () => play('deny', .7), tap: () => play('tap', .7),
+    merge: lv => lv >= 6 ? play('merge6', .9) : play(lv >= 4 ? 'merge2' : 'merge1', .8, 1 + (lv - 2) * .06),
+    bell: () => play('bell', .8), spawn: () => play('spawn', .7), sparkle: () => play('sparkle', .8), paper: () => play('paper', .7),
+    sting: () => play('sting', .8), coin: (k = 0) => play('coin', .6, 1 + k * .04),
+    knock: () => play('knock', 1),
+    clockspin: () => play('clockspin', .7),
+    clockbell: () => play('clockbell', .9),
+    gust() {
+      if (!ac) return; const t = ac.currentTime, n = noise(1.4), f = ac.createBiquadFilter();
+      f.type = 'bandpass'; f.Q.value = 1.2; f.frequency.setValueAtTime(300, t); f.frequency.exponentialRampToValueAtTime(1600, t + .6); f.frequency.exponentialRampToValueAtTime(400, t + 1.3);
+      n.connect(f); const g = ac.createGain(); g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(.5, t + .25); g.gain.linearRampToValueAtTime(0, t + 1.3); f.connect(g); g.connect(master); n.start(t);
+    },
+  };
+})();
+
+// ---- particle FX on a canvas over the stage (stage units: 360x640) ----
+const fx = (() => {
+  const cv = $('fxc'), cx = cv.getContext('2d'), DPR = Math.min(2, devicePixelRatio || 1);
+  cv.width = 360 * DPR; cv.height = 640 * DPR; cx.scale(DPR, DPR);
+  const P = [], amb = { motes: false, mist: false }, R = (a, b) => a + Math.random() * (b - a), add = p => P.push({ t: 0, ...p });
+  function sparks(x, y, n, colors, speed = 3.2, size = 3) {
+    for (let i = 0; i < n; i++) { const a = R(0, Math.PI * 2), v = speed * R(.4, 1.2); add({ k: 'spark', x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1, g: .09, max: R(28, 48), s: R(size * .6, size * 1.4), c: colors[i % colors.length] }); }
+  }
+  function stars(x, y, n, spread = 30, c = '#fff6c8') { for (let i = 0; i < n; i++) add({ k: 'star', x: x + R(-spread, spread), y: y + R(-spread, spread), vx: 0, vy: R(-.4, -.1), max: R(30, 50), s: R(5, 9), c }); }
+  function ring(x, y, c = '#fff', r = 40, w = 4) { add({ k: 'ring', x, y, max: 22, r, w, c }); }
+  function trail(x, y, c = '#ffe7a0') { add({ k: 'spark', x: x + R(-4, 4), y: y + R(-4, 4), vx: R(-.3, .3), vy: R(-.3, .3), g: 0, max: R(16, 26), s: R(2, 4), c }); }
+  function frame() {
+    requestAnimationFrame(frame);
+    cx.clearRect(0, 0, 360, 640);
+    if (amb.motes && Math.random() < .3) add({ k: 'mote', x: R(10, 350), y: R(60, 600), vx: R(-.15, .15), vy: R(-.35, -.1), max: R(90, 160), s: R(1.5, 3), c: amb.mist ? '#d6c4ff' : '#ffe7b0' });
+    for (let i = P.length - 1; i >= 0; i--) {
+      const p = P[i]; p.t++;
+      if (p.t > p.max || p.y > 660 || !isFinite(p.x) || !isFinite(p.y)) { P.splice(i, 1); continue; }
+      const u = p.t / p.max; p.x += p.vx || 0; p.y += p.vy || 0; if (p.g) p.vy += p.g;
+      cx.globalCompositeOperation = 'lighter';
+      if (p.k === 'spark' || p.k === 'mote') {
+        const gr = cx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.s * 2.2); gr.addColorStop(0, p.c); gr.addColorStop(1, 'rgba(0,0,0,0)');
+        cx.globalAlpha = p.k === 'mote' ? Math.sin(u * Math.PI) * .7 : 1 - u; cx.fillStyle = gr; cx.beginPath(); cx.arc(p.x, p.y, p.s * 2.2, 0, 7); cx.fill();
+      } else if (p.k === 'star') {
+        const s = p.s * Math.sin(u * Math.PI); cx.globalAlpha = 1; cx.fillStyle = p.c;
+        cx.beginPath(); cx.moveTo(p.x, p.y - s); cx.lineTo(p.x + s * .22, p.y - s * .22); cx.lineTo(p.x + s, p.y); cx.lineTo(p.x + s * .22, p.y + s * .22);
+        cx.lineTo(p.x, p.y + s); cx.lineTo(p.x - s * .22, p.y + s * .22); cx.lineTo(p.x - s, p.y); cx.lineTo(p.x - s * .22, p.y - s * .22); cx.fill();
+      } else if (p.k === 'ring') {
+        cx.globalAlpha = 1 - u; cx.strokeStyle = p.c; cx.lineWidth = p.w * (1 - u) + .5; cx.beginPath(); cx.arc(p.x, p.y, p.r * (.2 + u), 0, 7); cx.stroke();
+      }
+    }
+    cx.globalAlpha = 1; cx.globalCompositeOperation = 'source-over';
+  }
+  requestAnimationFrame(frame);
+  return { sparks, stars, ring, trail, amb };
+})();
+const GOLD = ['#ffd27a', '#fff1b8', '#ffb347'], VIOLET = ['#d6c4ff', '#b99cff', '#ffffff'];
+const TINT = { lgt: ['#7fe0d6', '#ffd27a', '#fff6c8'], srv: ['#ffffff', '#e05a6e', '#ffd27a'], chr: ['#c99be0', '#fff6c8'], key: ['#ff9a6a', '#fff6c8'] };
+
+// ---- analytics hooks (console + window.__events) ----
+window.__events = [];
+function track(name, data) { const e = { name, t: +(performance.now() / 1000).toFixed(2), ...data }; __events.push(e); console.log('[event]', e); }
+
+// ---- params: ?end=2 -> E2 end card ----
+const E2 = new URLSearchParams(location.search).get('end') === '2';
+
+// ---- stage scaling and coordinates ----
+const stage = $('stage');
+function fit() { const k = Math.min(innerWidth / 360, innerHeight / 640); stage.style.transform = `translate(-50%,-50%) scale(${k})`; stage._k = k; }
+addEventListener('resize', fit); fit();
+function local(e) { const r = stage.getBoundingClientRect(); return { x: (e.clientX - r.left) / stage._k, y: (e.clientY - r.top) / stage._k }; }
+function centerOf(el) { const s = stage.getBoundingClientRect(), r = el.getBoundingClientRect(); return { x: (r.left - s.left + r.width / 2) / stage._k, y: (r.top - s.top + r.height / 2) / stage._k }; }
+const wait = ms => new Promise(ok => setTimeout(ok, ms));
+const show = id => $(id).classList.remove('hidden'), hide = id => $(id).classList.add('hidden');
+function toast(msg) { const t = $('toast'); t.textContent = msg; t.style.display = 'block'; setTimeout(() => t.style.display = 'none', 1300); }
+
+// ---- board: 7x7, cell 48 (stage units), items origin (12,276) while the board is up ----
+const N = 7, CELL = 48, OX = 12, OY = 276;
+const MAXLV = { lgt: 6, srv: 6, chr: 3, key: 3 };
+// codes: L/S + level = the level's chain (lights / room service), c/k + level = chair / key filler, G = generator,
+// # = a dust sheet over a filler item (merge next to it to uncover), . = empty
+const LEVELS = [
+  { chain: 'lgt', gen: 'genbox', face: 'noraMain', facePos: '54% 20%', l1: '"Let there be light!"', l2: 'Restore the lobby', bar: 'RESTORING', done: 'RESTORED',
+    seed: [
+      '#  #  c1 k1 .  #  # ',
+      '#  k2 L2 #  L4 c2 # ',
+      'c1 .  L3 L2 .  k1 # ',
+      '#  G  .  L5 #  .  c2',
+      'k2 L1 .  #  L1 .  # ',
+      '#  c1 #  k1 .  c2 # ',
+      '#  #  k2 #  c1 #  # ',
+    ] },
+  { chain: 'srv', gen: 'gencart', face: 'aldricToast', facePos: '46% 9%', l1: '"Room 13.<br>Dinner at once."', l2: 'Lord Aldric · night guest', bar: 'SERVING', done: 'SERVED',
+    seed: [
+      '#  c2 .  k1 #  L3 # ',
+      'k1 #  S2 .  S4 #  c1',
+      '.  L4 S3 S2 #  .  # ',
+      'c1 .  #  S5 .  G  k2',
+      '#  k2 .  .  c1 L5 # ',
+      'c2 #  k1 .  #  .  c1',
+      '#  c1 #  k2 #  c2 # ',
+    ] },
+];
+const UNDER = ['chr1', 'key1', 'chr2', 'key2', 'chr1', 'key1'];   // what each dust sheet hides, in reading order
+let lastTop = { x: 180, y: 440 };
+let lvl = 0, B = [], cells = [], imgs = [], state = 'hook', merges = 0, firstTouch = false, best = 0;
+const L = () => LEVELS[lvl];
+const key = it => it.t === 'gen' ? it.g : it.t === 'lock' ? 'lockbox' : it.t + it.lv;
+const cellXY = i => ({ x: OX + (i % N) * CELL + CELL / 2, y: OY + ((i / N) | 0) * CELL + CELL / 2 });
+function buildBoard() {
+  for (let i = 0; i < N * N; i++) {
+    const c = document.createElement('div'); c.className = 'cell';
+    c.style.left = (i % N) * CELL + 'px'; c.style.top = ((i / N) | 0) * CELL + 'px';
+    $('grid').appendChild(c); cells.push(c);
+    const m = document.createElement('img'); m.className = 'it'; m.alt = '';
+    m.style.left = (i % N) * CELL + 'px'; m.style.top = ((i / N) | 0) * CELL + 'px';
+    $('items').appendChild(m); imgs.push(m);
+  }
+}
+function paintCells(night) {
+  cells.forEach((c, i) => c.style.backgroundColor = ((i % N) + ((i / N) | 0)) % 2
+    ? (night ? '#4a3d66' : '#e3cfa6') : (night ? '#55477a' : '#efdfbb'));
+}
+function parse(code, n) {
+  if (code === '.') return null;
+  if (code === 'G') return { t: 'gen', g: L().gen };
+  if (code === '#') { const u = UNDER[n % UNDER.length]; return { t: 'lock', under: { t: u.slice(0, 3), lv: +u[3] } }; }
+  const t = { L: 'lgt', S: 'srv', c: 'chr', k: 'key' }[code[0]];
+  return { t, lv: +code[1] };
+}
+function seed() {
+  let locks = 0;
+  L().seed.forEach((row, r) => row.trim().split(/\s+/).forEach((code, c) => { B[r * N + c] = parse(code, code === '#' ? locks++ : 0); }));
+  for (let i = 0; i < N * N; i++) draw(i);
+}
+function draw(i, anim) {
+  const m = imgs[i], it = B[i];
+  m.className = 'it'; m.style.removeProperty('--dx'); m.style.removeProperty('--dy');
+  if (!it) { m.style.visibility = 'hidden'; return; }
+  m.src = A[key(it)]; m.style.visibility = 'visible';
+  if (it.t === 'lock') m.classList.add('lock');
+  if (it.t === 'gen') m.classList.add('gen');
+  if (it.lv && it.lv === MAXLV[it.t] && it.lv >= 5) m.classList.add('top');
+  if (anim) { void m.offsetWidth; m.classList.add(anim); }
+}
+const canMerge = (a, b) => a && b && a.lv && a.t === b.t && a.lv === b.lv && a.lv < MAXLV[a.t];
+function cellAt(p) {
+  const c = Math.floor((p.x - OX) / CELL), r = Math.floor((p.y - OY) / CELL);
+  return c >= 0 && c < N && r >= 0 && r < N ? r * N + c : -1;
+}
+
+// ---- level setup ----
+function setupLevel() {
+  const lv = L(); best = 0;
+  seed(); paintCells(lvl === 1); $('board').classList.toggle('night', lvl === 1);
+  const f = $('orderFace'); f.style.backgroundImage = `url(${A[lv.face]})`; f.style.backgroundSize = '230%'; f.style.backgroundPosition = lv.facePos;
+  $('orderL1').innerHTML = lv.l1; $('orderL2').textContent = lv.l2; $('want').src = A[lv.chain + '6'];
+  $('bar').querySelector('i').style.width = '0'; $('bar').querySelector('span').textContent = lv.bar + ' 0%';
+}
+function progress(lv) {
+  if (lv <= best) return; best = lv;
+  const pct = { 3: 25, 4: 50, 5: 75, 6: 100 }[lv]; if (!pct) return;
+  $('bar').querySelector('i').style.width = pct + '%';
+  $('bar').querySelector('span').textContent = (pct === 100 ? L().done : L().bar) + ' ' + pct + '%';
+  const bar = $('bar'); bar.classList.remove('shine'); void bar.offsetWidth; bar.classList.add('shine');
+  setTimeout(() => { const x = 64 + 232 * pct / 100; fx.stars(x, 23, 3, 8); fx.sparks(x, 23, 8, GOLD, 2.2, 2.5); }, 450);
+}
+
+// ---- flying sprites ----
+function flyer(src, size) { const m = document.createElement('img'); m.src = src; m.alt = ''; m.style.width = m.style.height = size + 'px'; m.style.objectFit = 'contain'; $('layer').appendChild(m); return m; }
+function praise(lv, p) {
+  const el = document.createElement('div'); el.className = 'praise';
+  el.textContent = { 2: 'Nice!', 3: 'Great!', 4: 'Amazing!', 5: 'Awesome!', 6: 'Perfect!' }[lv] || 'Nice!';
+  el.style.left = Math.min(260, Math.max(100, p.x)) + 'px'; el.style.top = p.y - 64 + 'px';
+  stage.appendChild(el); setTimeout(() => el.remove(), 1000);
+}
+
+// ---- drag and merge ----
+let drag = null, hover = -1, lockTip = false;
+stage.addEventListener('pointerdown', e => {
+  sfx.unlock();
+  if (state !== 'play') return;
+  const p = local(e), i = cellAt(p);
+  if (i < 0 || !B[i]) return;
+  touched();
+  const it = B[i];
+  if (it.t === 'gen') return spawn(i);
+  if (it.t === 'lock') { imgs[i].classList.remove('nope'); void imgs[i].offsetWidth; imgs[i].classList.add('nope'); sfx.deny(); if (!lockTip) { lockTip = true; toast('Merge next to it to open!'); } return; }
+  drag = { from: i, x0: p.x, y0: p.y };
+  const d = $('drag'); d.src = imgs[i].src; d.style.display = 'block'; moveDrag(p);
+  imgs[i].classList.add('lift'); sfx.pick();
+  stage.setPointerCapture(e.pointerId);
+});
+stage.addEventListener('pointermove', e => { if (!drag) return; const p = local(e); moveDrag(p); setHover(cellAt(p)); });
+stage.addEventListener('pointerup', e => { if (drag) drop(local(e)); });
+stage.addEventListener('pointercancel', () => { if (drag) drop({ x: -1, y: -1 }); });
+function moveDrag(p) { const d = $('drag'); d.style.left = p.x - 30 + 'px'; d.style.top = p.y - 38 + 'px'; }
+function setHover(i) {
+  if (i === hover) return;
+  if (hover >= 0) cells[hover].classList.remove('ok', 'over', 'no');
+  hover = i;
+  if (i >= 0 && i !== drag.from) cells[i].classList.add(canMerge(B[drag.from], B[i]) ? 'ok' : B[i] && (B[i].t === 'lock' || B[i].t === 'gen') ? 'no' : 'over');
+}
+function drop(p) {
+  const { from } = drag, to = cellAt(p);
+  setHover(-1); drag = null; $('drag').style.display = 'none';
+  if (to >= 0 && to !== from && canMerge(B[from], B[to])) merge(from, to);
+  else if (to >= 0 && to !== from && !(B[to] && (B[to].t === 'lock' || B[to].t === 'gen'))) { [B[from], B[to]] = [B[to], B[from]]; draw(from); draw(to, 'pop'); sfx.drop(); }
+  else { draw(from, 'pop'); if (to >= 0 && to !== from) sfx.deny(); }
+  if (state === 'play') scheduleHint();
+}
+function merge(from, to) {
+  const it = B[from], lv = it.lv + 1, p = cellXY(to), main = it.t === L().chain;
+  B[from] = null; B[to] = { t: it.t, lv }; draw(from); draw(to, 'pop');
+  merges++; track('merge_' + merges, { item: it.t + lv });
+  cells[to].classList.remove('flash'); void cells[to].offsetWidth; cells[to].classList.add('flash');
+  const big = main && lv >= 5;
+  fx.ring(p.x, p.y, big ? '#ffd27a' : '#fff', big ? 64 : 44); fx.sparks(p.x, p.y, big ? 22 : 14, TINT[it.t], big ? 4 : 3.2); fx.stars(p.x, p.y, lv >= 4 ? 6 : 3, 22);
+  sfx.merge(lv); if (lv >= 4) sfx.sparkle();
+  praise(lv, p);
+  // open neighbouring cobwebbed boxes: the box swells and bursts in a puff of dust, the item inside can be merged
+  const r = (to / N) | 0, c = to % N, lifted = [];
+  [[r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1]].forEach(([rr, cc]) => {
+    if (rr < 0 || cc < 0 || rr >= N || cc >= N) return;
+    const k = rr * N + cc; if (B[k]?.t === 'lock') { lifted.push(k); B[k] = B[k].under; }
+  });
+  lifted.forEach((k, j) => {
+    const q = cellXY(k), f = flyer(A.lockbox, 48), at = `translate(${q.x - 24}px,${q.y - 24}px)`;
+    f.animate([{ transform: at, opacity: 1 }, { transform: at + ' scale(.9,1.08)', opacity: 1, offset: .25 },
+      { transform: at + ' scale(1.35)', opacity: .9, offset: .55 }, { transform: at + ' scale(1.6)', opacity: 0 }], { duration: 480, easing: 'ease-out' }).finished.then(() => f.remove());
+    setTimeout(() => { draw(k, 'pop'); fx.sparks(q.x, q.y, 14, ['#d9d2c4', '#b8ae9c', '#ffffff', '#c9a77a'], 2.8, 3); fx.ring(q.x, q.y, '#efe6d6', 34, 3); }, 260);
+  });
+  if (lifted.length) setTimeout(sfx.paper, 100);
+  if (main) progress(lv);
+  if (main && lv === MAXLV[it.t]) {
+    stage.classList.remove('quake'); void stage.offsetWidth; stage.classList.add('quake');
+    fx.ring(p.x, p.y, '#fff1b8', 120, 6); fx.sparks(p.x, p.y, 30, GOLD, 5.5, 4);
+    state = 'cut'; hideHand(); clearTimeout(hintTimer); lastTop = p;
+    setTimeout(lvl === 0 ? nightFalls : reveal, 1100);
+  }
+}
+function emptyNear(i) {
+  const r0 = (i / N) | 0, c0 = i % N; let bestK = -1, bd = 99;
+  B.forEach((v, k) => { if (v) return; const d = Math.abs(((k / N) | 0) - r0) + Math.abs(k % N - c0); if (d < bd) { bd = d; bestK = k; } });
+  return bestK;
+}
+function spawn(i) {
+  const k = emptyNear(i); if (k < 0) return toast('Board is full!');
+  const from = cellXY(i), to = cellXY(k);
+  B[k] = { t: L().chain, lv: 1 }; draw(k, 'flyin');
+  imgs[k].style.setProperty('--dx', from.x - to.x + 'px'); imgs[k].style.setProperty('--dy', from.y - to.y + 'px');
+  imgs[i].classList.remove('jiggle'); void imgs[i].offsetWidth; imgs[i].classList.add('jiggle');
+  sfx.spawn(); track('spawn'); fx.sparks(from.x, from.y, 6, GOLD, 2);
+  setTimeout(() => fx.sparks(to.x, to.y + 10, 8, TINT[L().chain], 2, 2.5), 420);
+  scheduleHint();
+}
+
+// ---- hints: board 1 shows the hand on the first move, later only a glow on the best pair after idle time ----
+let hintTimer = 0, handAnim = null, ghost = null;
+const TIP_X = 12, TIP_Y = 4;
+function touched() { hideHand(); clearTimeout(hintTimer); document.querySelectorAll('.it.hint').forEach(m => m.classList.remove('hint')); if (!firstTouch) { firstTouch = true; track('first_interaction'); } }
+function scheduleHint(ms) { clearTimeout(hintTimer); hintTimer = setTimeout(showHint, ms ?? 3000); }
+function hideHand() { if (handAnim) handAnim.cancel(); handAnim = null; $('hand').style.display = 'none'; if (ghost) ghost.remove(); ghost = null; }
+function bestPair() {
+  let bp = null;
+  for (let a = 0; a < N * N; a++) for (let b = a + 1; b < N * N; b++) {
+    if (!canMerge(B[a], B[b])) continue;
+    // the level's chain first, lowest level first (that is how the ladder cascades), level-1 spares and filler last
+    const it = B[a], score = it.t === L().chain ? (it.lv === 1 ? 60 : it.lv * 10) : 100;
+    const d = score + Math.hypot(a % N - b % N, ((a / N) | 0) - ((b / N) | 0));
+    if (!bp || d < bp.d) bp = { a, b, d };
+  }
+  return bp;
+}
+function showHint() {
+  if (state !== 'play' || drag) return;
+  hideHand();
+  const pr = bestPair();
+  if (!pr || B[pr.a].t !== L().chain) {
+    // nothing useful to merge: point at the generator
+    const g = B.findIndex(v => v?.t === 'gen'); if (g >= 0) imgs[g].classList.add('hint');
+    if (!pr) return;
+  }
+  imgs[pr.a].classList.add('hint'); imgs[pr.b].classList.add('hint');
+  if (lvl !== 0 || B[pr.a].t !== L().chain) return;   // night board: glow only, no hand
+  const h = $('hand'); h.src = A.hand; h.style.display = 'block'; h.style.transformOrigin = `${TIP_X}px ${TIP_Y}px`;
+  const tip = (p, s = 1) => `translate(${p.x - TIP_X}px,${p.y - TIP_Y}px) scale(${s})`;
+  const a = cellXY(pr.a), b = cellXY(pr.b), DUR = 1800;
+  handAnim = h.animate([
+    { transform: tip(a), opacity: 0 }, { transform: tip(a, .88), opacity: 1, offset: .15 },
+    { transform: tip(b, .88), opacity: 1, offset: .7 }, { transform: tip(b), opacity: 0, offset: .85 }, { transform: tip(b), opacity: 0 },
+  ], { duration: DUR, iterations: Infinity, easing: 'ease-in-out' });
+  ghost = flyer(A[key(B[pr.a])], 48);
+  const gt = (p, s = 1) => `translate(${p.x - 24}px,${p.y - 24}px) scale(${s})`;
+  ghost.animate([{ transform: gt(a), opacity: 0 }, { transform: gt(a, 1.1), opacity: .75, offset: .15 },
+    { transform: gt(b, 1.1), opacity: .75, offset: .7 }, { transform: gt(b), opacity: 0, offset: .85 }, { transform: gt(b), opacity: 0 }],
+    { duration: DUR, iterations: Infinity, easing: 'ease-in-out' });
+}
+
+// ---- dialogue helpers ----
+function say(who, text, pos, night) {
+  const b = document.createElement('div'); b.className = 'bubble' + (night ? ' night' : '');
+  b.innerHTML = (who ? `<b>${who}</b>` : '') + text; Object.assign(b.style, pos);
+  $('bubbles').innerHTML = ''; $('bubbles').appendChild(b); return b;
+}
+const clearSay = () => $('bubbles').innerHTML = '';
+// the sad portrait is drawn waist-up (others head-to-chest), so it is shown taller to keep her face the same size
+function char(id, src, on) { const c = $(id); if (src) { c.src = A[src]; c.style.height = src === 'noraSad' ? '380px' : id === 'nora' ? '300px' : '340px'; } c.classList.toggle(id === 'nora' ? 'out-l' : 'out-r', !on); }
+function caption(text, top) { const c = $('caption'); c.textContent = text || ''; if (top) c.style.top = top + 'px'; c.classList.toggle('on', !!text); }
+
+// ---- scene 1: hook ----
+async function hook() {
+  state = 'hook';
+  $('bgA').style.backgroundImage = `url(${A.bgDusk})`;
+  // each step checks the state: a tap may already have started the board
+  const step = async ms => { await wait(ms); return state === 'hook'; };
+  if (!await step(400)) return;
+  char('nora', 'noraSad', true);
+  if (!await step(500)) return;
+  $('phone').classList.add('in'); sfx.pick();
+  if (!await step(1500)) return;
+  say('NORA', "It's all I have left.", { left: '138px', top: '236px', whiteSpace: 'nowrap' });
+  if (!await step(1200)) return;
+  show('tapHint');
+  // auto start after a while if nobody taps (an ad keeps moving)
+  hookTimer = setTimeout(startLevel1, 4500);
+}
+let hookTimer = 0;
+$('scene').addEventListener('pointerdown', () => { if (state === 'hook') { clearTimeout(hookTimer); startLevel1(); } });
+
+// ---- scene 2-3: board 1 (day, lights) ----
+async function startLevel1() {
+  if (state !== 'hook') return; state = 'busy';
+  sfx.unlock(); sfx.tap(); hide('tapHint'); clearSay();
+  $('phone').classList.remove('in'); char('nora', null, false);
+  $('bgB').style.transition = 'none'; $('bgB').style.backgroundImage = `url(${A.bgRuined})`; $('bgB').style.opacity = 0;
+  void $('bgB').offsetWidth; $('bgB').style.transition = 'opacity .6s'; $('bgB').style.opacity = 1;
+  await wait(650);
+  // the ruined lobby becomes the base, the restored one waits on top at 0 and fades in with the bar
+  $('bgA').style.backgroundImage = `url(${A.bgRuined})`; $('bgB').style.transition = 'none'; $('bgB').style.opacity = 0; $('bgB').style.backgroundImage = `url(${A.bgRestored})`;
+  void $('bgB').offsetWidth; $('bgB').style.transition = '';
+  lvl = 0; setupLevel(); show('hud'); $('board').classList.remove('down'); fx.amb.motes = true;
+  await wait(600);
+  state = 'play'; scheduleHint(1800);
+}
+
+// ---- scene 4: the chandelier goes up, the clock hands run to midnight ----
+const CEIL = { x: 187, y: 62 };   // the chandelier painted in bg-restored, in stage units
+async function nightFalls() {
+  track('night_seen');
+  await wait(300);
+  $('board').classList.add('down'); hide('hud'); sfx.stopMusic();
+  await wait(500);   // the ruined lobby is seen in full first
+  // the chandelier just merged flies from the board up into the ceiling light and becomes it
+  const f = flyer(A.lgt6, 76), tr = (p, k) => `translate(${p.x - 38}px,${p.y - 38}px) scale(${k})`;
+  const frames = [];
+  for (let k = 0; k <= 10; k++) {
+    const u = k / 10, x = lastTop.x + (CEIL.x - lastTop.x) * u, y = lastTop.y + (CEIL.y - lastTop.y) * u - 90 * Math.sin(u * Math.PI);
+    frames.push({ transform: tr({ x, y }, 1.2 - .6 * u), opacity: u > .8 ? 1 - (u - .8) / .2 : 1 });
+  }
+  const trail = setInterval(() => { const q = centerOf(f); fx.trail(q.x, q.y); fx.trail(q.x, q.y); }, 30);
+  sfx.sparkle();
+  await f.animate(frames, { duration: 1000, easing: 'cubic-bezier(.45,0,.35,1)', fill: 'forwards' }).finished;
+  clearInterval(trail); f.remove();
+  fx.sparks(CEIL.x, CEIL.y + 20, 28, GOLD, 4.5, 3.5); fx.stars(CEIL.x, CEIL.y + 30, 8, 60);
+  sfx.merge(6);
+  // then the whole lobby is restored: the repaired picture fades in over the ruined one
+  $('bgB').style.transition = 'opacity 2.2s ease-in-out'; $('bgB').style.opacity = 1;
+  for (let k = 0; k < 6; k++) setTimeout(() => fx.stars(30 + Math.random() * 300, 120 + Math.random() * 420, 3, 20), 250 + k * 300);
+  setTimeout(() => ['lampGlow', 'fireGlow'].forEach(id => $(id).classList.add('on')), 1400);
+  await wait(1900);
+  caption('The Hollow Lantern is back.', 300);
+  await wait(1500);
+  caption('');
+  // the clock: hands run from 9 to midnight while the room goes dark around the lamps
+  const cw = $('clockWrap'); $('clockImg').src = A.clockFace; cw.classList.add('in');
+  $('dim').style.opacity = .35;
+  const hh = $('hourHand'), mh = $('minHand'), SPIN = 2600, ease = 'cubic-bezier(.5,0,.25,1)';
+  hh.animate([{ transform: 'rotate(270deg)' }, { transform: 'rotate(360deg)' }], { duration: SPIN, easing: ease, fill: 'forwards' });
+  mh.animate([{ transform: 'rotate(0deg)' }, { transform: 'rotate(1080deg)' }], { duration: SPIN, easing: ease, fill: 'forwards' });
+  sfx.clockspin(); $('tint').style.transition = `opacity ${SPIN}ms`; $('tint').style.opacity = .7; $('moonGlow').classList.add('on');
+  await wait(SPIN + 150);
+  // midnight: three deep strikes, each one dims the lights a step
+  $('tint').style.transition = 'opacity .8s'; fx.amb.mist = true;
+  caption('Midnight.', 384);
+  for (let k = 0; k < 3; k++) {
+    sfx.clockbell(); cw.classList.remove('strike'); void cw.offsetWidth; cw.classList.add('strike');
+    fx.ring(180, 250, '#d6c4ff', 110, 3);
+    $('tint').style.opacity = .78 + k * .07;
+    await wait(850);
+  }
+  cw.classList.remove('in'); caption('');
+  await wait(900);   // a beat of silence before the knock
+  knock();
+}
+
+// ---- scene 5: one knock clip (three knocks), a pause, then OPEN or HIDE ----
+let doorTimer = 0;
+async function knock() {
+  const spans = $('knock').querySelectorAll('span');
+  sfx.knock();
+  [60, 280, 500].forEach((ms, k) => setTimeout(() => { spans[k].classList.add('on'); stage.classList.remove('nudge'); void stage.offsetWidth; stage.classList.add('nudge'); }, ms));
+  await wait(1700);   // let it sink in, then the choice
+  show('choices'); state = 'door';
+  doorTimer = setTimeout(() => door('auto'), 4000);
+}
+$('btnOpen').addEventListener('pointerdown', e => { e.stopPropagation(); door('open'); });
+$('btnHide').addEventListener('pointerdown', e => { e.stopPropagation(); door('hide'); });
+async function door(how) {
+  if (state !== 'door') return; state = 'busy'; clearTimeout(doorTimer);
+  sfx.unlock(); sfx.tap(); track('door_' + how);
+  const hideIt = how === 'hide';
+  $(hideIt ? 'btnHide' : 'btnOpen').classList.add('picked'); $(hideIt ? 'btnOpen' : 'btnHide').classList.add('off');
+  await wait(450);
+  hide('choices'); clearSay(); $('knock').querySelectorAll('span').forEach(s => s.classList.remove('on'));
+  if (hideIt) {
+    // Nora ducks behind the desk; the door opens by itself and he is already at the bell
+    char('nora', null, false); await wait(400); sfx.bell(); await wait(500);
+    sfx.gust(); stage.classList.remove('flicker'); void stage.offsetWidth; stage.classList.add('flicker');
+    fx.sparks(250, 300, 24, VIOLET, 3.5, 3);
+    char('aldric', 'aldricSecret', true); track('monster_seen'); sfx.nightMusic();
+    await wait(600);
+    say('ALDRIC', 'No need to hide.<br>I only bite... my dinner.', { left: '14px', top: '250px', width: '200px' }, true);
+  } else {
+    // the door swings open: a gust blows out half the candles, Lord Aldric bows on the threshold
+    sfx.gust(); stage.classList.remove('flicker'); void stage.offsetWidth; stage.classList.add('flicker');
+    fx.sparks(250, 300, 24, VIOLET, 3.5, 3); char('nora', null, false);
+    await wait(500);
+    char('aldric', 'aldricBow', true); track('monster_seen'); sfx.nightMusic();
+    await wait(600);
+    say('ALDRIC', 'A room, madam.<br>For... a long stay.', { left: '14px', top: '250px', width: '190px' }, true);
+    await wait(1400);
+    caption('...he casts no shadow.', 560);
+  }
+  await wait(2300);
+  clearSay(); caption(''); char('aldric', null, false); $('dim').style.opacity = 0;
+  $('tint').style.opacity = .55;
+  startLevel2();
+}
+
+// ---- scene 6: board 2 (night, room service) ----
+async function startLevel2() {
+  lvl = 1; setupLevel(); show('hud'); $('board').classList.remove('down');
+  track('level2_start');
+  await wait(600);
+  state = 'play'; scheduleHint(3000);
+}
+
+// ---- scene 7: reveal ----
+async function reveal() {
+  track('reveal_seen');
+  await wait(300);
+  $('board').classList.add('down'); hide('hud'); $('dim').style.opacity = .55;
+  const big = $('big'); big.src = A.srv6; big.style.top = '300px'; big.classList.add('in'); $('halo').classList.add('violet');
+  await wait(200); big.style.top = '90px'; $('halo').style.top = '40px'; $('halo').classList.add('on'); sfx.sparkle(); fx.sparks(180, 180, 22, GOLD, 4, 3);
+  await wait(700);
+  char('aldric', 'aldricToast', true);
+  say('ALDRIC', 'Finally.<br>Proper service.', { left: '14px', top: '330px', width: '160px' }, true);
+  await wait(1900);
+  // rent: one antique gold coin... and a business card
+  clearSay();
+  const coin = $('propCoin'); coin.src = A.coin; coin.style.top = '-80px'; coin.style.opacity = 1;
+  requestAnimationFrame(() => { coin.style.top = '250px'; coin.style.transform = 'rotateY(720deg)'; });
+  await wait(700); sfx.coin(); fx.sparks(180, 285, 16, GOLD, 3.2, 3);
+  await wait(400);
+  big.classList.remove('in'); $('halo').classList.remove('on');
+  const cards = $('propCards'); cards.src = A.cards; cards.style.top = '420px'; cards.style.transform = 'scale(.3) rotate(-20deg)';
+  requestAnimationFrame(() => { cards.style.opacity = 1; cards.style.top = '90px'; cards.style.transform = 'scale(1) rotate(-4deg)'; });
+  coin.style.top = '200px'; coin.style.left = '74%';
+  char('aldric', 'aldricSecret', true);
+  await wait(500); sfx.sting();
+  say('ALDRIC', 'Your agent sold this hotel to us too...<br><i>in 1923.</i>', { left: '14px', top: '280px', width: '210px' }, true);
+  await wait(2600);
+  // zoom on the card: same name, a hundred years older
+  clearSay(); char('aldric', null, false);
+  cards.style.transform = 'scale(1.35) rotate(0deg)'; cards.style.top = '150px'; fx.stars(220, 230, 6, 60);
+  await wait(500);
+  char('nora', 'noraFrozen', true);
+  say('NORA', '...Who ARE you,<br>Victor?', { left: '170px', top: '360px', width: '160px' });
+  await wait(2400);
+  endCard();
+}
+
+// ---- scene 8: end card ----
+function endCard() {
+  state = 'end'; hideHand(); track('endcard_seen', { variant: E2 ? 'E2' : 'E1' });
+  $('end').style.backgroundImage = `url(${A.bgNight})`; $('endCard').src = A.cards;
+  $('endQ').textContent = E2 ? "Your guests aren't human. Keep them happy." : 'Who sold you a monster hotel?';
+  show('end'); sfx.sparkle();
+}
+function cta(e) {
+  e.stopPropagation(); track('cta_click');
+  if (window.mraid && mraid.open) mraid.open('https://example.com/store'); else toast('Store link goes here (internal demo)');
+}
+$('cta').addEventListener('pointerdown', cta);
+$('end').addEventListener('pointerdown', e => { if (e.target.id !== 'again') cta(e); });
+$('again').addEventListener('pointerdown', e => { e.stopPropagation(); location.reload(); });
+$('mute').addEventListener('pointerdown', e => { e.stopPropagation(); sfx.unlock(); $('mute').textContent = sfx.toggle() ? '🔇' : '🔊'; });
+
+// ---- boot ----
+function loadImg(src) { return new Promise(ok => { const i = new Image(); i.onload = i.onerror = () => ok(i); i.src = src; }); }
+async function start() {
+  track('load');
+  const list = Object.values(A); let n = 0;
+  await Promise.all(list.map(s => loadImg(s).then(() => $('loadBar').style.width = (++n / list.length * 100) + '%')));
+  buildBoard();
+  $('loader').style.opacity = 0; setTimeout(() => $('loader').remove(), 400);
+  track('ready');
+  hook();
+}
+start();
+</script>
+</body>
+</html>

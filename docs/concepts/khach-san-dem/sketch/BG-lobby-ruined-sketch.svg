@@ -1,0 +1,188 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 960" width="540" height="960" font-family="Arial, sans-serif">
+  <style>
+    .line{stroke:#2f2a26;stroke-width:2}
+    .note{font-size:11px;fill:#333}
+    .lbl{font-size:13px;font-weight:bold}
+    .tag{fill:#fffbe6;stroke:#c0392b;stroke-width:1.5}
+    .lead{stroke:#c0392b;stroke-width:1.5;fill:none}
+    .board{fill:none;stroke:#2c7fb8;stroke-width:2.5;stroke-dasharray:9 5}
+    .cell{fill:none;stroke:#bfe1f7;stroke-width:0.8;opacity:0.5}
+  </style>
+
+  <!-- ===== NỀN SẢNH: bố cục đầy đủ như bản 1 ===== -->
+  <rect width="540" height="960" fill="#3a2e2a"/>
+  <polygon points="0,0 540,0 540,330 0,330" fill="#7a3b3f"/>
+  <g stroke="#5c2a2e" stroke-width="2" opacity="0.6">
+    <line x1="30" y1="0" x2="30" y2="330"/><line x1="90" y1="0" x2="90" y2="330"/><line x1="150" y1="0" x2="150" y2="330"/><line x1="210" y1="0" x2="210" y2="330"/><line x1="270" y1="0" x2="270" y2="330"/><line x1="330" y1="0" x2="330" y2="330"/><line x1="390" y1="0" x2="390" y2="330"/><line x1="450" y1="0" x2="450" y2="330"/>
+  </g>
+  <polygon points="60,40 110,60 95,120 50,95" fill="#a8857a" opacity="0.7"/>
+  <polygon points="0,330 540,330 540,960 0,960" fill="#9c7448"/>
+  <g stroke="#7b5a36" stroke-width="2" opacity="0.7">
+    <line x1="0" y1="380" x2="540" y2="380"/><line x1="0" y1="440" x2="540" y2="440"/><line x1="0" y1="510" x2="540" y2="510"/><line x1="0" y1="590" x2="540" y2="590"/><line x1="0" y1="680" x2="540" y2="680"/><line x1="0" y1="780" x2="540" y2="780"/><line x1="0" y1="890" x2="540" y2="890"/>
+  </g>
+
+  <!-- tủ chìa khóa -->
+  <rect x="95" y="105" width="180" height="125" fill="#5b3a26" class="line"/>
+  <g fill="#3e2718" stroke="#c9a14a" stroke-width="1">
+    <rect x="105" y="115" width="30" height="24"/><rect x="140" y="115" width="30" height="24"/><rect x="175" y="115" width="30" height="24"/><rect x="210" y="115" width="30" height="24"/><rect x="245" y="115" width="22" height="24"/>
+    <rect x="105" y="145" width="30" height="24"/><rect x="140" y="145" width="30" height="24"/><rect x="175" y="145" width="30" height="24"/><rect x="210" y="145" width="30" height="24"/><rect x="245" y="145" width="22" height="24"/>
+    <rect x="105" y="175" width="30" height="24"/><rect x="140" y="175" width="30" height="24"/><rect x="175" y="175" width="30" height="24"/><rect x="210" y="175" width="30" height="24"/><rect x="245" y="175" width="22" height="24"/>
+  </g>
+  <g fill="#c9a14a"><circle cx="120" cy="134" r="3"/><circle cx="190" cy="134" r="3"/><circle cx="155" cy="164" r="3"/><circle cx="225" cy="194" r="3"/></g>
+  <rect x="120" y="82" width="130" height="18" fill="#3e2718" stroke="#c9a14a"/>
+  <text x="185" y="96" text-anchor="middle" font-size="11" fill="#8c7a5a" letter-spacing="2">RECEP  ION</text>
+
+  <!-- quầy lễ tân -->
+  <path d="M 40 300 Q 185 270 330 300 L 330 350 Q 185 320 40 350 Z" fill="#8a5a3a" class="line"/>
+  <path d="M 40 300 Q 185 270 330 300" stroke="#c9a14a" stroke-width="4" fill="none"/>
+  <circle cx="200" cy="283" r="7" fill="#d4a63a" class="line"/>
+  <rect x="235" y="278" width="34" height="10" fill="#efe4cf" class="line" transform="rotate(-6 252 283)"/>
+
+  <!-- thang máy cổ -->
+  <rect x="360" y="120" width="80" height="185" fill="#6b5a3a" class="line"/>
+  <rect x="368" y="135" width="30" height="165" fill="#3a3326" stroke="#c9a14a" stroke-width="2"/>
+  <rect x="402" y="135" width="30" height="165" fill="#3a3326" stroke="#c9a14a" stroke-width="2"/>
+  <g stroke="#c9a14a" stroke-width="1"><line x1="368" y1="150" x2="398" y2="290"/><line x1="398" y1="150" x2="368" y2="290"/><line x1="402" y1="150" x2="432" y2="290"/><line x1="432" y1="150" x2="402" y2="290"/></g>
+  <path d="M 375 115 A 25 25 0 0 1 425 115" fill="#c9a14a" stroke="#2f2a26" stroke-width="2"/>
+  <line x1="400" y1="115" x2="388" y2="98" stroke="#2f2a26" stroke-width="2"/>
+
+  <!-- cầu thang phụ + cửa sổ vòm -->
+  <polygon points="455,330 540,250 540,330" fill="#6b4a2c" class="line"/>
+  <g stroke="#2f2a26" stroke-width="1.5"><line x1="470" y1="316" x2="540" y2="316"/><line x1="485" y1="302" x2="540" y2="302"/><line x1="500" y1="288" x2="540" y2="288"/><line x1="515" y1="274" x2="540" y2="274"/></g>
+  <path d="M 470 230 L 470 120 A 30 30 0 0 1 530 120 L 530 230 Z" fill="#f2d59a" class="line"/>
+  <polygon points="470,230 530,230 420,520 300,520" fill="#f6dfa8" opacity="0.25"/>
+
+  <!-- đồng hồ quả lắc -->
+  <rect x="8" y="150" width="26" height="160" fill="#5b3a26" class="line"/>
+  <circle cx="21" cy="172" r="10" fill="#efe4cf" class="line"/>
+
+  <!-- thảm đỏ rách -->
+  <polygon points="150,960 300,960 255,350 195,350" fill="#8e2a2a" opacity="0.85"/>
+  <polygon points="215,700 260,690 250,760 205,745" fill="#9c7448"/>
+
+  <!-- đèn chùm rơi -->
+  <g transform="rotate(25 300 420)">
+    <ellipse cx="300" cy="420" rx="42" ry="16" fill="#e8eef2" stroke="#c9a14a" stroke-width="2"/>
+    <g stroke="#cfe3ee" stroke-width="2"><line x1="265" y1="425" x2="262" y2="455"/><line x1="285" y1="430" x2="284" y2="465"/><line x1="305" y1="432" x2="306" y2="468"/><line x1="325" y1="428" x2="328" y2="458"/></g>
+  </g>
+
+  <!-- xe đẩy hành lý đổ -->
+  <g transform="rotate(-18 410 440)">
+    <rect x="370" y="430" width="90" height="10" fill="#c9a14a" class="line"/>
+    <path d="M 375 430 L 375 370 Q 415 345 455 370 L 455 430" fill="none" stroke="#c9a14a" stroke-width="6"/>
+    <circle cx="380" cy="448" r="8" fill="#333"/><circle cx="450" cy="448" r="8" fill="#333"/>
+    <rect x="395" y="395" width="40" height="30" fill="#6b4a8a" class="line"/>
+  </g>
+
+  <!-- ghế phủ vải -->
+  <path d="M 30 420 Q 40 380 85 385 Q 125 390 120 440 L 115 470 L 35 470 Z" fill="#ece6dc" class="line"/>
+  <path d="M 100 470 Q 110 440 150 445 Q 180 450 175 490 L 170 505 L 105 505 Z" fill="#ece6dc" class="line"/>
+
+  <!-- biển ROOMS -->
+  <rect x="455" y="350" width="70" height="22" fill="#3e2718" stroke="#c9a14a"/>
+  <text x="490" y="366" text-anchor="middle" font-size="11" fill="#c9a14a">ROOMS →</text>
+
+  <!-- mạng nhện -->
+  <path d="M 0 0 L 45 0 M 0 0 L 0 45 M 0 0 L 32 32 M 10 0 Q 10 10 0 10 M 22 0 Q 22 22 0 22 M 35 0 Q 35 35 0 35" stroke="#e6e6e6" stroke-width="1" fill="none" opacity="0.8"/>
+
+  <!-- ===== TIỀN CẢNH: phần nền lộ ra khi bàn ghép ẩn ===== -->
+  <!-- hoa văn sàn: huy hiệu khách sạn khảm giữa sàn (dấu hiệu khách sạn) -->
+  <ellipse cx="270" cy="640" rx="120" ry="45" fill="#b8925e" stroke="#6b4a2c" stroke-width="3"/>
+  <ellipse cx="270" cy="640" rx="85" ry="31" fill="none" stroke="#c9a14a" stroke-width="3"/>
+  <text x="270" y="650" text-anchor="middle" font-size="26" font-weight="bold" fill="#6b4a2c" font-family="Georgia, serif">H L</text>
+  <!-- vết nứt sàn + ván gãy -->
+  <path d="M 330 610 L 360 640 L 352 670 L 380 700" stroke="#4a3320" stroke-width="2" fill="none"/>
+  <polygon points="405,720 470,705 478,722 412,737" fill="#7b5a36" stroke="#4a3320"/>
+
+  <!-- ghế sofa tròn giữa sảnh (kiểu khách sạn), phủ vải; bản đã sửa Nora ngồi ở đây -->
+  <ellipse cx="160" cy="745" rx="95" ry="30" fill="#d9d2c6" stroke="#2f2a26" stroke-width="2"/>
+  <path d="M 70 745 Q 75 690 160 685 Q 245 690 250 745" fill="#ece6dc" stroke="#2f2a26" stroke-width="2"/>
+  <path d="M 120 690 Q 160 650 200 690" fill="#e2dbcf" stroke="#2f2a26" stroke-width="2"/>
+
+  <!-- chồng vali cũ + hộp mũ, bỏ lại từ khách xưa -->
+  <rect x="330" y="760" width="95" height="38" rx="6" fill="#8a5a3a" stroke="#2f2a26" stroke-width="2"/>
+  <rect x="340" y="728" width="75" height="34" rx="6" fill="#4f6b5a" stroke="#2f2a26" stroke-width="2"/>
+  <ellipse cx="455" cy="790" rx="30" ry="12" fill="#a0446a" stroke="#2f2a26" stroke-width="2"/>
+  <rect x="425" y="768" width="60" height="22" fill="#a0446a" stroke="#2f2a26" stroke-width="2"/>
+  <circle cx="360" cy="778" r="7" fill="#e8c46a"/><circle cx="395" cy="745" r="6" fill="#d98a6a"/>
+
+  <!-- giá treo áo: áo choàng đen + mũ chóp cao (gợi ý khách đêm) -->
+  <line x1="505" y1="600" x2="505" y2="760" stroke="#3e2718" stroke-width="6"/>
+  <line x1="480" y1="760" x2="530" y2="760" stroke="#3e2718" stroke-width="6"/>
+  <path d="M 492 615 L 518 615 L 528 700 L 482 700 Z" fill="#1d1a24" stroke="#2f2a26"/>
+  <rect x="490" y="588" width="30" height="24" fill="#1d1a24"/><rect x="484" y="610" width="42" height="5" fill="#1d1a24"/>
+
+  <!-- cây cọ chậu lớn bị héo, góc dưới trái -->
+  <path d="M 40 860 L 30 960 L 110 960 L 100 860 Z" fill="#b07a4a" stroke="#2f2a26" stroke-width="2"/>
+  <path d="M 70 860 C 60 820 30 810 10 815 M 70 860 C 80 810 110 800 130 805 M 70 860 C 68 820 70 790 75 770" stroke="#7a6a3a" stroke-width="5" fill="none"/>
+
+  <!-- dây chắn nhung + cột đồng bị đổ, góc dưới phải -->
+  <line x1="395" y1="905" x2="470" y2="870" stroke="#c9a14a" stroke-width="6"/>
+  <circle cx="470" cy="870" r="8" fill="#c9a14a"/>
+  <path d="M 395 905 Q 420 940 455 925" stroke="#8e2a2a" stroke-width="6" fill="none"/>
+
+  <!-- thư, báo cũ vương vãi + xô hứng nước dột -->
+  <rect x="215" y="850" width="40" height="28" fill="#efe4cf" stroke="#2f2a26" transform="rotate(-12 235 864)"/>
+  <rect x="262" y="872" width="34" height="24" fill="#efe4cf" stroke="#2f2a26" transform="rotate(10 279 884)"/>
+  <rect x="300" y="830" width="28" height="32" fill="#7a7a7a" stroke="#2f2a26"/>
+  <ellipse cx="314" cy="866" rx="40" ry="9" fill="#8fb3c4" opacity="0.5"/>
+
+  <!-- ===== LỚP PHỦ: bàn ghép 7×7 trượt lên che nền (không thuộc ảnh nền) ===== -->
+  <rect class="board" x="12" y="400" width="516" height="550" rx="10"/>
+  <g>
+    <rect class="cell" x="22" y="430" width="70" height="70"/><rect class="cell" x="94" y="430" width="70" height="70"/><rect class="cell" x="166" y="430" width="70" height="70"/><rect class="cell" x="238" y="430" width="70" height="70"/><rect class="cell" x="310" y="430" width="70" height="70"/><rect class="cell" x="382" y="430" width="70" height="70"/><rect class="cell" x="454" y="430" width="70" height="70"/>
+    <rect class="cell" x="22" y="502" width="70" height="70"/><rect class="cell" x="94" y="502" width="70" height="70"/><rect class="cell" x="166" y="502" width="70" height="70"/><rect class="cell" x="238" y="502" width="70" height="70"/><rect class="cell" x="310" y="502" width="70" height="70"/><rect class="cell" x="382" y="502" width="70" height="70"/><rect class="cell" x="454" y="502" width="70" height="70"/>
+    <rect class="cell" x="22" y="574" width="70" height="70"/><rect class="cell" x="94" y="574" width="70" height="70"/><rect class="cell" x="166" y="574" width="70" height="70"/><rect class="cell" x="238" y="574" width="70" height="70"/><rect class="cell" x="310" y="574" width="70" height="70"/><rect class="cell" x="382" y="574" width="70" height="70"/><rect class="cell" x="454" y="574" width="70" height="70"/>
+    <rect class="cell" x="22" y="646" width="70" height="70"/><rect class="cell" x="94" y="646" width="70" height="70"/><rect class="cell" x="166" y="646" width="70" height="70"/><rect class="cell" x="238" y="646" width="70" height="70"/><rect class="cell" x="310" y="646" width="70" height="70"/><rect class="cell" x="382" y="646" width="70" height="70"/><rect class="cell" x="454" y="646" width="70" height="70"/>
+    <rect class="cell" x="22" y="718" width="70" height="70"/><rect class="cell" x="94" y="718" width="70" height="70"/><rect class="cell" x="166" y="718" width="70" height="70"/><rect class="cell" x="238" y="718" width="70" height="70"/><rect class="cell" x="310" y="718" width="70" height="70"/><rect class="cell" x="382" y="718" width="70" height="70"/><rect class="cell" x="454" y="718" width="70" height="70"/>
+    <rect class="cell" x="22" y="790" width="70" height="70"/><rect class="cell" x="94" y="790" width="70" height="70"/><rect class="cell" x="166" y="790" width="70" height="70"/><rect class="cell" x="238" y="790" width="70" height="70"/><rect class="cell" x="310" y="790" width="70" height="70"/><rect class="cell" x="382" y="790" width="70" height="70"/><rect class="cell" x="454" y="790" width="70" height="70"/>
+    <rect class="cell" x="22" y="862" width="70" height="70"/><rect class="cell" x="94" y="862" width="70" height="70"/><rect class="cell" x="166" y="862" width="70" height="70"/><rect class="cell" x="238" y="862" width="70" height="70"/><rect class="cell" x="310" y="862" width="70" height="70"/><rect class="cell" x="382" y="862" width="70" height="70"/><rect class="cell" x="454" y="862" width="70" height="70"/>
+  </g>
+  <rect x="95" y="404" width="350" height="22" rx="4" fill="rgba(20,40,60,0.75)"/>
+  <text x="270" y="420" text-anchor="middle" class="lbl" fill="#e6f2fa">BÀN GHÉP 7×7: lớp phủ, che phần dưới nền</text>
+
+  <!-- ===== CHÚ THÍCH ===== -->
+  <g>
+    <rect class="tag" x="155" y="8" width="215" height="48" rx="5"/>
+    <text x="162" y="22" class="note" font-weight="bold">Tủ chìa khóa nhiều ô số phòng</text>
+    <text x="162" y="36" class="note">thẻ đồng, vài ô trống; biển RECEPTION</text>
+    <text x="162" y="50" class="note">mất chữ = dấu hiệu khách sạn số 1</text>
+    <path class="lead" d="M 200 56 L 190 82"/>
+
+    <rect class="tag" x="5" y="345" width="175" height="34" rx="5"/>
+    <text x="12" y="359" class="note" font-weight="bold">Quầy lễ tân dài ở trung tâm</text>
+    <text x="12" y="373" class="note">chuông đồng + sổ khách</text>
+
+    <rect class="tag" x="345" y="60" width="140" height="34" rx="5"/>
+    <text x="352" y="74" class="note" font-weight="bold">Thang máy cổ</text>
+    <text x="352" y="88" class="note">cửa lưới + kim chỉ tầng</text>
+
+    <rect class="tag" x="395" y="372" width="140" height="22" rx="5"/>
+    <text x="402" y="387" class="note" font-weight="bold">Cầu thang, cửa sổ: PHỤ</text>
+
+    <!-- chú thích tiền cảnh -->
+    <rect class="tag" x="150" y="580" width="240" height="22" rx="5"/>
+    <text x="157" y="595" class="note" font-weight="bold">Huy hiệu khách sạn khảm giữa sàn</text>
+
+    <rect class="tag" x="20" y="790" width="180" height="34" rx="5"/>
+    <text x="27" y="804" class="note" font-weight="bold">Ghế sofa tròn kiểu khách sạn</text>
+    <text x="27" y="818" class="note">phủ vải; bản đêm Nora ngồi đây</text>
+
+    <rect class="tag" x="300" y="690" width="160" height="22" rx="5"/>
+    <text x="307" y="705" class="note" font-weight="bold">Vali cũ + hộp mũ bỏ lại</text>
+
+    <rect class="tag" x="360" y="560" width="175" height="34" rx="5"/>
+    <text x="367" y="574" class="note" font-weight="bold">Giá treo: áo choàng + mũ chóp</text>
+    <text x="367" y="588" class="note">gợi ý trước khách đêm</text>
+
+    <rect class="tag" x="130" y="900" width="210" height="22" rx="5"/>
+    <text x="137" y="915" class="note" font-weight="bold">Thư, báo cũ; xô hứng nước dột</text>
+
+    <rect class="tag" x="380" y="935" width="150" height="20" rx="5"/>
+    <text x="386" y="949" class="note" font-weight="bold">Dây chắn nhung bị đổ</text>
+    <rect class="tag" x="5" y="845" width="110" height="20" rx="5"/>
+    <text x="11" y="859" class="note" font-weight="bold">Cây cọ chậu héo</text>
+  </g>
+
+  <text x="530" y="956" text-anchor="end" class="note" fill="#fff">#2 BG-lobby-ruined · phác thảo v4 (nền đầy đủ + tiền cảnh, bàn 7×7 phủ lên) · 09/11</text>
+</svg>
